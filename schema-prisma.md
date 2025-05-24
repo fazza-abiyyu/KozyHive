@@ -1,3 +1,4 @@
+```
 // schema.prisma
 generator client {
   provider = "prisma-client-js"
@@ -194,3 +195,5 @@ enum TransactionType {
   REFUND          // Pengembalian dana
   FEE             // Biaya platform
 }
+
+```
