@@ -1,204 +1,213 @@
-# API Endpoints - Aplikasi Kos-kosan
+# Kos Platform API Endpoints
 
 ## 🔐 Authentication & Authorization
 
-### Auth
-- `POST /api/auth/register` - Register user baru
-- `POST /api/auth/login` - Login user
-- `POST /api/auth/logout` - Logout user
-- `POST /api/auth/refresh` - Refresh access token
-- `POST /api/auth/forgot-password` - Request reset password
-- `POST /api/auth/reset-password` - Reset password dengan token
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `POST` | `/api/auth/register` | Register new user | Public |
+| `POST` | `/api/auth/login` | User login | Public |
+| `POST` | `/api/auth/logout` | User logout | Authenticated |
+| `POST` | `/api/auth/refresh` | Refresh access token | Authenticated |
+| `POST` | `/api/auth/forgot-password` | Send password reset email | Public |
+| `POST` | `/api/auth/reset-password` | Reset password with token | Public |
 
-### Profile Management
-- `GET /api/profile` - Get profile user yang sedang login
-- `PUT /api/profile` - Update profile user
-- `POST /api/profile/upload-avatar` - Upload foto profil
-- `DELETE /api/profile/avatar` - Hapus foto profil
+## 👤 User Management
 
----
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/users/me` | Get current user profile | Authenticated |
+| `PUT` | `/api/users/me` | Update current user | Authenticated |
+| `DELETE` | `/api/users/me` | Delete current user account | Authenticated |
+| `GET` | `/api/users` | Get all users (admin only) | Admin |
+| `GET` | `/api/users/:id` | Get user by ID | Admin |
+| `PUT` | `/api/users/:id` | Update user by ID | Admin |
+| `DELETE` | `/api/users/:id` | Delete user by ID | Admin |
 
-## 🏠 Kos Property Management (Admin Only)
+## 📋 Profile Management
 
-### Kos Properties
-- `GET /api/admin/properties` - Get semua properti kos milik admin
-- `POST /api/admin/properties` - Buat properti kos baru
-- `GET /api/admin/properties/:id` - Get detail properti kos
-- `PUT /api/admin/properties/:id` - Update properti kos
-- `DELETE /api/admin/properties/:id` - Hapus properti kos
-- `PATCH /api/admin/properties/:id/status` - Update status properti (active/inactive)
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/profile` | Get current user profile | Authenticated |
+| `POST` | `/api/profile` | Create user profile | Authenticated |
+| `PUT` | `/api/profile` | Update user profile | Authenticated |
+| `DELETE` | `/api/profile` | Delete user profile | Authenticated |
 
-### Kos Rooms Management
-- `GET /api/admin/properties/:propertyId/rooms` - Get semua kamar dalam properti
-- `POST /api/admin/properties/:propertyId/rooms` - Buat kamar baru
-- `GET /api/admin/rooms/:id` - Get detail kamar
-- `PUT /api/admin/rooms/:id` - Update kamar
-- `DELETE /api/admin/rooms/:id` - Hapus kamar
-- `PATCH /api/admin/rooms/:id/status` - Update status ketersediaan kamar
-- `POST /api/admin/rooms/:id/images` - Upload gambar kamar
-- `DELETE /api/admin/rooms/:id/images/:imageId` - Hapus gambar kamar
+## 🏠 Property Management
 
----
+### Public Property Endpoints
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/properties` | Get all active properties (with filters) | Public |
+| `GET` | `/api/properties/:id` | Get property details | Public |
+| `GET` | `/api/properties/search` | Search properties | Public |
+| `GET` | `/api/properties/cities` | Get available cities | Public |
 
-## 🔍 Public Search & Browse (User)
+### Owner Property Endpoints
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/properties/my-properties` | Get owner's properties | Owner |
+| `POST` | `/api/properties` | Create new property | Owner |
+| `PUT` | `/api/properties/:id` | Update property | Owner |
+| `DELETE` | `/api/properties/:id` | Delete property | Owner |
+| `PATCH` | `/api/properties/:id/status` | Update property status | Owner |
 
-### Property Search
-- `GET /api/properties` - Search dan filter properti kos
-- `GET /api/properties/:id` - Get detail properti kos (public)
-- `GET /api/properties/:id/rooms` - Get kamar yang tersedia dalam properti
-- `GET /api/rooms/:id` - Get detail kamar (public)
+### Admin Property Endpoints
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/admin/properties` | Get all properties (admin) | Admin |
+| `PATCH` | `/api/admin/properties/:id/approve` | Approve property | Admin |
+| `PATCH` | `/api/admin/properties/:id/reject` | Reject property | Admin |
 
-### Location & Filters
-- `GET /api/cities` - Get daftar kota yang tersedia
-- `GET /api/properties/nearby` - Get kos terdekat berdasarkan koordinat
-- `GET /api/properties/search` - Advanced search dengan multiple filter
+## 📅 Booking Management
 
----
+### Tenant Booking Endpoints
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/bookings/my-bookings` | Get tenant's bookings | Tenant |
+| `POST` | `/api/bookings` | Create new booking | Tenant |
+| `PUT` | `/api/bookings/:id` | Update booking (before confirmed) | Tenant |
+| `DELETE` | `/api/bookings/:id` | Cancel booking | Tenant |
+| `GET` | `/api/bookings/:id` | Get booking details | Tenant/Owner |
 
-## 📝 Booking Management
+### Owner Booking Endpoints
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/bookings/property-bookings` | Get bookings for owner's properties | Owner |
+| `PATCH` | `/api/bookings/:id/confirm` | Confirm booking | Owner |
+| `PATCH` | `/api/bookings/:id/reject` | Reject booking | Owner |
+| `PATCH` | `/api/bookings/:id/activate` | Activate booking (tenant checked in) | Owner |
+| `PATCH` | `/api/bookings/:id/complete` | Complete booking | Owner |
 
-### User Bookings
-- `GET /api/bookings` - Get semua booking user
-- `POST /api/bookings` - Buat booking baru
-- `GET /api/bookings/:id` - Get detail booking
-- `PUT /api/bookings/:id` - Update booking (jika masih pending)
-- `DELETE /api/bookings/:id` - Cancel booking
-- `GET /api/bookings/:id/logs` - Get history log booking
+### Admin Booking Endpoints
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/admin/bookings` | Get all bookings | Admin |
+| `GET` | `/api/admin/bookings/stats` | Get booking statistics | Admin |
 
-### Admin Booking Management
-- `GET /api/admin/bookings` - Get semua booking untuk properti admin
-- `GET /api/admin/bookings/:id` - Get detail booking
-- `PATCH /api/admin/bookings/:id/confirm` - Konfirmasi booking
-- `PATCH /api/admin/bookings/:id/reject` - Tolak booking
-- `PATCH /api/admin/bookings/:id/checkin` - Proses check-in penyewa
-- `PATCH /api/admin/bookings/:id/checkout` - Proses check-out penyewa
-- `POST /api/admin/bookings/:id/extend` - Perpanjang masa sewa
+## 📋 Booking Logs
 
----
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/bookings/:id/logs` | Get booking logs | Tenant/Owner |
+| `POST` | `/api/bookings/:id/logs` | Add booking log | Owner/Admin |
 
-## 💰 Payment & Transactions
+## 💳 Transaction Management
 
-### Payment Processing
-- `POST /api/bookings/:id/payment` - Inisiasi pembayaran booking
-- `GET /api/bookings/:id/payment/status` - Cek status pembayaran
-- `POST /api/payments/webhook` - Webhook dari payment gateway
-- `POST /api/payments/verify` - Verifikasi pembayaran manual
+### Tenant Transaction Endpoints
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/transactions/my-transactions` | Get tenant's transactions | Tenant |
+| `GET` | `/api/transactions/:id` | Get transaction details | Tenant/Owner |
+| `POST` | `/api/transactions/create-payment` | Create payment for booking | Tenant |
+| `POST` | `/api/transactions/confirm-payment` | Confirm payment (webhook) | System |
 
-### Transaction Management
-- `GET /api/transactions` - Get riwayat transaksi user
-- `GET /api/transactions/:id` - Get detail transaksi
-- `GET /api/admin/transactions` - Get riwayat transaksi admin
-- `POST /api/admin/transactions/:id/refund` - Proses refund
+### Owner Transaction Endpoints
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/transactions/property-transactions` | Get transactions for owner's properties | Owner |
+| `GET` | `/api/transactions/earnings` | Get owner's earnings summary | Owner |
 
----
+### Admin Transaction Endpoints
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/admin/transactions` | Get all transactions | Admin |
+| `GET` | `/api/admin/transactions/stats` | Get transaction statistics | Admin |
+| `POST` | `/api/admin/transactions/refund` | Process refund | Admin |
 
 ## 📊 Dashboard & Analytics
 
-### User Dashboard
-- `GET /api/dashboard/user` - Dashboard user (booking aktif, riwayat, dll)
-- `GET /api/dashboard/user/stats` - Statistik user
-- `GET /api/dashboard/user/notifications` - Notifikasi user
+### Tenant Dashboard
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/dashboard/tenant` | Get tenant dashboard data | Tenant |
+| `GET` | `/api/dashboard/tenant/stats` | Get tenant statistics | Tenant |
+
+### Owner Dashboard
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/dashboard/owner` | Get owner dashboard data | Owner |
+| `GET` | `/api/dashboard/owner/stats` | Get owner statistics | Owner |
+| `GET` | `/api/dashboard/owner/revenue` | Get revenue analytics | Owner |
 
 ### Admin Dashboard
-- `GET /api/dashboard/admin` - Dashboard admin
-- `GET /api/dashboard/admin/stats` - Statistik properti dan booking
-- `GET /api/dashboard/admin/revenue` - Laporan pendapatan
-- `GET /api/dashboard/admin/occupancy` - Tingkat hunian kamar
-- `GET /api/dashboard/admin/notifications` - Notifikasi admin
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/admin/dashboard` | Get admin dashboard data | Admin |
+| `GET` | `/api/admin/stats` | Get platform statistics | Admin |
+| `GET` | `/api/admin/analytics` | Get detailed analytics | Admin |
+
+## 🔄 Utility Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `POST` | `/api/upload/image` | Upload property image | Owner |
+| `DELETE` | `/api/upload/image/:id` | Delete uploaded image | Owner |
+| `GET` | `/api/health` | Health check | Public |
+| `GET` | `/api/version` | API version info | Public |
+
+## 🎯 Search & Filter Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/search/properties` | Advanced property search | Public |
+| `GET` | `/api/search/suggestions` | Search suggestions | Public |
+| `GET` | `/api/filters/cities` | Get available cities | Public |
+| `GET` | `/api/filters/price-range` | Get price range data | Public |
+
+## 📱 Notification Endpoints (Optional)
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `GET` | `/api/notifications` | Get user notifications | Authenticated |
+| `PATCH` | `/api/notifications/:id/read` | Mark notification as read | Authenticated |
+| `DELETE` | `/api/notifications/:id` | Delete notification | Authenticated |
+
+## 🔧 System Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|---------|
+| `POST` | `/api/webhooks/payment` | Payment gateway webhook | System |
+| `GET` | `/api/system/status` | System status | Admin |
+| `POST` | `/api/system/seed` | Seed database (dev only) | Admin |
 
 ---
 
-## 🔔 Notifications
+## 📝 Query Parameters Examples
 
-### Notification Management
-- `GET /api/notifications` - Get semua notifikasi
-- `PATCH /api/notifications/:id/read` - Mark notifikasi sebagai dibaca
-- `PATCH /api/notifications/read-all` - Mark semua notifikasi sebagai dibaca
-- `DELETE /api/notifications/:id` - Hapus notifikasi
-
----
-
-## ⭐ Reviews & Ratings (Optional)
-
-### Review Management
-- `GET /api/properties/:id/reviews` - Get review properti
-- `POST /api/bookings/:id/review` - Buat review setelah checkout
-- `PUT /api/reviews/:id` - Update review
-- `DELETE /api/reviews/:id` - Hapus review
-- `GET /api/admin/reviews` - Get semua review untuk properti admin
-
----
-
-## 🛠️ Admin Management
-
-### User Management (Super Admin)
-- `GET /api/admin/users` - Get semua user
-- `GET /api/admin/users/:id` - Get detail user
-- `PATCH /api/admin/users/:id/status` - Update status user
-- `DELETE /api/admin/users/:id` - Hapus user
-
-### System Settings
-- `GET /api/admin/settings` - Get pengaturan sistem
-- `PUT /api/admin/settings` - Update pengaturan sistem
-- `GET /api/admin/reports` - Generate laporan sistem
-
----
-
-## 📱 Mobile App Support
-
-### App Configuration
-- `GET /api/config` - Get konfigurasi aplikasi
-- `GET /api/version` - Get versi API dan app
-- `POST /api/device/register` - Register device untuk push notification
-
----
-
-## 🔧 Utilities
-
-### File Upload
-- `POST /api/upload/image` - Upload gambar umum
-- `POST /api/upload/document` - Upload dokumen
-- `DELETE /api/upload/:fileId` - Hapus file
-
-### Geocoding
-- `GET /api/geocode` - Convert alamat ke koordinat
-- `GET /api/reverse-geocode` - Convert koordinat ke alamat
-
-### Health Check
-- `GET /api/health` - Health check API
-- `GET /api/status` - Status sistem
-
----
-
-## Query Parameters Examples
-
-### Property Search (`GET /api/properties`)
+### Property Search
 ```
-?city=Jakarta
-&minPrice=500000
-&maxPrice=2000000
-&roomType=SINGLE
-&facilities=wifi,ac,parking
-&page=1
-&limit=10
-&sortBy=price
-&sortOrder=asc
+GET /api/properties?city=Jakarta&minPrice=1000000&maxPrice=5000000&page=1&limit=10
 ```
 
-### Nearby Search (`GET /api/properties/nearby`)
+### Booking Filter
 ```
-?lat=-6.200000
-&lng=106.816666
-&radius=5
-&limit=20
+GET /api/bookings/my-bookings?status=ACTIVE&startDate=2024-01-01&endDate=2024-12-31
 ```
 
-### Admin Bookings (`GET /api/admin/bookings`)
+### Transaction Filter
 ```
-?status=PENDING
-&dateFrom=2024-01-01
-&dateTo=2024-12-31
-&propertyId=1
-&page=1
-&limit=20
+GET /api/transactions/my-transactions?status=SUCCESS&type=BOOKING_PAYMENT&page=1
+```
+
+## 🔒 Access Levels
+- **Public**: No authentication required
+- **Authenticated**: Valid JWT token required
+- **Tenant**: Role TENANT required
+- **Owner**: Role OWNER required  
+- **Admin**: Role ADMIN required
+- **System**: Internal system calls (webhooks, etc.)
+
+## 📋 Common Response Format
+```json
+{
+  "success": true,
+  "message": "Success message",
+  "data": {},
+  "meta": {
+    "page": 1,
+    "limit": 10,
+    "total": 100,
+    "totalPages": 10
+  }
+}
 ```
