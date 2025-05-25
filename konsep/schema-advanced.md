@@ -1,7 +1,7 @@
 ```
-// schema.prisma
+// schema.db
 generator client {
-  provider = "prisma-client-js"
+  provider = "db-client-js"
 }
 
 datasource db {
