@@ -19,7 +19,15 @@ export default defineEventHandler( async (event) => {
             '/api/properties/my-properties',
             '/api/properties/:id',
             '/api/properties?page=:page&pagesize=:pagesize',
+            '/api/properties/search?q=:q&page=:page&pagesize=:pagesize',
+            '/api/properties/cities?c=:c&page=:page&pagesize=:pagesize',
             '/api/properties/:id/status',
+            '/api/admin/properties',
+            '/api/admin/properties/:id',
+            '/api/admin/properties?page=:page&pagesize=:pagesize',
+            '/api/bookings/my-bookings',
+            '/api/bookings/:id',
+            '/api/bookings',
         ]
 
         const isHandledByThisMiddleware = endpoints.some(endopoint => {

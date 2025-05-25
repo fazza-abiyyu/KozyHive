@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
 
         const propertyById = await Property.getPropertyById(id);
 
-        return ResponseHandler.sendSuccess(event, "Pengguna ditemukan!", propertyById , 200);
+        return ResponseHandler.sendSuccess(event, "Properti ditemukan!", propertyById , 200);
     } catch (error: any) {
         return ErrorHandler.handleError(event, error);
     }

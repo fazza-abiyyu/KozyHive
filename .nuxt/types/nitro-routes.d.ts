@@ -18,6 +18,17 @@ declare module "nitropack/types" {
     '/api/auth/register': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/register.post').default>>>>
     }
+    '/api/bookings/:id': {
+      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id].delete').default>>>>
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id].get').default>>>>
+      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id].put').default>>>>
+    }
+    '/api/bookings': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/index.post').default>>>>
+    }
+    '/api/bookings/my-bookings': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/my-bookings.get').default>>>>
+    }
     '/api/profile': {
       'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/profile/index.delete').default>>>>
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/profile/index.get').default>>>>
@@ -32,11 +43,18 @@ declare module "nitropack/types" {
     '/api/properties/:id/status': {
       'patch': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id]/status.patch').default>>>>
     }
+    '/api/properties/cities': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/cities.get').default>>>>
+    }
     '/api/properties': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/index.get').default>>>>
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/index.post').default>>>>
     }
     '/api/properties/my-properties': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/my-properties.get').default>>>>
+    }
+    '/api/properties/search': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/search.get').default>>>>
     }
     '/api/users/:id': {
       'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/[id].delete').default>>>>

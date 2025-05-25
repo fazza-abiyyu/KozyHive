@@ -1,14 +1,17 @@
 import { Property } from "~/server/models/Property";
 import { ResponseHandler } from "~/server/utils/ResponseHandler";
 import { ErrorHandler } from "~/server/utils/ErrorHandler";
+import { Pagination } from "~/server/utils/Pagination";
 
 export default defineEventHandler(async (event) => {
     try {
-        const id = parseInt(event.context.params?.id as string);
+        const query = getQuery(event);
+        const { page, limit } = Pagination.getPagination(query);
 
-        const deletedProperties = await Property.deleteProperty(id);
+        const { data, meta } = await Property.getAllProperties(page, limit);
 
-        return ResponseHandler.sendSuccess(event, "Properti berhasil dihapus!", deletedProperties, 200);
+        return ResponseHandler.sendSuccess(event, "Data properti ditemukan!", data, 200, meta);
+
     } catch (error: any) {
         return ErrorHandler.handleError(event, error);
     }

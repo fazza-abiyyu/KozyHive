@@ -10,7 +10,7 @@ export class Property {
 
         const properties = await prisma.property.findMany({
             where: {
-                ownerId, // 🔥 Hanya ambil properti milik user tertentu
+                ownerId,
                 ...filters,
             },
             skip,
@@ -139,4 +139,80 @@ export class Property {
             where: { id },
         });
     }
+
+    static async searchProperties(query: string, page: number = 1, pageSize: number = 10) {
+        const searchQuery = query?.trim().toLowerCase(); // 🔥 Bersihkan spasi dan buat pencarian tidak sensitif terhadap huruf besar/kecil
+        const skip = (page - 1) * pageSize;
+        const take = pageSize;
+
+        console.log("📌 Query yang digunakan untuk pencarian:", searchQuery);
+
+        const properties = await prisma.property.findMany({
+            where: {
+                OR: [
+                    { name: { contains: searchQuery } },
+                    { description: { contains: searchQuery } }
+                ]
+            },
+            skip,
+            take,
+            include: {
+                owner: { select: { id: true, email: true } },
+                bookings: true,
+            },
+        });
+
+        const total = await prisma.property.count({
+            where: {
+                OR: [
+                    { name: { contains: searchQuery } },
+                    { description: { contains: searchQuery } }
+                ]
+            }
+        });
+
+        console.log("📌 Properti yang ditemukan:", properties);
+
+        return {
+            success: true,
+            message: "Properties searched successfully",
+            data: properties,
+            meta: {
+                page,
+                limit: pageSize,
+                total,
+                totalPages: Math.ceil(total / pageSize),
+            },
+        };
+    }
+
+    static async filterPropertiesByCity(city: string, page: number = 1, pageSize: number = 10) {
+        const skip = (page - 1) * pageSize;
+        const take = pageSize;
+
+        const properties = await prisma.property.findMany({
+            where: { city: { equals: city } },
+            skip,
+            take,
+            include: {
+                owner: { select: { id: true, email: true } },
+                bookings: true,
+            },
+        });
+
+        const total = await prisma.property.count({ where: { city: { equals: city } } });
+
+        return {
+            success: true,
+            message: `Properties in ${city} retrieved successfully`,
+            data: properties,
+            meta: {
+                page,
+                limit: pageSize,
+                total,
+                totalPages: Math.ceil(total / pageSize),
+            },
+        };
+    }
+
 }

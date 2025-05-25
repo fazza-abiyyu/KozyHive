@@ -100,8 +100,6 @@ export default defineEventHandler(async (event) => {
         }
 
         try {
-            console.log("📌 Payload sebelum update:", payload);
-
             const updatedProperty = await Property.updateProperty(id, payload);
             return { code: 200, message: "Properti berhasil diperbarui!", data: updatedProperty };
         } catch (dbError: any) {

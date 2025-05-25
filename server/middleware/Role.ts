@@ -5,7 +5,7 @@ import { ErrorHandler } from "~/server/utils/ErrorHandler";
 export default defineEventHandler(async (event) => {
     try {
         // Daftar endpoint yang harus DILEWATI oleh middleware role
-        const excludedEndpoints = ["/api/auth/*", "/api/profile", "/api/users/me"];
+        const excludedEndpoints = ["/api/auth/*", "/api/profile", "/api/users/me", "/api/properties/search", "/api/properties/cities",];
         const isExcluded = excludedEndpoints.some((endpoint) => {
             const pattern = new UrlPattern(endpoint);
             return pattern.match(event.req.url as string);
@@ -26,7 +26,8 @@ export default defineEventHandler(async (event) => {
         const roleEndpoints: { path: string; roles: ("ADMIN" | "OWNER" | "TENANT")[] }[] = [
             { path: "/api/users", roles: ["ADMIN"] },
             { path: "/api/users/:id", roles: ["ADMIN"] },
-            { path: "/api/properties/*", roles: ["OWNER"] },
+            // { path: "/api/properties/*", roles: ["OWNER"] },
+            { path: "/api/bookings/*", roles: ["TENANT"] },
         ];
 
         // Cek apakah URL cocok dengan salah satu endpoint yang butuh validasi role
