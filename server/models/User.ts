@@ -2,6 +2,7 @@ import { prisma } from "~/server/config/db";
 import {$Enums} from "~/generated/prisma";
 import Role = $Enums.Role;
 import {RegisterRequest} from "~/types/AuthType";
+import bcrypt from "bcryptjs";
 
 export class User {
     static createUser = (data: any) => {
@@ -29,14 +30,18 @@ export class User {
     static getUserById = (id: number) => {
         return prisma.user.findUnique({
             where: { id },
-            include: {
+            select: {
+                id: true,
+                email: true,
+                role: true,
+                createdAt: true,
+                updatedAt: true,
                 profile: true,
                 tenantBookings: true,
                 tenantTransactions: true,
                 properties: true,
                 ownerBookings: true,
                 ownerTransactions: true,
-                refreshTokens: true,
             },
         });
     };
@@ -56,25 +61,34 @@ export class User {
         });
     };
 
-    static updateUser = (id: number, data: any) => {
+    static updateUser = async (id: number, data: any) => {
+        const updatedData: any = {
+            email: data.email,
+            role: data.role,
+            profile: data.profile ? { update: data.profile } : undefined,
+        };
+
+        // Jika ada perubahan password, lakukan hashing sebelum disimpan
+        if (data.password) {
+            const saltRounds = 10;
+            updatedData.password = await bcrypt.hash(data.password, saltRounds);
+        }
+
         return prisma.user.update({
             where: { id },
-            data: {
-                email: data.email,
-                password: data.password,
-                role: data.role,
-                profile: data.profile
-                    ? { update: data.profile }
-                    : undefined,
-            },
+            data: updatedData,
         });
     };
 
-    static deleteUser = (id: number) => {
+    static deleteUser = async (id: number) => {
         return prisma.user.delete({
             where: { id },
         });
     };
+
+    static async countUsers() {
+        return prisma.user.count();
+    }
 
     static getAllUsers = async (page: number, pageSize: number) => {
         const skip = (page - 1) * pageSize;

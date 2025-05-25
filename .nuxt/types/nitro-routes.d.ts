@@ -3,6 +3,9 @@ import type { Serialize, Simplify } from "nitropack/types";
 declare module "nitropack/types" {
   type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T
   interface InternalApi {
+    '/api/admin/properties': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/admin/properties/index.get').default>>>>
+    }
     '/api/auth/login': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/login.post').default>>>>
     }
@@ -14,6 +17,39 @@ declare module "nitropack/types" {
     }
     '/api/auth/register': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/register.post').default>>>>
+    }
+    '/api/profile': {
+      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/profile/index.delete').default>>>>
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/profile/index.get').default>>>>
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/profile/index.post').default>>>>
+      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/profile/index.put').default>>>>
+    }
+    '/api/properties/:id': {
+      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id].delete').default>>>>
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id].get').default>>>>
+      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id].put').default>>>>
+    }
+    '/api/properties/:id/status': {
+      'patch': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id]/status.patch').default>>>>
+    }
+    '/api/properties': {
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/index.post').default>>>>
+    }
+    '/api/properties/my-properties': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/my-properties.get').default>>>>
+    }
+    '/api/users/:id': {
+      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/[id].delete').default>>>>
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/[id].get').default>>>>
+      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/[id].put').default>>>>
+    }
+    '/api/users': {
+      'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/index').default>>>>
+    }
+    '/api/users/me': {
+      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/me/index.delete').default>>>>
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/me/index.get').default>>>>
+      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/me/index.put').default>>>>
     }
     '/__nuxt_error': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../node_modules/nuxt/dist/core/runtime/nitro/handlers/renderer').default>>>>

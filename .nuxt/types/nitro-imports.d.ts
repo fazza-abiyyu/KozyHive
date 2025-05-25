@@ -1,5 +1,6 @@
 declare global {
   const ErrorHandler: typeof import('../../server/utils/ErrorHandler')['ErrorHandler']
+  const Pagination: typeof import('../../server/utils/Pagination')['Pagination']
   const ResponseHandler: typeof import('../../server/utils/ResponseHandler')['ResponseHandler']
   const __buildAssetsURL: typeof import('../../node_modules/nuxt/dist/core/runtime/nitro/utils/paths')['buildAssetsURL']
   const __publicAssetsURL: typeof import('../../node_modules/nuxt/dist/core/runtime/nitro/utils/paths')['publicAssetsURL']
@@ -126,6 +127,7 @@ declare global {
   const toWebRequest: typeof import('../../node_modules/h3')['toWebRequest']
   const unsealSession: typeof import('../../node_modules/h3')['unsealSession']
   const updateSession: typeof import('../../node_modules/h3')['updateSession']
+  const uploadFile: typeof import('../../server/utils/UploadFiles')['uploadFile']
   const useAppConfig: typeof import('../../node_modules/nitropack/dist/runtime/internal/config')['useAppConfig']
   const useBase: typeof import('../../node_modules/h3')['useBase']
   const useEvent: typeof import('../../node_modules/nitropack/dist/runtime/internal/context')['useEvent']
@@ -141,6 +143,9 @@ declare global {
   // @ts-ignore
   export type { ErrorHandler } from '../../server/utils/ErrorHandler'
   import('../../server/utils/ErrorHandler')
+  // @ts-ignore
+  export type { Pagination } from '../../server/utils/Pagination'
+  import('../../server/utils/Pagination')
   // @ts-ignore
   export type { ResponseHandler } from '../../server/utils/ResponseHandler'
   import('../../server/utils/ResponseHandler')
@@ -160,6 +165,8 @@ export { appendCorsHeaders, appendCorsPreflightHeaders, appendHeader, appendHead
 export { buildAssetsURL as __buildAssetsURL, publicAssetsURL as __publicAssetsURL } from 'E:/Projek/kozy-hive/node_modules/nuxt/dist/core/runtime/nitro/utils/paths';
 export { defineAppConfig } from 'E:/Projek/kozy-hive/node_modules/nuxt/dist/core/runtime/nitro/utils/config';
 export { ErrorHandler } from 'E:/Projek/kozy-hive/server/utils/ErrorHandler';
+export { Pagination } from 'E:/Projek/kozy-hive/server/utils/Pagination';
 export { ResponseHandler } from 'E:/Projek/kozy-hive/server/utils/ResponseHandler';
 export { addToBlacklist, isBlacklisted } from 'E:/Projek/kozy-hive/server/utils/TokenBlacklist';
+export { uploadFile } from 'E:/Projek/kozy-hive/server/utils/UploadFiles';
 export { generateAccessToken, generateToken, decodeAccessToken, verifyToken, decodeRefreshToken, sendRefreshToken, deleteRefreshToken } from 'E:/Projek/kozy-hive/server/utils/jwt';

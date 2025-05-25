@@ -9,10 +9,17 @@ export default defineEventHandler( async (event) => {
             '/api/auth/logs',
             '/api/auth/logout',
             '/api/auth/verification',
-            '/api/auth/users',
-            '/api/auth/users/:id',
-            '/api/auth/users/search?q=:q',
-            '/api/auth/users?page=:page&pagesize=:pagesize',
+            '/api/users',
+            '/api/users/me',
+            '/api/users/:id',
+            '/api/users/search?q=:q',
+            '/api/users?page=:page&pagesize=:pagesize',
+            '/api/profile',
+            '/api/properties',
+            '/api/properties/my-properties',
+            '/api/properties/:id',
+            '/api/properties?page=:page&pagesize=:pagesize',
+            '/api/properties/:id/status',
         ]
 
         const isHandledByThisMiddleware = endpoints.some(endopoint => {

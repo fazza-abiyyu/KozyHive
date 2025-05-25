@@ -3,9 +3,12 @@ import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, getRequestURL, getResponseHeader, setCookie, deleteCookie, sendError, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getCookie, appendHeader, getResponseStatusText } from 'file://E:/Projek/kozy-hive/node_modules/h3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, getRequestURL, getResponseHeader, setCookie, deleteCookie, sendError, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getCookie, appendHeader, readMultipartFormData, getResponseStatusText } from 'file://E:/Projek/kozy-hive/node_modules/h3/dist/index.mjs';
 import { escapeHtml } from 'file://E:/Projek/kozy-hive/node_modules/@vue/shared/dist/shared.cjs.js';
 import bcrypt from 'file://E:/Projek/kozy-hive/node_modules/bcryptjs/index.js';
+import { PrismaClient, $Enums } from 'file://E:/Projek/kozy-hive/generated/prisma/index.js';
+import { Readable } from 'node:stream';
+import { v2 } from 'file://E:/Projek/kozy-hive/node_modules/cloudinary/cloudinary.js';
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://E:/Projek/kozy-hive/node_modules/vue-bundle-renderer/dist/runtime.mjs';
 import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, joinRelativeURL } from 'file://E:/Projek/kozy-hive/node_modules/ufo/dist/index.mjs';
 import { renderToString } from 'file://E:/Projek/kozy-hive/node_modules/vue/server-renderer/index.mjs';
@@ -34,7 +37,6 @@ import { getContext } from 'file://E:/Projek/kozy-hive/node_modules/unctx/dist/i
 import { captureRawStackTrace, parseRawStackTrace } from 'file://E:/Projek/kozy-hive/node_modules/errx/dist/index.js';
 import UrlPattern from 'file://E:/Projek/kozy-hive/node_modules/url-pattern/lib/url-pattern.js';
 import jwt from 'file://E:/Projek/kozy-hive/node_modules/jsonwebtoken/index.js';
-import { PrismaClient, $Enums } from 'file://E:/Projek/kozy-hive/generated/prisma/index.js';
 import { walkResolver } from 'file://E:/Projek/kozy-hive/node_modules/unhead/dist/utils.mjs';
 
 const serverAssets = [{"baseName":"server","dir":"E:/Projek/kozy-hive/server/assets"}];
@@ -651,14 +653,14 @@ const _inlineRuntimeConfig = {
   "public": {},
   "JWT_REFRESH_TOKEN": "IJBHAUG87khgb&^r2IUh9wyheiyG*hbg38vyg9y7yh9o21gP&T9pg129p7ty0921gp97T9",
   "JWT_ACCESS_TOKEN": "IJBHAUG87khgb&^r2IUh9wyheiyG*hbg38vyg9y7yh9o21gP&T9pg129p7ty0921gp97T9",
-  "CLOUDINARY_CLOUD_NAME": "",
-  "CLOUDINARY_API_KEY": "",
-  "CLOUDINARY_API_SECRET": "",
-  "SMTP_HOST": "",
-  "SMTP_PORT": "",
-  "SMTP_USER": "",
-  "SMTP_PASSWORD": "",
-  "MAIL_FROM_EMAIL": ""
+  "CLOUDINARY_CLOUD_NAME": "dglcmrrhx",
+  "CLOUDINARY_API_KEY": "668779219879969",
+  "CLOUDINARY_API_SECRET": "9Jc7R-dH1srVSGzSXCBxi8fhINA",
+  "SMTP_HOST": "smtp.gmail.com",
+  "SMTP_PORT": "587",
+  "SMTP_USER": "2211102010@ittelkom-pwt.ac.id",
+  "SMTP_PASSWORD": "1700428480@Chiel.yu",
+  "MAIL_FROM_EMAIL": "2211102010@ittelkom-pwt.ac.id"
 };
 const envOptions = {
   prefix: "NITRO_",
@@ -704,9 +706,9 @@ new Proxy(/* @__PURE__ */ Object.create(null), {
   }
 });
 
-const config = useRuntimeConfig();
+const config$1 = useRuntimeConfig();
 const _routeRulesMatcher = toRouteMatcher(
-  createRouter({ routes: config.nitro.routeRules })
+  createRouter({ routes: config$1.nitro.routeRules })
 );
 function createRouteRulesHandler(ctx) {
   return eventHandler((event) => {
@@ -1173,13 +1175,16 @@ const deleteRefreshToken = (event) => {
 
 const prisma = new PrismaClient();
 
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+var __defProp$1 = Object.defineProperty;
+var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, typeof key !== "symbol" ? key + "" : key, value);
 const Role = $Enums.Role;
 class User {
+  static async countUsers() {
+    return prisma.user.count();
+  }
 }
-__publicField(User, "createUser", (data) => {
+__publicField$1(User, "createUser", (data) => {
   var _a;
   return prisma.user.create({
     data: {
@@ -1190,7 +1195,7 @@ __publicField(User, "createUser", (data) => {
     }
   });
 });
-__publicField(User, "registerUser", (data) => {
+__publicField$1(User, "registerUser", (data) => {
   return prisma.user.create({
     data: {
       email: data.email,
@@ -1198,21 +1203,25 @@ __publicField(User, "registerUser", (data) => {
     }
   });
 });
-__publicField(User, "getUserById", (id) => {
+__publicField$1(User, "getUserById", (id) => {
   return prisma.user.findUnique({
     where: { id },
-    include: {
+    select: {
+      id: true,
+      email: true,
+      role: true,
+      createdAt: true,
+      updatedAt: true,
       profile: true,
       tenantBookings: true,
       tenantTransactions: true,
       properties: true,
       ownerBookings: true,
-      ownerTransactions: true,
-      refreshTokens: true
+      ownerTransactions: true
     }
   });
 });
-__publicField(User, "getUserByEmail", (email) => {
+__publicField$1(User, "getUserByEmail", (email) => {
   return prisma.user.findUnique({
     where: { email },
     include: {
@@ -1226,23 +1235,27 @@ __publicField(User, "getUserByEmail", (email) => {
     }
   });
 });
-__publicField(User, "updateUser", (id, data) => {
+__publicField$1(User, "updateUser", async (id, data) => {
+  const updatedData = {
+    email: data.email,
+    role: data.role,
+    profile: data.profile ? { update: data.profile } : void 0
+  };
+  if (data.password) {
+    const saltRounds = 10;
+    updatedData.password = await bcrypt.hash(data.password, saltRounds);
+  }
   return prisma.user.update({
     where: { id },
-    data: {
-      email: data.email,
-      password: data.password,
-      role: data.role,
-      profile: data.profile ? { update: data.profile } : void 0
-    }
+    data: updatedData
   });
 });
-__publicField(User, "deleteUser", (id) => {
+__publicField$1(User, "deleteUser", async (id) => {
   return prisma.user.delete({
     where: { id }
   });
 });
-__publicField(User, "getAllUsers", async (page, pageSize) => {
+__publicField$1(User, "getAllUsers", async (page, pageSize) => {
   const skip = (page - 1) * pageSize;
   const take = pageSize;
   const users = await prisma.user.findMany({
@@ -1266,7 +1279,7 @@ __publicField(User, "getAllUsers", async (page, pageSize) => {
     }
   };
 });
-__publicField(User, "searchUser", async (search, page, pageSize) => {
+__publicField$1(User, "searchUser", async (search, page, pageSize) => {
   const skip = (page - 1) * pageSize;
   const take = pageSize;
   const users = await prisma.user.findMany({
@@ -1312,10 +1325,17 @@ const _dzrTQi = defineEventHandler(async (event) => {
       "/api/auth/logs",
       "/api/auth/logout",
       "/api/auth/verification",
-      "/api/auth/users",
-      "/api/auth/users/:id",
-      "/api/auth/users/search?q=:q",
-      "/api/auth/users?page=:page&pagesize=:pagesize"
+      "/api/users",
+      "/api/users/me",
+      "/api/users/:id",
+      "/api/users/search?q=:q",
+      "/api/users?page=:page&pagesize=:pagesize",
+      "/api/profile",
+      "/api/properties",
+      "/api/properties/my-properties",
+      "/api/properties/:id",
+      "/api/properties?page=:page&pagesize=:pagesize",
+      "/api/properties/:id/status"
     ];
     const isHandledByThisMiddleware = endpoints.some((endopoint) => {
       const pattern = new UrlPattern(endopoint);
@@ -1350,6 +1370,106 @@ const _dzrTQi = defineEventHandler(async (event) => {
     }
   } catch (e) {
     return;
+  }
+});
+
+class ErrorHandler {
+  static handleError(event, error) {
+    let statusCode = error.statusCode || 500;
+    let message = error.statusMessage || error.message || "Terjadi kesalahan internal.";
+    switch (error.code) {
+      case "P2002":
+        if (event.req.method === "POST") {
+          statusCode = 409;
+          message = "Data sudah ada.";
+        } else {
+          statusCode = 400;
+          message = "Gagal memperbarui data. Pastikan tidak ada duplikasi.";
+        }
+        break;
+      case "P2003":
+        statusCode = 400;
+        message = "Tidak bisa menghapus atau mengubah karena data terkait masih digunakan.";
+        break;
+      case "P2025":
+        statusCode = 404;
+        message = "Data tidak ditemukan.";
+        break;
+      case "P2000":
+        statusCode = 400;
+        message = "Validasi gagal. Data tidak sesuai format.";
+        break;
+      case "P2011":
+        statusCode = 400;
+        message = "Validasi gagal. Data tidak memenuhi aturan yang ditentukan.";
+        break;
+      case "P2010":
+        statusCode = 500;
+        message = "Kesalahan dalam middleware role. Periksa aturan akses dan endpoint.";
+        break;
+      case "P2012":
+        statusCode = 401;
+        message = "Authorization gagal. Token tidak ditemukan dalam request.";
+        break;
+      case "P2013":
+        statusCode = 401;
+        message = "Authorization gagal. Token yang diberikan tidak valid.";
+        break;
+      case "P2014":
+        statusCode = 401;
+        message = "Authorization gagal. User tidak ditemukan di dalam sistem.";
+        break;
+      case "P2015":
+        statusCode = 403;
+        message = "Anda tidak memiliki izin untuk mengakses endpoint ini.";
+        break;
+    }
+    console.error("Error Caught:", {
+      statusCode,
+      message
+    });
+    setResponseStatus(event, statusCode);
+    return {
+      success: false,
+      statusCode,
+      message
+    };
+  }
+}
+
+const _B9vN2H = defineEventHandler(async (event) => {
+  var _a;
+  try {
+    const excludedEndpoints = ["/api/auth/*", "/api/profile", "/api/users/me"];
+    const isExcluded = excludedEndpoints.some((endpoint) => {
+      const pattern = new UrlPattern(endpoint);
+      return pattern.match(event.req.url);
+    });
+    if (isExcluded) {
+      console.log(`\u23E9 Middleware Role dilewati untuk: ${event.req.url}`);
+      return;
+    }
+    const user = (_a = event.context.auth) == null ? void 0 : _a.user;
+    if (!user) {
+      throw { statusCode: 401, statusMessage: "Unauthorized - User tidak ditemukan." };
+    }
+    const roleEndpoints = [
+      { path: "/api/users", roles: ["ADMIN"] },
+      { path: "/api/users/:id", roles: ["ADMIN"] },
+      { path: "/api/properties/*", roles: ["OWNER"] }
+    ];
+    const matchedEndpoint = roleEndpoints.find(({ path }) => {
+      const pattern = new UrlPattern(path);
+      return pattern.match(event.req.url);
+    });
+    if (!matchedEndpoint) {
+      return;
+    }
+    if (!matchedEndpoint.roles.includes(user.role)) {
+      throw { statusCode: 403, statusMessage: "Forbidden - Anda tidak memiliki akses." };
+    }
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
   }
 });
 
@@ -1671,18 +1791,55 @@ async function getIslandContext(event) {
   return ctx;
 }
 
+const _lazy_bp7n6T = () => Promise.resolve().then(function () { return index_get$5; });
 const _lazy_GhcmGr = () => Promise.resolve().then(function () { return login_post$1; });
 const _lazy_XF0_O7 = () => Promise.resolve().then(function () { return logout_get$1; });
 const _lazy_timx8d = () => Promise.resolve().then(function () { return refresh_get$1; });
 const _lazy_Dc406Z = () => Promise.resolve().then(function () { return register_post$1; });
+const _lazy_HBw_9U = () => Promise.resolve().then(function () { return index_delete$3; });
+const _lazy_7na682 = () => Promise.resolve().then(function () { return index_get$3; });
+const _lazy_1RpiGl = () => Promise.resolve().then(function () { return index_post$3; });
+const _lazy_v5Zzr5 = () => Promise.resolve().then(function () { return index_put$3; });
+const _lazy_qHcgGe = () => Promise.resolve().then(function () { return _id__delete$2; });
+const _lazy_aImm8G = () => Promise.resolve().then(function () { return _id__get$3; });
+const _lazy_e0QA13 = () => Promise.resolve().then(function () { return _id__put$3; });
+const _lazy_VL3sxh = () => Promise.resolve().then(function () { return status_patch$1; });
+const _lazy_Xk1C2K = () => Promise.resolve().then(function () { return index_post$1; });
+const _lazy_DBasW1 = () => Promise.resolve().then(function () { return myProperties_get$1; });
+const _lazy_5c2gzB = () => Promise.resolve().then(function () { return _id__delete$1; });
+const _lazy_IuQPSO = () => Promise.resolve().then(function () { return _id__get$1; });
+const _lazy_HGrgm0 = () => Promise.resolve().then(function () { return _id__put$1; });
+const _lazy_DzxU0d = () => Promise.resolve().then(function () { return index$1; });
+const _lazy_jYdoq0 = () => Promise.resolve().then(function () { return index_delete$1; });
+const _lazy_aICSos = () => Promise.resolve().then(function () { return index_get$1; });
+const _lazy_WubLvg = () => Promise.resolve().then(function () { return index_put$1; });
 const _lazy_wQMhBW = () => Promise.resolve().then(function () { return renderer$1; });
 
 const handlers = [
   { route: '', handler: _dzrTQi, lazy: false, middleware: true, method: undefined },
+  { route: '', handler: _B9vN2H, lazy: false, middleware: true, method: undefined },
+  { route: '/api/admin/properties', handler: _lazy_bp7n6T, lazy: true, middleware: false, method: "get" },
   { route: '/api/auth/login', handler: _lazy_GhcmGr, lazy: true, middleware: false, method: "post" },
   { route: '/api/auth/logout', handler: _lazy_XF0_O7, lazy: true, middleware: false, method: "get" },
   { route: '/api/auth/refresh', handler: _lazy_timx8d, lazy: true, middleware: false, method: "get" },
   { route: '/api/auth/register', handler: _lazy_Dc406Z, lazy: true, middleware: false, method: "post" },
+  { route: '/api/profile', handler: _lazy_HBw_9U, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/profile', handler: _lazy_7na682, lazy: true, middleware: false, method: "get" },
+  { route: '/api/profile', handler: _lazy_1RpiGl, lazy: true, middleware: false, method: "post" },
+  { route: '/api/profile', handler: _lazy_v5Zzr5, lazy: true, middleware: false, method: "put" },
+  { route: '/api/properties/:id', handler: _lazy_qHcgGe, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/properties/:id', handler: _lazy_aImm8G, lazy: true, middleware: false, method: "get" },
+  { route: '/api/properties/:id', handler: _lazy_e0QA13, lazy: true, middleware: false, method: "put" },
+  { route: '/api/properties/:id/status', handler: _lazy_VL3sxh, lazy: true, middleware: false, method: "patch" },
+  { route: '/api/properties', handler: _lazy_Xk1C2K, lazy: true, middleware: false, method: "post" },
+  { route: '/api/properties/my-properties', handler: _lazy_DBasW1, lazy: true, middleware: false, method: "get" },
+  { route: '/api/users/:id', handler: _lazy_5c2gzB, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/users/:id', handler: _lazy_IuQPSO, lazy: true, middleware: false, method: "get" },
+  { route: '/api/users/:id', handler: _lazy_HGrgm0, lazy: true, middleware: false, method: "put" },
+  { route: '/api/users', handler: _lazy_DzxU0d, lazy: true, middleware: false, method: undefined },
+  { route: '/api/users/me', handler: _lazy_jYdoq0, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/users/me', handler: _lazy_aICSos, lazy: true, middleware: false, method: "get" },
+  { route: '/api/users/me', handler: _lazy_WubLvg, lazy: true, middleware: false, method: "put" },
   { route: '/__nuxt_error', handler: _lazy_wQMhBW, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: _SxA8c9, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_wQMhBW, lazy: true, middleware: false, method: undefined }
@@ -2013,30 +2170,130 @@ const styles$1 = /*#__PURE__*/Object.freeze({
   default: styles
 });
 
-class RefreshToken {
-  static create(userId, refreshToken) {
-    return prisma.refreshToken.create({
-      data: {
-        userId,
-        refreshToken
-      }
-    });
-  }
-  static findToken(token) {
-    return prisma.refreshToken.findFirst({
-      where: { refreshToken: token }
-    });
-  }
-  static deleteToken(token) {
-    return prisma.refreshToken.deleteMany({
-      where: { refreshToken: token }
-    });
-  }
-  static async getToken(refreshToken) {
-    return prisma.refreshToken.findFirst({
+class Property {
+  // GET: Ambil properti milik owner
+  static async getMyProperties(ownerId, page, pageSize, filters = {}) {
+    const skip = (page - 1) * pageSize;
+    const take = pageSize;
+    const properties = await prisma.property.findMany({
       where: {
-        refreshToken
+        ownerId,
+        // 🔥 Hanya ambil properti milik user tertentu
+        ...filters
+      },
+      skip,
+      take,
+      include: {
+        owner: { select: { id: true, email: true } },
+        bookings: true
       }
+    });
+    const total = await prisma.property.count({ where: { ownerId, ...filters } });
+    const totalPages = Math.ceil(total / pageSize);
+    return {
+      success: true,
+      message: "Owner's properties retrieved successfully",
+      data: properties,
+      meta: {
+        page,
+        limit: pageSize,
+        total,
+        totalPages
+      }
+    };
+  }
+  static async countMyProperties(ownerId) {
+    return prisma.property.count({
+      where: { ownerId }
+    });
+  }
+  // POST: Buat properti baru
+  static async createProperty(data) {
+    var _a, _b, _c, _d, _e;
+    if (!data.ownerId || !data.name || !data.description || !data.address || !data.city || !data.price) {
+      throw { statusCode: 400, statusMessage: "Semua field wajib diisi!" };
+    }
+    return prisma.property.create({
+      data: {
+        ownerId: data.ownerId,
+        name: data.name,
+        description: data.description,
+        address: data.address,
+        city: data.city,
+        price: Number(data.price),
+        totalRooms: Number((_a = data.totalRooms) != null ? _a : 1),
+        availableRooms: Number((_c = (_b = data.availableRooms) != null ? _b : data.totalRooms) != null ? _c : 1),
+        status: (_d = data.status) != null ? _d : "ACTIVE",
+        images: (_e = data.images) != null ? _e : null
+        // 🔹 Pastikan bisa null jika tidak ada gambar
+      }
+    });
+  }
+  // PUT: Update properti
+  static async updateProperty(id, data) {
+    var _a;
+    return prisma.property.update({
+      where: { id },
+      data: {
+        name: data.name,
+        description: data.description,
+        address: data.address,
+        city: data.city,
+        price: data.price,
+        totalRooms: data.totalRooms,
+        availableRooms: data.availableRooms,
+        status: (_a = data.status) != null ? _a : "ACTIVE",
+        images: data.images
+      }
+    });
+  }
+  // DELETE: Hapus properti
+  static async deleteProperty(id) {
+    return prisma.property.delete({
+      where: { id }
+    });
+  }
+  // PATCH: Update status properti
+  static async updatePropertyStatus(id, status) {
+    return prisma.property.update({
+      where: { id },
+      data: { status }
+    });
+  }
+  static async countProperties() {
+    return prisma.property.count();
+  }
+  static async getAllProperties(page, pageSize, filters = {}) {
+    const skip = (page - 1) * pageSize;
+    const take = pageSize;
+    const properties = await prisma.property.findMany({
+      where: {
+        ...filters
+      },
+      skip,
+      take,
+      include: {
+        owner: { select: { id: true, email: true } },
+        bookings: true
+      }
+    });
+    const total = await prisma.property.count({ where: { ...filters } });
+    const totalPages = Math.ceil(total / pageSize);
+    return {
+      success: true,
+      message: "Properties retrieved successfully",
+      data: properties,
+      meta: {
+        page,
+        limit: pageSize,
+        total,
+        totalPages
+      }
+    };
+  }
+  static async getPropertyById(id) {
+    return prisma.property.findUnique({
+      where: { id }
     });
   }
 }
@@ -2064,21 +2321,64 @@ class ResponseHandler {
   }
 }
 
-class ErrorHandler {
-  static handleError(event, error) {
-    let statusCode = error.statusCode || 500;
-    let message = error.statusMessage || error.message || "Terjadi kesalahan internal.";
-    if (error.message.includes("Unique constraint failed on the constraint")) {
-      statusCode = 409;
-      message = "Email sudah terdaftar. Gunakan email lain.";
-    }
-    console.error("Error Caught:", error);
-    setResponseStatus(event, statusCode);
+class Pagination {
+  static getPagination(query) {
+    const page = parseInt(query.page) || 1;
+    const limit = parseInt(query.limit) || 10;
+    const offset = (page - 1) * limit;
+    return { page, limit, offset };
+  }
+  static getMeta(total, page, limit) {
     return {
-      success: false,
-      statusCode,
-      message
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit)
     };
+  }
+}
+
+const index_get$4 = defineEventHandler(async (event) => {
+  try {
+    const query = getQuery$1(event);
+    const { page, limit } = Pagination.getPagination(query);
+    const { data, meta } = await Property.getAllProperties(page, limit);
+    return ResponseHandler.sendSuccess(event, "Data properti ditemukan!", data, 200, meta);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_get$5 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_get$4
+});
+
+class RefreshToken {
+  static create(userId, refreshToken) {
+    return prisma.refreshToken.create({
+      data: {
+        userId,
+        refreshToken
+      }
+    });
+  }
+  static findToken(token) {
+    return prisma.refreshToken.findFirst({
+      where: { refreshToken: token }
+    });
+  }
+  static deleteToken(token) {
+    return prisma.refreshToken.deleteMany({
+      where: { refreshToken: token }
+    });
+  }
+  static async getToken(refreshToken) {
+    return prisma.refreshToken.findFirst({
+      where: {
+        refreshToken
+      }
+    });
   }
 }
 
@@ -2277,6 +2577,513 @@ const register_post = defineEventHandler(async (event) => {
 const register_post$1 = /*#__PURE__*/Object.freeze({
   __proto__: null,
   default: register_post
+});
+
+var __defProp = Object.defineProperty;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
+class Profile {
+}
+__publicField(Profile, "createProfile", async (userId, data) => {
+  return prisma.profile.create({
+    data: {
+      userId,
+      name: data.name,
+      phone: data.phone,
+      address: data.address
+    }
+  });
+});
+__publicField(Profile, "getProfileByUserId", async (userId) => {
+  return prisma.profile.findUnique({
+    where: { userId }
+  });
+});
+__publicField(Profile, "updateProfile", async (userId, data) => {
+  return prisma.profile.update({
+    where: { userId },
+    data: {
+      name: data.name,
+      phone: data.phone,
+      address: data.address
+    }
+  });
+});
+__publicField(Profile, "deleteProfile", async (userId) => {
+  return prisma.profile.delete({
+    where: { userId }
+  });
+});
+
+const index_delete$2 = defineEventHandler(async (event) => {
+  var _a, _b;
+  try {
+    const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
+    const deletedProfile = await Profile.deleteProfile(userId);
+    return ResponseHandler.sendSuccess(event, "Profile berhasil dihapus!", deletedProfile, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_delete$3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_delete$2
+});
+
+const index_get$2 = defineEventHandler(async (event) => {
+  var _a, _b;
+  try {
+    const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
+    const profile = await Profile.getProfileByUserId(userId);
+    return ResponseHandler.sendSuccess(event, "Profile ditemukan!", profile, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_get$3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_get$2
+});
+
+const index_post$2 = defineEventHandler(async (event) => {
+  var _a, _b;
+  try {
+    const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
+    const data = await readBody(event);
+    const profile = await Profile.createProfile(userId, data);
+    return ResponseHandler.sendSuccess(event, "Profile berhasil dibuat!", profile, 201);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_post$3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_post$2
+});
+
+const index_put$2 = defineEventHandler(async (event) => {
+  var _a, _b;
+  try {
+    const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
+    const data = await readBody(event);
+    const updatedProfile = await Profile.updateProfile(userId, data);
+    return ResponseHandler.sendSuccess(event, "Profile berhasil diperbarui!", updatedProfile, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_put$3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_put$2
+});
+
+const _id__delete$2 = /*#__PURE__*/Object.freeze({
+  __proto__: null
+});
+
+const _id__get$2 = defineEventHandler(async (event) => {
+  var _a;
+  try {
+    const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
+    const propertyById = await Property.getPropertyById(id);
+    return ResponseHandler.sendSuccess(event, "Pengguna ditemukan!", propertyById, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const _id__get$3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: _id__get$2
+});
+
+var _a, _b, _c;
+const config = useRuntimeConfig();
+v2.config({
+  cloud_name: (_a = config.CLOUDINARY_CLOUD_NAME) != null ? _a : "",
+  api_key: (_b = config.CLOUDINARY_API_KEY) != null ? _b : "",
+  api_secret: (_c = config.CLOUDINARY_API_SECRET) != null ? _c : ""
+});
+
+const uploadFile = async ({ fileBuffer, filename, mimeType }) => {
+  try {
+    return await new Promise((resolve, reject) => {
+      const uploadStream = v2.uploader.upload_stream(
+        {
+          resource_type: "auto",
+          public_id: filename,
+          format: mimeType.split("/")[1] || "jpg",
+          asset_folder: "kozy-hive"
+        },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            result ? resolve(result) : reject(new Error("Upload failed: result is undefined"));
+          }
+        }
+      );
+      const bufferStream = Readable.from(fileBuffer);
+      bufferStream.pipe(uploadStream);
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
+const PropertyStatus$2 = $Enums.PropertyStatus;
+const _id__put$2 = defineEventHandler(async (event) => {
+  var _a, _b;
+  try {
+    const user = (_a = event.context.auth) == null ? void 0 : _a.user;
+    if (!user) {
+      return ErrorHandler.handleError(event, { statusCode: 401, statusMessage: "User not authenticated." });
+    }
+    const id = parseInt((_b = event.context.params) == null ? void 0 : _b.id);
+    if (isNaN(id)) {
+      return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Properti ID tidak valid." });
+    }
+    const existingProperty = await Property.getPropertyById(id);
+    if (!existingProperty) {
+      return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Properti tidak ditemukan." });
+    }
+    if (existingProperty.ownerId !== user.id) {
+      return ErrorHandler.handleError(event, { statusCode: 403, statusMessage: "Tidak memiliki izin untuk update properti ini." });
+    }
+    const formData = await readMultipartFormData(event);
+    if (!formData) {
+      return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "No form data provided." });
+    }
+    const payload = {};
+    let uploadResult;
+    for (const field of formData) {
+      const { name, data, filename, type } = field;
+      if (typeof name !== "string") continue;
+      if (filename) {
+        const fileBuffer = data;
+        const fileName = `${filename.replace(/\s/g, "_")}_${Date.now()}`;
+        try {
+          uploadResult = await uploadFile({
+            fileBuffer,
+            filename: fileName,
+            mimeType: type
+          });
+          if (!uploadResult || !uploadResult.secure_url) {
+            throw new Error("Gagal mengupload gambar.");
+          }
+          payload.images = uploadResult.secure_url;
+        } catch (uploadError) {
+          return ErrorHandler.handleError(event, { statusCode: 500, statusMessage: uploadError.message || "Gagal mengupload gambar." });
+        }
+      } else if (data) {
+        switch (name) {
+          case "name":
+            payload.name = data.toString("utf-8").trim();
+            break;
+          case "description":
+            payload.description = data.toString("utf-8").trim();
+            break;
+          case "address":
+            payload.address = data.toString("utf-8").trim();
+            break;
+          case "city":
+            payload.city = data.toString("utf-8").trim();
+            break;
+          case "price":
+            payload.price = parseFloat(data.toString("utf-8").trim());
+            break;
+          case "totalRooms":
+            payload.totalRooms = parseInt(data.toString("utf-8").trim(), 10);
+            break;
+          case "availableRooms":
+            payload.availableRooms = parseInt(data.toString("utf-8").trim(), 10);
+            break;
+          case "status":
+            const rawStatus = data.toString("utf-8").trim().toUpperCase();
+            payload.status = rawStatus === "ACTIVE" ? PropertyStatus$2.ACTIVE : PropertyStatus$2.INACTIVE;
+            break;
+        }
+      }
+    }
+    try {
+      console.log("\u{1F4CC} Payload sebelum update:", payload);
+      const updatedProperty = await Property.updateProperty(id, payload);
+      return { code: 200, message: "Properti berhasil diperbarui!", data: updatedProperty };
+    } catch (dbError) {
+      return ErrorHandler.handleError(event, { statusCode: 500, statusMessage: dbError.message || "Gagal memperbarui properti di database." });
+    }
+  } catch (error) {
+    return ErrorHandler.handleError(event, { statusCode: 500, statusMessage: error.message || "Internal Server Error" });
+  }
+});
+
+const _id__put$3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: _id__put$2
+});
+
+const PropertyStatus$1 = $Enums.PropertyStatus;
+const status_patch = defineEventHandler(async (event) => {
+  var _a, _b, _c;
+  const user = (_a = event.context.auth) == null ? void 0 : _a.user;
+  if (!user) {
+    return ErrorHandler.handleError(event, { statusCode: 401, statusMessage: "User tidak terautentikasi." });
+  }
+  const id = parseInt((_b = event.context.params) == null ? void 0 : _b.id);
+  if (isNaN(id)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Properti ID tidak valid." });
+  }
+  const existingProperty = await Property.getPropertyById(id);
+  if (!existingProperty) {
+    return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Properti tidak ditemukan." });
+  }
+  if (existingProperty.ownerId !== user.id) {
+    return ErrorHandler.handleError(event, { statusCode: 403, statusMessage: "Tidak memiliki izin untuk mengubah status properti ini." });
+  }
+  const body = await readBody(event);
+  const rawStatus = (_c = body.status) == null ? void 0 : _c.trim().toUpperCase();
+  if (!rawStatus || !Object.values(PropertyStatus$1).includes(rawStatus)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
+  }
+  const updatedProperty = await Property.updateProperty(id, { status: rawStatus });
+  return { code: 200, message: "Status properti berhasil diperbarui!", data: updatedProperty };
+});
+
+const status_patch$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: status_patch
+});
+
+const PropertyStatus = $Enums.PropertyStatus;
+const index_post = defineEventHandler(async (event) => {
+  var _a;
+  try {
+    const user = (_a = event.context.auth) == null ? void 0 : _a.user;
+    if (!user) {
+      return ErrorHandler.handleError(event, { statusCode: 401, statusMessage: "User not authenticated." });
+    }
+    const formData = await readMultipartFormData(event);
+    if (!formData) {
+      return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "No form data provided." });
+    }
+    const payload = {
+      ownerId: user.id,
+      name: "",
+      description: "",
+      address: "",
+      city: "",
+      price: 0,
+      totalRooms: 1,
+      availableRooms: 1,
+      status: PropertyStatus.ACTIVE,
+      images: ""
+    };
+    let uploadResult;
+    for (const field of formData) {
+      const { name, data, filename, type } = field;
+      if (typeof name !== "string") continue;
+      if (filename) {
+        const fileBuffer = data;
+        const fileName = `${filename.replace(/\s/g, "_")}_${Date.now()}`;
+        try {
+          uploadResult = await uploadFile({
+            fileBuffer,
+            filename: fileName,
+            mimeType: type
+          });
+          if (!uploadResult || !uploadResult.secure_url) {
+            throw new Error("Gagal mengupload gambar.");
+          }
+          payload.images = uploadResult.secure_url;
+        } catch (uploadError) {
+          return ErrorHandler.handleError(event, { statusCode: 500, statusMessage: uploadError.message || "Gagal mengupload gambar." });
+        }
+      } else if (data) {
+        switch (name) {
+          case "name":
+            payload.name = data.toString("utf-8").trim();
+            break;
+          case "description":
+            payload.description = data.toString("utf-8").trim();
+            break;
+          case "address":
+            payload.address = data.toString("utf-8").trim();
+            break;
+          case "city":
+            payload.city = data.toString("utf-8").trim();
+            break;
+          case "price":
+            payload.price = parseFloat(data.toString("utf-8").trim());
+            break;
+          case "totalRooms":
+            payload.totalRooms = parseInt(data.toString("utf-8").trim(), 10);
+            break;
+          case "availableRooms":
+            payload.availableRooms = parseInt(data.toString("utf-8").trim(), 10);
+            break;
+          case "status":
+            const rawStatus = data.toString("utf-8").trim().toUpperCase();
+            payload.status = rawStatus === "ACTIVE" ? PropertyStatus.ACTIVE : PropertyStatus.INACTIVE;
+            break;
+        }
+      }
+    }
+    if (!payload.name || !payload.description || !payload.address || !payload.city || !payload.price) {
+      return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Semua field wajib diisi!" });
+    }
+    try {
+      const newProperty = await Property.createProperty(payload);
+      return { code: 201, message: "Properti berhasil ditambahkan!", data: newProperty };
+    } catch (dbError) {
+      return ErrorHandler.handleError(event, { statusCode: 500, statusMessage: dbError.message || "Gagal menyimpan properti ke database." });
+    }
+  } catch (error) {
+    return ErrorHandler.handleError(event, { statusCode: 500, statusMessage: error.message || "Internal Server Error" });
+  }
+});
+
+const index_post$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_post
+});
+
+const myProperties_get = defineEventHandler(async (event) => {
+  var _a, _b;
+  try {
+    const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
+    const query = getQuery$1(event);
+    const { page, limit } = Pagination.getPagination(query);
+    const { data, meta } = await Property.getMyProperties(userId, page, limit);
+    return ResponseHandler.sendSuccess(event, "Data properti ditemukan!", data, 200, meta);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const myProperties_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: myProperties_get
+});
+
+const _id__delete = defineEventHandler(async (event) => {
+  var _a;
+  try {
+    const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
+    const deletedProfile = await User.deleteUser(id);
+    return ResponseHandler.sendSuccess(event, "Pengguna berhasil dihapus!", deletedProfile, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const _id__delete$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: _id__delete
+});
+
+const _id__get = defineEventHandler(async (event) => {
+  var _a;
+  try {
+    const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
+    const userById = await User.getUserById(id);
+    return ResponseHandler.sendSuccess(event, "Pengguna ditemukan!", userById, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const _id__get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: _id__get
+});
+
+const _id__put = defineEventHandler(async (event) => {
+  var _a;
+  try {
+    const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
+    const data = await readBody(event);
+    const updatedUser = await User.updateUser(id, data);
+    return ResponseHandler.sendSuccess(event, "Pengguna berhasil diubah!", updatedUser, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const _id__put$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: _id__put
+});
+
+const index = defineEventHandler(async (event) => {
+  try {
+    const query = getQuery$1(event);
+    const { page, limit } = Pagination.getPagination(query);
+    const total = await User.countUsers();
+    const { data, meta } = await User.getAllUsers(page, limit);
+    return ResponseHandler.sendSuccess(event, "Data user ditemukan!", data, 200, meta);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index
+});
+
+const index_delete = defineEventHandler(async (event) => {
+  var _a, _b;
+  try {
+    const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
+    const deletedProfile = await User.deleteUser(userId);
+    return ResponseHandler.sendSuccess(event, "Pengguna berhasil dihapus!", deletedProfile, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_delete$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_delete
+});
+
+const index_get = defineEventHandler(async (event) => {
+  var _a, _b;
+  try {
+    const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
+    const userById = await User.getUserById(userId);
+    return ResponseHandler.sendSuccess(event, "Pengguna ditemukan!", userById, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_get
+});
+
+const index_put = defineEventHandler(async (event) => {
+  var _a, _b;
+  try {
+    const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
+    const data = await readBody(event);
+    console.log(`\u{1F539} ID pengguna yang diupdate: ${userId}`);
+    console.log(`\u{1F539} Data yang akan diupdate:`, data);
+    const updatedUser = await User.updateUser(userId, data);
+    return ResponseHandler.sendSuccess(event, "Pengguna berhasil diubah!", updatedUser, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_put$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_put
 });
 
 function renderPayloadResponse(ssrContext) {
