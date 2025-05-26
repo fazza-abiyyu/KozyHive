@@ -2844,6 +2844,11 @@ const login_post = defineEventHandler(async (event) => {
     const { password, ...userData } = user;
     await RefreshToken.create(user.id, refreshToken);
     sendRefreshToken(event, refreshToken);
+    const cleanedProfile = user.profile ? {
+      name: user.profile.name,
+      phone: user.profile.phone,
+      address: user.profile.address
+    } : void 0;
     return ResponseHandler.sendSuccess(
       event,
       "Berhasil Masuk!",
@@ -2853,7 +2858,7 @@ const login_post = defineEventHandler(async (event) => {
           id: user.id,
           email: user.email,
           role: user.role,
-          profile: userData.profile
+          profile: cleanedProfile
         }
       },
       200

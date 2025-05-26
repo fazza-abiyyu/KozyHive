@@ -67,14 +67,12 @@ respon 200
     "statusCode": 200,
     "message": "Berhasil Masuk!",
     "data": {
-        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwicm9sZSI6IlRFTkFOVCIsImlhdCI6MTc0ODIzNDU1OCwiZXhwIjoxNzQ4MjM1MTU4fQ.aEl9YCU3DcNimO0QjofIunn0Jj9xIvu37fftS9WZ0rw",
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwicm9sZSI6IlRFTkFOVCIsImlhdCI6MTc0ODIzNDk4MiwiZXhwIjoxNzQ4MjM1NTgyfQ.5kq17-IdXeAxDlW5ThVYgkKk0T2CLkdLqwMXtjvpIEA",
         "user": {
             "id": 2,
             "email": "user@example.com",
             "role": "TENANT",
             "profile": {
-                "id": 1,
-                "userId": 2,
                 "name": "John Doe",
                 "phone": "+628123456789",
                 "address": "Jl. Mawar No. 1, Jakarta"

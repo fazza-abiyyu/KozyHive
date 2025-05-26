@@ -55,6 +55,12 @@ export default defineEventHandler(async (event) => {
         // Set refresh token ke cookie
         sendRefreshToken(event, refreshToken);
 
+        const cleanedProfile = user.profile ? {
+            name: user.profile.name,
+            phone: user.profile.phone,
+            address: user.profile.address
+        } : undefined;
+
         // Kirim respons sukses menggunakan ResponseHandler
         return ResponseHandler.sendSuccess(
             event,
@@ -65,7 +71,7 @@ export default defineEventHandler(async (event) => {
                     id: user.id,
                     email: user.email,
                     role: user.role,
-                    profile: userData.profile,
+                    profile: cleanedProfile,
                 },
             },
             200
