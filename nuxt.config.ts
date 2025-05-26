@@ -22,4 +22,16 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  plugins: ["~/plugins/preline.client.ts"],
+  app: {
+    head: {
+      title: "KozyHive",
+      htmlAttrs: {
+        lang: 'id'
+      },
+      meta: [
+        {name: 'description', content: 'KozyHive'},
+      ],
+    },
+  },
 })
