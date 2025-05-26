@@ -1,6 +1,5 @@
 import {prisma} from "~/server/config/db";
-import {$Enums} from "~/generated/prisma";
-import BookingStatus = $Enums.BookingStatus;
+import {BookingStatus} from "@prisma/client";
 
 export class Booking {
     // GET: Ambil booking berdasarkan ID

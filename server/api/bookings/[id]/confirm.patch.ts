@@ -1,8 +1,7 @@
 import { Booking } from "~/server/models/Booking";
 import { ErrorHandler } from "~/server/utils/ErrorHandler";
-import { $Enums } from "~/generated/prisma";
-import BookingStatus = $Enums.BookingStatus;
 import {BookingLogger} from "~/server/utils/BookingLoggers";
+import {BookingStatus} from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
     const user = event.context.auth?.user;

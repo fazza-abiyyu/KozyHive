@@ -1,8 +1,7 @@
 import { prisma } from "~/server/config/db";
-import {$Enums} from "~/generated/prisma";
-import Role = $Enums.Role;
 import {RegisterRequest} from "~/types/AuthType";
 import bcrypt from "bcryptjs";
+import {Role} from "@prisma/client";
 
 export class User {
     static createUser = (data: any) => {

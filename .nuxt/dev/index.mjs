@@ -5,7 +5,7 @@ import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
 import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, getRequestURL, getResponseHeader, setCookie, deleteCookie, sendError, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getCookie, appendHeader, readMultipartFormData, getResponseStatusText } from 'file://E:/Projek/kozy-hive/node_modules/h3/dist/index.mjs';
 import { escapeHtml } from 'file://E:/Projek/kozy-hive/node_modules/@vue/shared/dist/shared.cjs.js';
-import { PrismaClient, $Enums } from 'file://E:/Projek/kozy-hive/generated/prisma/index.js';
+import { PrismaClient, Role, BookingStatus, PropertyStatus } from 'file://E:/Projek/kozy-hive/node_modules/@prisma/client/default.js';
 import bcrypt from 'file://E:/Projek/kozy-hive/node_modules/bcryptjs/index.js';
 import { Readable } from 'node:stream';
 import { v2 } from 'file://E:/Projek/kozy-hive/node_modules/cloudinary/cloudinary.js';
@@ -1178,7 +1178,6 @@ const prisma = new PrismaClient();
 var __defProp$1 = Object.defineProperty;
 var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, typeof key !== "symbol" ? key + "" : key, value);
-const Role = $Enums.Role;
 class User {
   static async countUsers() {
     return prisma.user.count();
@@ -2224,7 +2223,6 @@ const styles$1 = /*#__PURE__*/Object.freeze({
   default: styles
 });
 
-const BookingStatus$4 = $Enums.BookingStatus;
 class Booking {
   // GET: Ambil booking berdasarkan ID
   static async getBookingById(id) {
@@ -2337,7 +2335,7 @@ class Booking {
         monthlyPrice,
         deposit,
         totalAmount,
-        status: BookingStatus$4.PENDING,
+        status: BookingStatus.PENDING,
         notes: (_b = data.notes) != null ? _b : null
       }
     });
@@ -2491,7 +2489,6 @@ const stats_get$1 = /*#__PURE__*/Object.freeze({
   default: stats_get
 });
 
-const PropertyStatus$5 = $Enums.PropertyStatus;
 class Property {
   // GET: Ambil properti milik owner
   static async getMyProperties(ownerId, page, pageSize, filters = {}) {
@@ -2573,7 +2570,7 @@ class Property {
     if (!validStatuses.includes(status)) {
       throw { statusCode: 400, statusMessage: "Status properti tidak valid." };
     }
-    const statusEnum = PropertyStatus$5[status];
+    const statusEnum = PropertyStatus[status];
     if (!statusEnum) {
       throw { statusCode: 400, statusMessage: "Konversi status ke enum gagal." };
     }
@@ -2700,7 +2697,6 @@ class Property {
   }
 }
 
-const PropertyStatus$4 = $Enums.PropertyStatus;
 const approve_patch = defineEventHandler(async (event) => {
   var _a, _b, _c;
   const user = (_a = event.context.auth) == null ? void 0 : _a.user;
@@ -2717,7 +2713,7 @@ const approve_patch = defineEventHandler(async (event) => {
   }
   const body = await readBody(event);
   let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "ACTIVE";
-  if (!Object.values(PropertyStatus$4).includes(rawStatus)) {
+  if (!Object.values(PropertyStatus).includes(rawStatus)) {
     return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
   }
   const updatedProperty = await Property.updatePropertyStatus(id, rawStatus);
@@ -2729,7 +2725,6 @@ const approve_patch$1 = /*#__PURE__*/Object.freeze({
   default: approve_patch
 });
 
-const PropertyStatus$3 = $Enums.PropertyStatus;
 const reject_patch$2 = defineEventHandler(async (event) => {
   var _a, _b, _c;
   const user = (_a = event.context.auth) == null ? void 0 : _a.user;
@@ -2746,7 +2741,7 @@ const reject_patch$2 = defineEventHandler(async (event) => {
   }
   const body = await readBody(event);
   let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "DELETED";
-  if (!Object.values(PropertyStatus$3).includes(rawStatus)) {
+  if (!Object.values(PropertyStatus).includes(rawStatus)) {
     return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
   }
   const updatedProperty = await Property.updatePropertyStatus(id, rawStatus);
@@ -3025,7 +3020,6 @@ class BookingLogger {
   }
 }
 
-const BookingStatus$3 = $Enums.BookingStatus;
 const activate_patch = defineEventHandler(async (event) => {
   var _a, _b, _c;
   const user = (_a = event.context.auth) == null ? void 0 : _a.user;
@@ -3042,7 +3036,7 @@ const activate_patch = defineEventHandler(async (event) => {
   }
   const body = await readBody(event);
   let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "ACTIVE";
-  if (!Object.values(BookingStatus$3).includes(rawStatus)) {
+  if (!Object.values(BookingStatus).includes(rawStatus)) {
     return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
   }
   await BookingLogger.logStatusChange(id, rawStatus, `Status booking berubah menjadi ${rawStatus}`);
@@ -3055,7 +3049,6 @@ const activate_patch$1 = /*#__PURE__*/Object.freeze({
   default: activate_patch
 });
 
-const BookingStatus$2 = $Enums.BookingStatus;
 const complete_patch = defineEventHandler(async (event) => {
   var _a, _b, _c;
   const user = (_a = event.context.auth) == null ? void 0 : _a.user;
@@ -3072,7 +3065,7 @@ const complete_patch = defineEventHandler(async (event) => {
   }
   const body = await readBody(event);
   let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "COMPLETED";
-  if (!Object.values(BookingStatus$2).includes(rawStatus)) {
+  if (!Object.values(BookingStatus).includes(rawStatus)) {
     return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
   }
   await BookingLogger.logStatusChange(id, rawStatus, `Status booking berubah menjadi ${rawStatus}`);
@@ -3085,7 +3078,6 @@ const complete_patch$1 = /*#__PURE__*/Object.freeze({
   default: complete_patch
 });
 
-const BookingStatus$1 = $Enums.BookingStatus;
 const confirm_patch = defineEventHandler(async (event) => {
   var _a, _b, _c;
   const user = (_a = event.context.auth) == null ? void 0 : _a.user;
@@ -3102,7 +3094,7 @@ const confirm_patch = defineEventHandler(async (event) => {
   }
   const body = await readBody(event);
   let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "CONFIRMED";
-  if (!Object.values(BookingStatus$1).includes(rawStatus)) {
+  if (!Object.values(BookingStatus).includes(rawStatus)) {
     return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
   }
   await BookingLogger.logStatusChange(id, rawStatus, `Status booking berubah menjadi ${rawStatus}`);
@@ -3201,7 +3193,6 @@ const index_post$7 = /*#__PURE__*/Object.freeze({
   default: index_post$6
 });
 
-const BookingStatus = $Enums.BookingStatus;
 const reject_patch = defineEventHandler(async (event) => {
   var _a, _b, _c;
   const user = (_a = event.context.auth) == null ? void 0 : _a.user;
@@ -3434,7 +3425,6 @@ const uploadFile = async ({ fileBuffer, filename, mimeType }) => {
   }
 };
 
-const PropertyStatus$2 = $Enums.PropertyStatus;
 const index_put$4 = defineEventHandler(async (event) => {
   var _a, _b;
   try {
@@ -3503,7 +3493,7 @@ const index_put$4 = defineEventHandler(async (event) => {
             break;
           case "status":
             const rawStatus = data.toString("utf-8").trim().toUpperCase();
-            payload.status = rawStatus === "ACTIVE" ? PropertyStatus$2.ACTIVE : PropertyStatus$2.INACTIVE;
+            payload.status = rawStatus === "ACTIVE" ? PropertyStatus.ACTIVE : PropertyStatus.INACTIVE;
             break;
         }
       }
@@ -3524,7 +3514,6 @@ const index_put$5 = /*#__PURE__*/Object.freeze({
   default: index_put$4
 });
 
-const PropertyStatus$1 = $Enums.PropertyStatus;
 const status_patch = defineEventHandler(async (event) => {
   var _a, _b, _c;
   const user = (_a = event.context.auth) == null ? void 0 : _a.user;
@@ -3541,7 +3530,7 @@ const status_patch = defineEventHandler(async (event) => {
   }
   const body = await readBody(event);
   const rawStatus = (_c = body.status) == null ? void 0 : _c.trim().toUpperCase();
-  if (!rawStatus || !Object.values(PropertyStatus$1).includes(rawStatus)) {
+  if (!rawStatus || !Object.values(PropertyStatus).includes(rawStatus)) {
     return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
   }
   const updatedProperty = await Property.updatePropertyStatus(id, rawStatus);
@@ -3586,7 +3575,6 @@ const index_get$5 = /*#__PURE__*/Object.freeze({
   default: index_get$4
 });
 
-const PropertyStatus = $Enums.PropertyStatus;
 const index_post = defineEventHandler(async (event) => {
   var _a;
   try {

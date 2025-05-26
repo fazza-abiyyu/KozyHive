@@ -1,6 +1,5 @@
 import { prisma } from "~/server/config/db";
-import {$Enums} from "~/generated/prisma";
-import PropertyStatus = $Enums.PropertyStatus;
+import {PropertyStatus} from "@prisma/client";
 
 export class Property {
     // GET: Ambil properti milik owner

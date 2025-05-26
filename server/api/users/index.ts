@@ -1,14 +1,14 @@
 import { User } from "~/server/models/User";
 import { ResponseHandler } from "~/server/utils/ResponseHandler";
 import { ErrorHandler } from "~/server/utils/ErrorHandler";
-import { Pagination } from "~/server/utils/Pagination"; // 🔹 Gunakan utils pagination
+import { Pagination } from "~/server/utils/Pagination";
 
 export default defineEventHandler(async (event) => {
     try {
         const query = getQuery(event);
         const { page, limit } = Pagination.getPagination(query);
 
-        const total = await User.countUsers(); // 🔹 Hitung total user
+        const total = await User.countUsers();
         const { data, meta } = await User.getAllUsers(page, limit);
 
         return ResponseHandler.sendSuccess(event, "Data user ditemukan!", data, 200, meta);

@@ -1,7 +1,5 @@
 import { prisma } from "~/server/config/db";
-import { $Enums } from "~/generated/prisma";
-import TransactionType = $Enums.TransactionType;
-import PaymentStatus = $Enums.PaymentStatus;
+import {PaymentStatus, TransactionType} from "@prisma/client";
 
 export class Transaction {
     // Membuat transaksi baru

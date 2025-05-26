@@ -1,8 +1,7 @@
 import { uploadFile } from "~/server/utils/UploadFiles";
 import { Property } from "~/server/models/Property";
 import { ErrorHandler } from "~/server/utils/ErrorHandler";
-import { $Enums } from "~/generated/prisma";
-import PropertyStatus = $Enums.PropertyStatus;
+import {PropertyStatus} from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -17,7 +16,7 @@ export default defineEventHandler(async (event) => {
             return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "No form data provided." });
         }
 
-        // 🔹 Inisialisasi payload untuk properti
+        // Inisialisasi payload untuk properti
         const payload: {
             ownerId: number;
             name: string;
@@ -99,12 +98,12 @@ export default defineEventHandler(async (event) => {
             }
         }
 
-        // 🔹 Validasi apakah semua field penting sudah terisi
+        // Validasi apakah semua field penting sudah terisi
         if (!payload.name || !payload.description || !payload.address || !payload.city || !payload.price) {
             return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Semua field wajib diisi!" });
         }
 
-        // 🔹 Buat properti baru di database
+        // Buat properti baru di database
         try {
             const newProperty = await Property.createProperty(payload);
             return { code: 201, message: "Properti berhasil ditambahkan!", data: newProperty };

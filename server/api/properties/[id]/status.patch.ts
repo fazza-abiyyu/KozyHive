@@ -1,7 +1,6 @@
 import { Property } from "~/server/models/Property";
 import { ErrorHandler } from "~/server/utils/ErrorHandler";
-import { $Enums } from "~/generated/prisma";
-import PropertyStatus = $Enums.PropertyStatus;
+import {PropertyStatus} from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
     const user = event.context.auth?.user;
