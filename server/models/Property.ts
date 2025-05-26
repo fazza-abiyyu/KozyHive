@@ -59,7 +59,7 @@ export class Property {
                 price: Number(data.price),
                 totalRooms: Number(data.totalRooms ?? 1),
                 availableRooms: Number(data.availableRooms ?? data.totalRooms ?? 1),
-                status: data.status ?? "ACTIVE",
+                status: data.status ?? "INACTIVE",
                 images: data.images ?? null, // 🔹 Pastikan bisa null jika tidak ada gambar
             },
         });
@@ -80,6 +80,31 @@ export class Property {
                 status: data.status ?? "ACTIVE",
                 images: data.images,
             },
+        });
+    }
+
+    static async patchPropertyStatus(id: number, status: string) {
+        const validStatuses = ["ACTIVE", "INACTIVE", "PENDING"];
+
+        if (!validStatuses.includes(status)) {
+            throw { statusCode: 400, statusMessage: "Status properti tidak valid." };
+        }
+
+        const statusEnum = PropertyStatus[status as keyof typeof PropertyStatus];
+
+        if (!statusEnum) {
+            throw { statusCode: 400, statusMessage: "Konversi status ke enum gagal." };
+        }
+
+        const property = await prisma.property.findUnique({ where: { id } });
+
+        if (!property) {
+            throw { statusCode: 404, statusMessage: "Properti tidak ditemukan." };
+        }
+
+        return prisma.property.update({
+            where: { id },
+            data: { status: statusEnum },
         });
     }
 
@@ -141,11 +166,9 @@ export class Property {
     }
 
     static async searchProperties(query: string, page: number = 1, pageSize: number = 10) {
-        const searchQuery = query?.trim().toLowerCase(); // 🔥 Bersihkan spasi dan buat pencarian tidak sensitif terhadap huruf besar/kecil
+        const searchQuery = query?.trim().toLowerCase();
         const skip = (page - 1) * pageSize;
         const take = pageSize;
-
-        console.log("📌 Query yang digunakan untuk pencarian:", searchQuery);
 
         const properties = await prisma.property.findMany({
             where: {
@@ -170,8 +193,6 @@ export class Property {
                 ]
             }
         });
-
-        console.log("📌 Properti yang ditemukan:", properties);
 
         return {
             success: true,

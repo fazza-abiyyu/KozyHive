@@ -5,8 +5,8 @@ import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
 import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, getRequestURL, getResponseHeader, setCookie, deleteCookie, sendError, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getCookie, appendHeader, readMultipartFormData, getResponseStatusText } from 'file://E:/Projek/kozy-hive/node_modules/h3/dist/index.mjs';
 import { escapeHtml } from 'file://E:/Projek/kozy-hive/node_modules/@vue/shared/dist/shared.cjs.js';
-import bcrypt from 'file://E:/Projek/kozy-hive/node_modules/bcryptjs/index.js';
 import { PrismaClient, $Enums } from 'file://E:/Projek/kozy-hive/generated/prisma/index.js';
+import bcrypt from 'file://E:/Projek/kozy-hive/node_modules/bcryptjs/index.js';
 import { Readable } from 'node:stream';
 import { v2 } from 'file://E:/Projek/kozy-hive/node_modules/cloudinary/cloudinary.js';
 import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://E:/Projek/kozy-hive/node_modules/vue-bundle-renderer/dist/runtime.mjs';
@@ -1338,8 +1338,17 @@ const _dzrTQi = defineEventHandler(async (event) => {
       "/api/properties/search?q=:q&page=:page&pagesize=:pagesize",
       "/api/properties/cities?c=:c&page=:page&pagesize=:pagesize",
       "/api/properties/:id/status",
+      "/api/admin/properties/:id/approve",
+      "/api/admin/properties/:id/reject",
+      "/api/bookings/:id/activate",
+      "/api/bookings/:id/complete",
+      "/api/bookings/:id/confirm",
+      "/api/bookings/:id/reject",
+      "/api/bookings/:id/logs",
       "/api/admin/properties",
       "/api/admin/properties/:id",
+      "/api/admin/bookings?page=:page&pagesize=:pagesize",
+      "/api/admin/bookings/stats",
       "/api/admin/properties?page=:page&pagesize=:pagesize",
       "/api/bookings/my-bookings",
       "/api/bookings/:id",
@@ -1463,9 +1472,9 @@ const _B9vN2H = defineEventHandler(async (event) => {
     }
     const roleEndpoints = [
       { path: "/api/users", roles: ["ADMIN"] },
-      { path: "/api/users/:id", roles: ["ADMIN"] },
+      { path: "/api/users/:id", roles: ["ADMIN"] }
       // { path: "/api/properties/*", roles: ["OWNER"] },
-      { path: "/api/bookings/*", roles: ["TENANT"] }
+      // { path: "/api/bookings/*", roles: ["TENANT"] },
     ];
     const matchedEndpoint = roleEndpoints.find(({ path }) => {
       const pattern = new UrlPattern(path);
@@ -1800,32 +1809,42 @@ async function getIslandContext(event) {
   return ctx;
 }
 
-const _lazy_bp7n6T = () => Promise.resolve().then(function () { return index_get$7; });
+const _lazy_F4vIQn = () => Promise.resolve().then(function () { return index_get$h; });
+const _lazy_6LoUji = () => Promise.resolve().then(function () { return stats_get$1; });
+const _lazy_9Yfp89 = () => Promise.resolve().then(function () { return approve_patch$1; });
+const _lazy_98czY5 = () => Promise.resolve().then(function () { return reject_patch$3; });
+const _lazy_bp7n6T = () => Promise.resolve().then(function () { return index_get$f; });
 const _lazy_GhcmGr = () => Promise.resolve().then(function () { return login_post$1; });
 const _lazy_XF0_O7 = () => Promise.resolve().then(function () { return logout_get$1; });
 const _lazy_timx8d = () => Promise.resolve().then(function () { return refresh_get$1; });
 const _lazy_Dc406Z = () => Promise.resolve().then(function () { return register_post$1; });
-const _lazy_CULQim = () => Promise.resolve().then(function () { return _id__delete$5; });
-const _lazy_rP0GWt = () => Promise.resolve().then(function () { return _id__get$5; });
-const _lazy_a2uOBq = () => Promise.resolve().then(function () { return _id__put$5; });
+const _lazy_xELXKt = () => Promise.resolve().then(function () { return activate_patch$1; });
+const _lazy_Clnwr7 = () => Promise.resolve().then(function () { return complete_patch$1; });
+const _lazy_g0zfXS = () => Promise.resolve().then(function () { return confirm_patch$1; });
+const _lazy_BErVkA = () => Promise.resolve().then(function () { return index_delete$9; });
+const _lazy_V57ZFx = () => Promise.resolve().then(function () { return index_get$d; });
+const _lazy_l41_Ws = () => Promise.resolve().then(function () { return index_put$9; });
+const _lazy_8EfKm9 = () => Promise.resolve().then(function () { return index_get$b; });
+const _lazy_61ZUnw = () => Promise.resolve().then(function () { return index_post$7; });
+const _lazy_4AGZIG = () => Promise.resolve().then(function () { return reject_patch$1; });
 const _lazy_RMKoXz = () => Promise.resolve().then(function () { return index_post$5; });
 const _lazy_7yRElE = () => Promise.resolve().then(function () { return myBookings_get$1; });
-const _lazy_HBw_9U = () => Promise.resolve().then(function () { return index_delete$3; });
-const _lazy_7na682 = () => Promise.resolve().then(function () { return index_get$5; });
+const _lazy_HBw_9U = () => Promise.resolve().then(function () { return index_delete$7; });
+const _lazy_7na682 = () => Promise.resolve().then(function () { return index_get$9; });
 const _lazy_1RpiGl = () => Promise.resolve().then(function () { return index_post$3; });
-const _lazy_v5Zzr5 = () => Promise.resolve().then(function () { return index_put$3; });
-const _lazy_qHcgGe = () => Promise.resolve().then(function () { return _id__delete$3; });
-const _lazy_aImm8G = () => Promise.resolve().then(function () { return _id__get$3; });
-const _lazy_e0QA13 = () => Promise.resolve().then(function () { return _id__put$3; });
+const _lazy_v5Zzr5 = () => Promise.resolve().then(function () { return index_put$7; });
+const _lazy_PWNJ2e = () => Promise.resolve().then(function () { return index_delete$5; });
+const _lazy_EsFi6c = () => Promise.resolve().then(function () { return index_get$7; });
+const _lazy_qDYrlV = () => Promise.resolve().then(function () { return index_put$5; });
 const _lazy_VL3sxh = () => Promise.resolve().then(function () { return status_patch$1; });
 const _lazy_4WmOur = () => Promise.resolve().then(function () { return cities_get$1; });
-const _lazy_VeImZ7 = () => Promise.resolve().then(function () { return index_get$3; });
+const _lazy_VeImZ7 = () => Promise.resolve().then(function () { return index_get$5; });
 const _lazy_Xk1C2K = () => Promise.resolve().then(function () { return index_post$1; });
 const _lazy_DBasW1 = () => Promise.resolve().then(function () { return myProperties_get$1; });
 const _lazy_opsNBH = () => Promise.resolve().then(function () { return search_get$1; });
-const _lazy_5c2gzB = () => Promise.resolve().then(function () { return _id__delete$1; });
-const _lazy_IuQPSO = () => Promise.resolve().then(function () { return _id__get$1; });
-const _lazy_HGrgm0 = () => Promise.resolve().then(function () { return _id__put$1; });
+const _lazy_R6_nkP = () => Promise.resolve().then(function () { return index_delete$3; });
+const _lazy_OJVwMV = () => Promise.resolve().then(function () { return index_get$3; });
+const _lazy_2mJosN = () => Promise.resolve().then(function () { return index_put$3; });
 const _lazy_DzxU0d = () => Promise.resolve().then(function () { return index$1; });
 const _lazy_jYdoq0 = () => Promise.resolve().then(function () { return index_delete$1; });
 const _lazy_aICSos = () => Promise.resolve().then(function () { return index_get$1; });
@@ -1835,32 +1854,42 @@ const _lazy_wQMhBW = () => Promise.resolve().then(function () { return renderer$
 const handlers = [
   { route: '', handler: _dzrTQi, lazy: false, middleware: true, method: undefined },
   { route: '', handler: _B9vN2H, lazy: false, middleware: true, method: undefined },
+  { route: '/api/admin/bookings', handler: _lazy_F4vIQn, lazy: true, middleware: false, method: "get" },
+  { route: '/api/admin/bookings/stats', handler: _lazy_6LoUji, lazy: true, middleware: false, method: "get" },
+  { route: '/api/admin/properties/:id/approve', handler: _lazy_9Yfp89, lazy: true, middleware: false, method: "patch" },
+  { route: '/api/admin/properties/:id/reject', handler: _lazy_98czY5, lazy: true, middleware: false, method: "patch" },
   { route: '/api/admin/properties', handler: _lazy_bp7n6T, lazy: true, middleware: false, method: "get" },
   { route: '/api/auth/login', handler: _lazy_GhcmGr, lazy: true, middleware: false, method: "post" },
   { route: '/api/auth/logout', handler: _lazy_XF0_O7, lazy: true, middleware: false, method: "get" },
   { route: '/api/auth/refresh', handler: _lazy_timx8d, lazy: true, middleware: false, method: "get" },
   { route: '/api/auth/register', handler: _lazy_Dc406Z, lazy: true, middleware: false, method: "post" },
-  { route: '/api/bookings/:id', handler: _lazy_CULQim, lazy: true, middleware: false, method: "delete" },
-  { route: '/api/bookings/:id', handler: _lazy_rP0GWt, lazy: true, middleware: false, method: "get" },
-  { route: '/api/bookings/:id', handler: _lazy_a2uOBq, lazy: true, middleware: false, method: "put" },
+  { route: '/api/bookings/:id/activate', handler: _lazy_xELXKt, lazy: true, middleware: false, method: "patch" },
+  { route: '/api/bookings/:id/complete', handler: _lazy_Clnwr7, lazy: true, middleware: false, method: "patch" },
+  { route: '/api/bookings/:id/confirm', handler: _lazy_g0zfXS, lazy: true, middleware: false, method: "patch" },
+  { route: '/api/bookings/:id', handler: _lazy_BErVkA, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/bookings/:id', handler: _lazy_V57ZFx, lazy: true, middleware: false, method: "get" },
+  { route: '/api/bookings/:id', handler: _lazy_l41_Ws, lazy: true, middleware: false, method: "put" },
+  { route: '/api/bookings/:id/logs', handler: _lazy_8EfKm9, lazy: true, middleware: false, method: "get" },
+  { route: '/api/bookings/:id/logs', handler: _lazy_61ZUnw, lazy: true, middleware: false, method: "post" },
+  { route: '/api/bookings/:id/reject', handler: _lazy_4AGZIG, lazy: true, middleware: false, method: "patch" },
   { route: '/api/bookings', handler: _lazy_RMKoXz, lazy: true, middleware: false, method: "post" },
   { route: '/api/bookings/my-bookings', handler: _lazy_7yRElE, lazy: true, middleware: false, method: "get" },
   { route: '/api/profile', handler: _lazy_HBw_9U, lazy: true, middleware: false, method: "delete" },
   { route: '/api/profile', handler: _lazy_7na682, lazy: true, middleware: false, method: "get" },
   { route: '/api/profile', handler: _lazy_1RpiGl, lazy: true, middleware: false, method: "post" },
   { route: '/api/profile', handler: _lazy_v5Zzr5, lazy: true, middleware: false, method: "put" },
-  { route: '/api/properties/:id', handler: _lazy_qHcgGe, lazy: true, middleware: false, method: "delete" },
-  { route: '/api/properties/:id', handler: _lazy_aImm8G, lazy: true, middleware: false, method: "get" },
-  { route: '/api/properties/:id', handler: _lazy_e0QA13, lazy: true, middleware: false, method: "put" },
+  { route: '/api/properties/:id', handler: _lazy_PWNJ2e, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/properties/:id', handler: _lazy_EsFi6c, lazy: true, middleware: false, method: "get" },
+  { route: '/api/properties/:id', handler: _lazy_qDYrlV, lazy: true, middleware: false, method: "put" },
   { route: '/api/properties/:id/status', handler: _lazy_VL3sxh, lazy: true, middleware: false, method: "patch" },
   { route: '/api/properties/cities', handler: _lazy_4WmOur, lazy: true, middleware: false, method: "get" },
   { route: '/api/properties', handler: _lazy_VeImZ7, lazy: true, middleware: false, method: "get" },
   { route: '/api/properties', handler: _lazy_Xk1C2K, lazy: true, middleware: false, method: "post" },
   { route: '/api/properties/my-properties', handler: _lazy_DBasW1, lazy: true, middleware: false, method: "get" },
   { route: '/api/properties/search', handler: _lazy_opsNBH, lazy: true, middleware: false, method: "get" },
-  { route: '/api/users/:id', handler: _lazy_5c2gzB, lazy: true, middleware: false, method: "delete" },
-  { route: '/api/users/:id', handler: _lazy_IuQPSO, lazy: true, middleware: false, method: "get" },
-  { route: '/api/users/:id', handler: _lazy_HGrgm0, lazy: true, middleware: false, method: "put" },
+  { route: '/api/users/:id', handler: _lazy_R6_nkP, lazy: true, middleware: false, method: "delete" },
+  { route: '/api/users/:id', handler: _lazy_OJVwMV, lazy: true, middleware: false, method: "get" },
+  { route: '/api/users/:id', handler: _lazy_2mJosN, lazy: true, middleware: false, method: "put" },
   { route: '/api/users', handler: _lazy_DzxU0d, lazy: true, middleware: false, method: undefined },
   { route: '/api/users/me', handler: _lazy_jYdoq0, lazy: true, middleware: false, method: "delete" },
   { route: '/api/users/me', handler: _lazy_aICSos, lazy: true, middleware: false, method: "get" },
@@ -2195,6 +2224,274 @@ const styles$1 = /*#__PURE__*/Object.freeze({
   default: styles
 });
 
+const BookingStatus$4 = $Enums.BookingStatus;
+class Booking {
+  // GET: Ambil booking berdasarkan ID
+  static async getBookingById(id) {
+    return prisma.booking.findUnique({
+      where: { id },
+      include: {
+        tenant: { select: { id: true, email: true } },
+        owner: { select: { id: true, email: true } },
+        property: true,
+        bookingLogs: true
+      }
+    });
+  }
+  // GET: Ambil semua booking milik tenant
+  static async getTenantBookings(tenantId, page, pageSize) {
+    const skip = (page - 1) * pageSize;
+    const totalBookings = await prisma.booking.count({ where: { tenantId } });
+    const bookings = await prisma.booking.findMany({
+      where: { tenantId },
+      skip,
+      take: pageSize,
+      include: {
+        property: true,
+        owner: { select: { id: true, email: true } }
+      }
+    });
+    const totalPages = Math.ceil(totalBookings / pageSize);
+    return {
+      success: true,
+      message: "Tenant's bookings retrieved successfully",
+      data: bookings,
+      meta: {
+        page,
+        limit: pageSize,
+        total: totalBookings,
+        totalPages
+      }
+    };
+  }
+  // GET: Ambil semua booking milik owner
+  static async getOwnerBookings(ownerId, page, pageSize) {
+    const skip = (page - 1) * pageSize;
+    const totalBookings = await prisma.booking.count({ where: { ownerId } });
+    const bookings = await prisma.booking.findMany({
+      where: { ownerId },
+      skip,
+      take: pageSize,
+      include: {
+        property: true,
+        tenant: { select: { id: true, email: true } }
+      }
+    });
+    const totalPages = Math.ceil(totalBookings / pageSize);
+    return {
+      success: true,
+      message: "Owner's bookings retrieved successfully",
+      data: bookings,
+      meta: {
+        page,
+        limit: pageSize,
+        total: totalBookings,
+        totalPages
+      }
+    };
+  }
+  static async getAllBookings(tenantId, page = 1, pageSize = 10) {
+    const skip = (page - 1) * pageSize;
+    const totalBookings = await prisma.booking.count({
+      where: { tenantId }
+    });
+    const bookings = await prisma.booking.findMany({
+      where: { tenantId },
+      skip,
+      take: pageSize,
+      include: {
+        property: true,
+        owner: { select: { id: true, email: true } }
+      }
+    });
+    const totalPages = Math.ceil(totalBookings / pageSize);
+    return {
+      success: true,
+      message: "Data booking tenant berhasil diambil!",
+      data: bookings,
+      meta: {
+        page,
+        limit: pageSize,
+        total: totalBookings,
+        totalPages
+      }
+    };
+  }
+  // POST: Buat booking baru dan kurangi ketersediaan kamar
+  static async createBooking(data, userId) {
+    var _a, _b;
+    const property = await prisma.property.findUnique({ where: { id: data.propertyId } });
+    if (!property || property.availableRooms <= 0 || property.status !== "ACTIVE") {
+      throw { statusCode: 400, statusMessage: "Properti tidak tersedia untuk booking." };
+    }
+    const monthlyPrice = property.price;
+    const deposit = (_a = data.deposit) != null ? _a : 0;
+    const totalAmount = data.duration * monthlyPrice + deposit;
+    const booking = await prisma.booking.create({
+      data: {
+        tenantId: userId,
+        ownerId: property.ownerId,
+        propertyId: data.propertyId,
+        checkInDate: new Date(data.checkInDate),
+        duration: data.duration,
+        monthlyPrice,
+        deposit,
+        totalAmount,
+        status: BookingStatus$4.PENDING,
+        notes: (_b = data.notes) != null ? _b : null
+      }
+    });
+    await prisma.property.update({
+      where: { id: data.propertyId },
+      data: { availableRooms: property.availableRooms - 1 }
+    });
+    return booking;
+  }
+  static async updateBooking(id, tenantId, data) {
+    var _a, _b, _c, _d, _e, _f, _g, _h;
+    const booking = await prisma.booking.findUnique({ where: { id } });
+    const property = await prisma.property.findUnique({ where: { id: booking == null ? void 0 : booking.propertyId } });
+    return prisma.booking.update({
+      where: { id },
+      data: {
+        checkInDate: data.checkInDate ? new Date(data.checkInDate) : void 0,
+        duration: (_a = data.duration) != null ? _a : void 0,
+        monthlyPrice: (_b = property == null ? void 0 : property.price) != null ? _b : void 0,
+        deposit: (_c = data.deposit) != null ? _c : void 0,
+        totalAmount: ((_e = (_d = data.duration) != null ? _d : booking == null ? void 0 : booking.duration) != null ? _e : 0) * ((_f = property == null ? void 0 : property.price) != null ? _f : 0) + ((_g = data.deposit) != null ? _g : 0),
+        notes: (_h = data.notes) != null ? _h : void 0
+      }
+    });
+  }
+  static async updateBookingStatus(id, status) {
+    return prisma.booking.update({
+      where: { id },
+      data: { status }
+    });
+  }
+  static async deleteBooking(id) {
+    return prisma.booking.delete({
+      where: { id }
+    });
+  }
+  static async getBookingStats() {
+    var _a, _b, _c;
+    const totalBookings = await prisma.booking.count();
+    const totalRevenuePaid = await prisma.booking.aggregate({
+      _sum: { totalAmount: true },
+      where: { status: "PAID" }
+    });
+    const totalRevenueCompleted = await prisma.booking.aggregate({
+      _sum: { totalAmount: true },
+      where: { status: "COMPLETED" }
+    });
+    const totalDeposit = await prisma.booking.aggregate({
+      _sum: { deposit: true }
+    });
+    const uniqueTenants = await prisma.booking.findMany({
+      select: { tenantId: true },
+      distinct: ["tenantId"]
+    });
+    const totalTenants = uniqueTenants.length;
+    const uniqueOwners = await prisma.booking.findMany({
+      select: { ownerId: true },
+      distinct: ["ownerId"]
+    });
+    const totalOwners = uniqueOwners.length;
+    const pendingBookings = await prisma.booking.count({ where: { status: "PENDING" } });
+    const confirmedBookings = await prisma.booking.count({ where: { status: "CONFIRMED" } });
+    const activeBookings = await prisma.booking.count({ where: { status: "ACTIVE" } });
+    const completedBookings = await prisma.booking.count({ where: { status: "COMPLETED" } });
+    const cancelledBookings = await prisma.booking.count({ where: { status: "CANCELLED" } });
+    return {
+      totalBookings,
+      totalRevenuePaid: (_a = totalRevenuePaid._sum.totalAmount) != null ? _a : 0,
+      totalRevenueCompleted: (_b = totalRevenueCompleted._sum.totalAmount) != null ? _b : 0,
+      totalDeposit: (_c = totalDeposit._sum.deposit) != null ? _c : 0,
+      totalTenants,
+      totalOwners,
+      pendingBookings,
+      confirmedBookings,
+      activeBookings,
+      completedBookings,
+      cancelledBookings
+    };
+  }
+}
+
+class ResponseHandler {
+  static sendSuccess(event, message, data, statusCode = 200, meta) {
+    setResponseStatus(event, statusCode);
+    return {
+      success: true,
+      statusCode,
+      message,
+      ...data && Object.keys(data).length > 0 ? { data } : {},
+      ...meta && Object.keys(meta).length > 0 ? { meta } : {}
+    };
+  }
+  static sendCreated(event, message, data, statusCode = 201, meta) {
+    setResponseStatus(event, statusCode);
+    return {
+      success: true,
+      statusCode,
+      message,
+      data: { ...data },
+      meta
+    };
+  }
+}
+
+class Pagination {
+  static getPagination(query) {
+    const page = parseInt(query.page) || 1;
+    const limit = parseInt(query.limit) || 10;
+    const offset = (page - 1) * limit;
+    return { page, limit, offset };
+  }
+  static getMeta(total, page, limit) {
+    return {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit)
+    };
+  }
+}
+
+const index_get$g = defineEventHandler(async (event) => {
+  var _a, _b;
+  try {
+    const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
+    const query = getQuery$1(event);
+    const { page, limit } = Pagination.getPagination(query);
+    const { data, meta } = await Booking.getAllBookings(userId, page, limit);
+    return ResponseHandler.sendSuccess(event, "Data pesanan ditemukan!", data, 200, meta);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_get$h = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_get$g
+});
+
+const stats_get = defineEventHandler(async (event) => {
+  try {
+    const stats = await Booking.getBookingStats();
+    return ResponseHandler.sendSuccess(event, "Data statistik booking berhasil diambil!", stats, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const stats_get$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: stats_get
+});
+
+const PropertyStatus$5 = $Enums.PropertyStatus;
 class Property {
   // GET: Ambil properti milik owner
   static async getMyProperties(ownerId, page, pageSize, filters = {}) {
@@ -2247,7 +2544,7 @@ class Property {
         price: Number(data.price),
         totalRooms: Number((_a = data.totalRooms) != null ? _a : 1),
         availableRooms: Number((_c = (_b = data.availableRooms) != null ? _b : data.totalRooms) != null ? _c : 1),
-        status: (_d = data.status) != null ? _d : "ACTIVE",
+        status: (_d = data.status) != null ? _d : "INACTIVE",
         images: (_e = data.images) != null ? _e : null
         // 🔹 Pastikan bisa null jika tidak ada gambar
       }
@@ -2269,6 +2566,24 @@ class Property {
         status: (_a = data.status) != null ? _a : "ACTIVE",
         images: data.images
       }
+    });
+  }
+  static async patchPropertyStatus(id, status) {
+    const validStatuses = ["ACTIVE", "INACTIVE", "PENDING"];
+    if (!validStatuses.includes(status)) {
+      throw { statusCode: 400, statusMessage: "Status properti tidak valid." };
+    }
+    const statusEnum = PropertyStatus$5[status];
+    if (!statusEnum) {
+      throw { statusCode: 400, statusMessage: "Konversi status ke enum gagal." };
+    }
+    const property = await prisma.property.findUnique({ where: { id } });
+    if (!property) {
+      throw { statusCode: 404, statusMessage: "Properti tidak ditemukan." };
+    }
+    return prisma.property.update({
+      where: { id },
+      data: { status: statusEnum }
     });
   }
   // DELETE: Hapus properti
@@ -2324,7 +2639,6 @@ class Property {
     const searchQuery = query == null ? void 0 : query.trim().toLowerCase();
     const skip = (page - 1) * pageSize;
     const take = pageSize;
-    console.log("\u{1F4CC} Query yang digunakan untuk pencarian:", searchQuery);
     const properties = await prisma.property.findMany({
       where: {
         OR: [
@@ -2347,7 +2661,6 @@ class Property {
         ]
       }
     });
-    console.log("\u{1F4CC} Properti yang ditemukan:", properties);
     return {
       success: true,
       message: "Properties searched successfully",
@@ -2387,47 +2700,65 @@ class Property {
   }
 }
 
-class ResponseHandler {
-  static sendSuccess(event, message, data, statusCode = 200, meta) {
-    setResponseStatus(event, statusCode);
-    return {
-      success: true,
-      statusCode,
-      message,
-      ...data && Object.keys(data).length > 0 ? { data: { ...data } } : {},
-      meta
-    };
+const PropertyStatus$4 = $Enums.PropertyStatus;
+const approve_patch = defineEventHandler(async (event) => {
+  var _a, _b, _c;
+  const user = (_a = event.context.auth) == null ? void 0 : _a.user;
+  if (!user) {
+    return ErrorHandler.handleError(event, { statusCode: 401, statusMessage: "User tidak terautentikasi." });
   }
-  static sendCreated(event, message, data, statusCode = 201, meta) {
-    setResponseStatus(event, statusCode);
-    return {
-      success: true,
-      statusCode,
-      message,
-      data: { ...data },
-      meta
-    };
+  const id = parseInt((_b = event.context.params) == null ? void 0 : _b.id);
+  if (isNaN(id)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Properti ID tidak valid." });
   }
-}
+  const existingProperty = await Property.getPropertyById(id);
+  if (!existingProperty) {
+    return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Properti tidak ditemukan." });
+  }
+  const body = await readBody(event);
+  let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "ACTIVE";
+  if (!Object.values(PropertyStatus$4).includes(rawStatus)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
+  }
+  const updatedProperty = await Property.updatePropertyStatus(id, rawStatus);
+  return { code: 200, message: "Status properti berhasil diperbarui!", data: updatedProperty };
+});
 
-class Pagination {
-  static getPagination(query) {
-    const page = parseInt(query.page) || 1;
-    const limit = parseInt(query.limit) || 10;
-    const offset = (page - 1) * limit;
-    return { page, limit, offset };
-  }
-  static getMeta(total, page, limit) {
-    return {
-      page,
-      limit,
-      total,
-      totalPages: Math.ceil(total / limit)
-    };
-  }
-}
+const approve_patch$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: approve_patch
+});
 
-const index_get$6 = defineEventHandler(async (event) => {
+const PropertyStatus$3 = $Enums.PropertyStatus;
+const reject_patch$2 = defineEventHandler(async (event) => {
+  var _a, _b, _c;
+  const user = (_a = event.context.auth) == null ? void 0 : _a.user;
+  if (!user) {
+    return ErrorHandler.handleError(event, { statusCode: 401, statusMessage: "User tidak terautentikasi." });
+  }
+  const id = parseInt((_b = event.context.params) == null ? void 0 : _b.id);
+  if (isNaN(id)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Properti ID tidak valid." });
+  }
+  const existingProperty = await Property.getPropertyById(id);
+  if (!existingProperty) {
+    return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Properti tidak ditemukan." });
+  }
+  const body = await readBody(event);
+  let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "DELETED";
+  if (!Object.values(PropertyStatus$3).includes(rawStatus)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
+  }
+  const updatedProperty = await Property.updatePropertyStatus(id, rawStatus);
+  return { code: 200, message: "Status properti berhasil diperbarui!", data: updatedProperty };
+});
+
+const reject_patch$3 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: reject_patch$2
+});
+
+const index_get$e = defineEventHandler(async (event) => {
   try {
     const query = getQuery$1(event);
     const { page, limit } = Pagination.getPagination(query);
@@ -2438,9 +2769,9 @@ const index_get$6 = defineEventHandler(async (event) => {
   }
 });
 
-const index_get$7 = /*#__PURE__*/Object.freeze({
+const index_get$f = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: index_get$6
+  default: index_get$e
 });
 
 class RefreshToken {
@@ -2668,126 +2999,123 @@ const register_post$1 = /*#__PURE__*/Object.freeze({
   default: register_post
 });
 
-const BookingStatus = $Enums.BookingStatus;
-class Booking {
-  // GET: Ambil booking berdasarkan ID
-  static async getBookingById(id) {
-    return prisma.booking.findUnique({
-      where: { id },
-      include: {
-        tenant: { select: { id: true, email: true } },
-        owner: { select: { id: true, email: true } },
-        property: true,
-        bookingLogs: true
-      }
-    });
-  }
-  // GET: Ambil semua booking milik tenant
-  static async getTenantBookings(tenantId, page, pageSize) {
-    const skip = (page - 1) * pageSize;
-    const totalBookings = await prisma.booking.count({ where: { tenantId } });
-    const bookings = await prisma.booking.findMany({
-      where: { tenantId },
-      skip,
-      take: pageSize,
-      include: {
-        property: true,
-        owner: { select: { id: true, email: true } }
-      }
-    });
-    const totalPages = Math.ceil(totalBookings / pageSize);
-    return {
-      success: true,
-      message: "Tenant's bookings retrieved successfully",
-      data: bookings,
-      meta: {
-        page,
-        limit: pageSize,
-        total: totalBookings,
-        totalPages
-      }
-    };
-  }
-  // GET: Ambil semua booking milik owner
-  static async getOwnerBookings(ownerId, page, pageSize) {
-    const skip = (page - 1) * pageSize;
-    const totalBookings = await prisma.booking.count({ where: { ownerId } });
-    const bookings = await prisma.booking.findMany({
-      where: { ownerId },
-      skip,
-      take: pageSize,
-      include: {
-        property: true,
-        tenant: { select: { id: true, email: true } }
-      }
-    });
-    const totalPages = Math.ceil(totalBookings / pageSize);
-    return {
-      success: true,
-      message: "Owner's bookings retrieved successfully",
-      data: bookings,
-      meta: {
-        page,
-        limit: pageSize,
-        total: totalBookings,
-        totalPages
-      }
-    };
-  }
-  // POST: Buat booking baru dan kurangi ketersediaan kamar
-  static async createBooking(data, userId) {
-    var _a, _b;
-    const property = await prisma.property.findUnique({ where: { id: data.propertyId } });
-    if (!property || property.availableRooms <= 0 || property.status !== "ACTIVE") {
-      throw { statusCode: 400, statusMessage: "Properti tidak tersedia untuk booking." };
-    }
-    const monthlyPrice = property.price;
-    const deposit = (_a = data.deposit) != null ? _a : 0;
-    const totalAmount = data.duration * monthlyPrice + deposit;
-    const booking = await prisma.booking.create({
+class BookingLog {
+  // Simpan log perubahan status booking
+  static async createLog(bookingId, status, description) {
+    return prisma.bookingLog.create({
       data: {
-        tenantId: userId,
-        ownerId: property.ownerId,
-        propertyId: data.propertyId,
-        checkInDate: new Date(data.checkInDate),
-        duration: data.duration,
-        monthlyPrice,
-        deposit,
-        totalAmount,
-        status: BookingStatus.PENDING,
-        notes: (_b = data.notes) != null ? _b : null
-      }
-    });
-    await prisma.property.update({
-      where: { id: data.propertyId },
-      data: { availableRooms: property.availableRooms - 1 }
-    });
-    return booking;
-  }
-  static async updateBooking(id, tenantId, data) {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
-    const booking = await prisma.booking.findUnique({ where: { id } });
-    const property = await prisma.property.findUnique({ where: { id: booking == null ? void 0 : booking.propertyId } });
-    return prisma.booking.update({
-      where: { id },
-      data: {
-        checkInDate: data.checkInDate ? new Date(data.checkInDate) : void 0,
-        duration: (_a = data.duration) != null ? _a : void 0,
-        monthlyPrice: (_b = property == null ? void 0 : property.price) != null ? _b : void 0,
-        deposit: (_c = data.deposit) != null ? _c : void 0,
-        totalAmount: ((_e = (_d = data.duration) != null ? _d : booking == null ? void 0 : booking.duration) != null ? _e : 0) * ((_f = property == null ? void 0 : property.price) != null ? _f : 0) + ((_g = data.deposit) != null ? _g : 0),
-        notes: (_h = data.notes) != null ? _h : void 0
+        bookingId,
+        status,
+        description
       }
     });
   }
-  static async deleteBooking(id) {
-    return prisma.booking.delete({
-      where: { id }
+  // Ambil semua log berdasarkan `bookingId`
+  static async getLogsByBookingId(bookingId) {
+    return prisma.bookingLog.findMany({
+      where: { bookingId },
+      orderBy: { createdAt: "desc" }
     });
   }
 }
 
-const _id__delete$4 = defineEventHandler(async (event) => {
+class BookingLogger {
+  static async logStatusChange(bookingId, newStatus, message) {
+    await BookingLog.createLog(bookingId, newStatus, message);
+  }
+}
+
+const BookingStatus$3 = $Enums.BookingStatus;
+const activate_patch = defineEventHandler(async (event) => {
+  var _a, _b, _c;
+  const user = (_a = event.context.auth) == null ? void 0 : _a.user;
+  if (!user) {
+    return ErrorHandler.handleError(event, { statusCode: 401, statusMessage: "User tidak terautentikasi." });
+  }
+  const id = parseInt((_b = event.context.params) == null ? void 0 : _b.id);
+  if (isNaN(id)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Pesanan ID tidak valid." });
+  }
+  const existingBooking = await Booking.getBookingById(id);
+  if (!existingBooking) {
+    return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Pesanan tidak ditemukan." });
+  }
+  const body = await readBody(event);
+  let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "ACTIVE";
+  if (!Object.values(BookingStatus$3).includes(rawStatus)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
+  }
+  await BookingLogger.logStatusChange(id, rawStatus, `Status booking berubah menjadi ${rawStatus}`);
+  const updatedBooking = await Booking.updateBookingStatus(id, rawStatus);
+  return { code: 200, message: "Status properti berhasil diperbarui!", data: updatedBooking };
+});
+
+const activate_patch$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: activate_patch
+});
+
+const BookingStatus$2 = $Enums.BookingStatus;
+const complete_patch = defineEventHandler(async (event) => {
+  var _a, _b, _c;
+  const user = (_a = event.context.auth) == null ? void 0 : _a.user;
+  if (!user) {
+    return ErrorHandler.handleError(event, { statusCode: 401, statusMessage: "User tidak terautentikasi." });
+  }
+  const id = parseInt((_b = event.context.params) == null ? void 0 : _b.id);
+  if (isNaN(id)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Pesanan ID tidak valid." });
+  }
+  const existingBooking = await Booking.getBookingById(id);
+  if (!existingBooking) {
+    return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Pesanan tidak ditemukan." });
+  }
+  const body = await readBody(event);
+  let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "COMPLETED";
+  if (!Object.values(BookingStatus$2).includes(rawStatus)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
+  }
+  await BookingLogger.logStatusChange(id, rawStatus, `Status booking berubah menjadi ${rawStatus}`);
+  const updatedBooking = await Booking.updateBookingStatus(id, rawStatus);
+  return { code: 200, message: "Status properti berhasil diperbarui!", data: updatedBooking };
+});
+
+const complete_patch$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: complete_patch
+});
+
+const BookingStatus$1 = $Enums.BookingStatus;
+const confirm_patch = defineEventHandler(async (event) => {
+  var _a, _b, _c;
+  const user = (_a = event.context.auth) == null ? void 0 : _a.user;
+  if (!user) {
+    return ErrorHandler.handleError(event, { statusCode: 401, statusMessage: "User tidak terautentikasi." });
+  }
+  const id = parseInt((_b = event.context.params) == null ? void 0 : _b.id);
+  if (isNaN(id)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Pesanan ID tidak valid." });
+  }
+  const existingBooking = await Booking.getBookingById(id);
+  if (!existingBooking) {
+    return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Pesanan tidak ditemukan." });
+  }
+  const body = await readBody(event);
+  let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "CONFIRMED";
+  if (!Object.values(BookingStatus$1).includes(rawStatus)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
+  }
+  await BookingLogger.logStatusChange(id, rawStatus, `Status booking berubah menjadi ${rawStatus}`);
+  const updatedBooking = await Booking.updateBookingStatus(id, rawStatus);
+  return { code: 200, message: "Status properti berhasil diperbarui!", data: updatedBooking };
+});
+
+const confirm_patch$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: confirm_patch
+});
+
+const index_delete$8 = defineEventHandler(async (event) => {
   var _a;
   try {
     const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
@@ -2798,12 +3126,12 @@ const _id__delete$4 = defineEventHandler(async (event) => {
   }
 });
 
-const _id__delete$5 = /*#__PURE__*/Object.freeze({
+const index_delete$9 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: _id__delete$4
+  default: index_delete$8
 });
 
-const _id__get$4 = defineEventHandler(async (event) => {
+const index_get$c = defineEventHandler(async (event) => {
   var _a;
   try {
     const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
@@ -2814,12 +3142,12 @@ const _id__get$4 = defineEventHandler(async (event) => {
   }
 });
 
-const _id__get$5 = /*#__PURE__*/Object.freeze({
+const index_get$d = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: _id__get$4
+  default: index_get$c
 });
 
-const _id__put$4 = defineEventHandler(async (event) => {
+const index_put$8 = defineEventHandler(async (event) => {
   var _a, _b, _c;
   try {
     const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
@@ -2832,9 +3160,75 @@ const _id__put$4 = defineEventHandler(async (event) => {
   }
 });
 
-const _id__put$5 = /*#__PURE__*/Object.freeze({
+const index_put$9 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: _id__put$4
+  default: index_put$8
+});
+
+const index_get$a = defineEventHandler(async (event) => {
+  var _a;
+  try {
+    const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
+    const bookingById = await BookingLog.getLogsByBookingId(id);
+    return ResponseHandler.sendSuccess(event, "Data riwayat pemesanan ditemukan!", bookingById, 200);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_get$b = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_get$a
+});
+
+const index_post$6 = defineEventHandler(async (event) => {
+  var _a;
+  try {
+    const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
+    const { status, description } = await readBody(event);
+    if (!status || typeof status !== "string") {
+      return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status booking tidak valid." });
+    }
+    const bookingLog = await BookingLog.createLog(id, status, description);
+    return ResponseHandler.sendSuccess(event, "Riwayar pesanan berhasil dibuat!", bookingLog, 201);
+  } catch (error) {
+    return ErrorHandler.handleError(event, error);
+  }
+});
+
+const index_post$7 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: index_post$6
+});
+
+const BookingStatus = $Enums.BookingStatus;
+const reject_patch = defineEventHandler(async (event) => {
+  var _a, _b, _c;
+  const user = (_a = event.context.auth) == null ? void 0 : _a.user;
+  if (!user) {
+    return ErrorHandler.handleError(event, { statusCode: 401, statusMessage: "User tidak terautentikasi." });
+  }
+  const id = parseInt((_b = event.context.params) == null ? void 0 : _b.id);
+  if (isNaN(id)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Pesanan ID tidak valid." });
+  }
+  const existingBooking = await Booking.getBookingById(id);
+  if (!existingBooking) {
+    return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Pesanan tidak ditemukan." });
+  }
+  const body = await readBody(event);
+  let rawStatus = ((_c = body == null ? void 0 : body.status) == null ? void 0 : _c.trim().toUpperCase()) || "CANCELLED";
+  if (!Object.values(BookingStatus).includes(rawStatus)) {
+    return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
+  }
+  await BookingLogger.logStatusChange(id, rawStatus, `Status booking berubah menjadi ${rawStatus}`);
+  const updatedBooking = await Booking.updateBookingStatus(id, rawStatus);
+  return { code: 200, message: "Status properti berhasil diperbarui!", data: updatedBooking };
+});
+
+const reject_patch$1 = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  default: reject_patch
 });
 
 const index_post$4 = defineEventHandler(async (event) => {
@@ -2861,7 +3255,7 @@ const myBookings_get = defineEventHandler(async (event) => {
     const query = getQuery$1(event);
     const { page, limit } = Pagination.getPagination(query);
     const { data, meta } = await Booking.getTenantBookings(userId, page, limit);
-    return ResponseHandler.sendSuccess(event, "Data properti ditemukan!", data, 200, meta);
+    return ResponseHandler.sendSuccess(event, "Data pesanan ditemukan!", data, 200, meta);
   } catch (error) {
     return ErrorHandler.handleError(event, error);
   }
@@ -2908,7 +3302,7 @@ __publicField(Profile, "deleteProfile", async (userId) => {
   });
 });
 
-const index_delete$2 = defineEventHandler(async (event) => {
+const index_delete$6 = defineEventHandler(async (event) => {
   var _a, _b;
   try {
     const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
@@ -2919,12 +3313,12 @@ const index_delete$2 = defineEventHandler(async (event) => {
   }
 });
 
-const index_delete$3 = /*#__PURE__*/Object.freeze({
+const index_delete$7 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: index_delete$2
+  default: index_delete$6
 });
 
-const index_get$4 = defineEventHandler(async (event) => {
+const index_get$8 = defineEventHandler(async (event) => {
   var _a, _b;
   try {
     const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
@@ -2935,9 +3329,9 @@ const index_get$4 = defineEventHandler(async (event) => {
   }
 });
 
-const index_get$5 = /*#__PURE__*/Object.freeze({
+const index_get$9 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: index_get$4
+  default: index_get$8
 });
 
 const index_post$2 = defineEventHandler(async (event) => {
@@ -2957,7 +3351,7 @@ const index_post$3 = /*#__PURE__*/Object.freeze({
   default: index_post$2
 });
 
-const index_put$2 = defineEventHandler(async (event) => {
+const index_put$6 = defineEventHandler(async (event) => {
   var _a, _b;
   try {
     const userId = (_b = (_a = event.context.auth) == null ? void 0 : _a.user) == null ? void 0 : _b.id;
@@ -2969,12 +3363,12 @@ const index_put$2 = defineEventHandler(async (event) => {
   }
 });
 
-const index_put$3 = /*#__PURE__*/Object.freeze({
+const index_put$7 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: index_put$2
+  default: index_put$6
 });
 
-const _id__delete$2 = defineEventHandler(async (event) => {
+const index_delete$4 = defineEventHandler(async (event) => {
   var _a;
   try {
     const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
@@ -2985,12 +3379,12 @@ const _id__delete$2 = defineEventHandler(async (event) => {
   }
 });
 
-const _id__delete$3 = /*#__PURE__*/Object.freeze({
+const index_delete$5 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: _id__delete$2
+  default: index_delete$4
 });
 
-const _id__get$2 = defineEventHandler(async (event) => {
+const index_get$6 = defineEventHandler(async (event) => {
   var _a;
   try {
     const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
@@ -3001,9 +3395,9 @@ const _id__get$2 = defineEventHandler(async (event) => {
   }
 });
 
-const _id__get$3 = /*#__PURE__*/Object.freeze({
+const index_get$7 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: _id__get$2
+  default: index_get$6
 });
 
 var _a, _b, _c;
@@ -3041,7 +3435,7 @@ const uploadFile = async ({ fileBuffer, filename, mimeType }) => {
 };
 
 const PropertyStatus$2 = $Enums.PropertyStatus;
-const _id__put$2 = defineEventHandler(async (event) => {
+const index_put$4 = defineEventHandler(async (event) => {
   var _a, _b;
   try {
     const user = (_a = event.context.auth) == null ? void 0 : _a.user;
@@ -3125,9 +3519,9 @@ const _id__put$2 = defineEventHandler(async (event) => {
   }
 });
 
-const _id__put$3 = /*#__PURE__*/Object.freeze({
+const index_put$5 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: _id__put$2
+  default: index_put$4
 });
 
 const PropertyStatus$1 = $Enums.PropertyStatus;
@@ -3145,15 +3539,12 @@ const status_patch = defineEventHandler(async (event) => {
   if (!existingProperty) {
     return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Properti tidak ditemukan." });
   }
-  if (existingProperty.ownerId !== user.id) {
-    return ErrorHandler.handleError(event, { statusCode: 403, statusMessage: "Tidak memiliki izin untuk mengubah status properti ini." });
-  }
   const body = await readBody(event);
   const rawStatus = (_c = body.status) == null ? void 0 : _c.trim().toUpperCase();
   if (!rawStatus || !Object.values(PropertyStatus$1).includes(rawStatus)) {
     return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });
   }
-  const updatedProperty = await Property.updateProperty(id, { status: rawStatus });
+  const updatedProperty = await Property.updatePropertyStatus(id, rawStatus);
   return { code: 200, message: "Status properti berhasil diperbarui!", data: updatedProperty };
 });
 
@@ -3179,7 +3570,7 @@ const cities_get$1 = /*#__PURE__*/Object.freeze({
   default: cities_get
 });
 
-const index_get$2 = defineEventHandler(async (event) => {
+const index_get$4 = defineEventHandler(async (event) => {
   try {
     const query = getQuery$1(event);
     const { page, limit } = Pagination.getPagination(query);
@@ -3190,9 +3581,9 @@ const index_get$2 = defineEventHandler(async (event) => {
   }
 });
 
-const index_get$3 = /*#__PURE__*/Object.freeze({
+const index_get$5 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: index_get$2
+  default: index_get$4
 });
 
 const PropertyStatus = $Enums.PropertyStatus;
@@ -3216,7 +3607,7 @@ const index_post = defineEventHandler(async (event) => {
       price: 0,
       totalRooms: 1,
       availableRooms: 1,
-      status: PropertyStatus.ACTIVE,
+      status: PropertyStatus.INACTIVE,
       images: ""
     };
     let uploadResult;
@@ -3264,7 +3655,7 @@ const index_post = defineEventHandler(async (event) => {
             break;
           case "status":
             const rawStatus = data.toString("utf-8").trim().toUpperCase();
-            payload.status = rawStatus === "ACTIVE" ? PropertyStatus.ACTIVE : PropertyStatus.INACTIVE;
+            payload.status = rawStatus === "INACTIVE" ? PropertyStatus.INACTIVE : PropertyStatus.ACTIVE;
             break;
         }
       }
@@ -3310,7 +3701,6 @@ const search_get = defineEventHandler(async (event) => {
   try {
     const query = getQuery$1(event);
     const { page, limit } = Pagination.getPagination(query);
-    console.log("\u{1F4CC} Query Params:", query);
     const searchQuery = typeof query.q === "string" ? query.q.trim() : "";
     if (!searchQuery || searchQuery.length < 1) {
       throw { statusCode: 400, statusMessage: "Query pencarian tidak boleh kosong." };
@@ -3318,7 +3708,6 @@ const search_get = defineEventHandler(async (event) => {
     const { data, meta } = await Property.searchProperties(searchQuery, page, limit);
     return ResponseHandler.sendSuccess(event, "Data properti ditemukan!", data, 200, meta);
   } catch (error) {
-    console.error("\u274C Error Caught:", error);
     return ErrorHandler.handleError(event, error);
   }
 });
@@ -3328,7 +3717,7 @@ const search_get$1 = /*#__PURE__*/Object.freeze({
   default: search_get
 });
 
-const _id__delete = defineEventHandler(async (event) => {
+const index_delete$2 = defineEventHandler(async (event) => {
   var _a;
   try {
     const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
@@ -3339,12 +3728,12 @@ const _id__delete = defineEventHandler(async (event) => {
   }
 });
 
-const _id__delete$1 = /*#__PURE__*/Object.freeze({
+const index_delete$3 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: _id__delete
+  default: index_delete$2
 });
 
-const _id__get = defineEventHandler(async (event) => {
+const index_get$2 = defineEventHandler(async (event) => {
   var _a;
   try {
     const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
@@ -3355,12 +3744,12 @@ const _id__get = defineEventHandler(async (event) => {
   }
 });
 
-const _id__get$1 = /*#__PURE__*/Object.freeze({
+const index_get$3 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: _id__get
+  default: index_get$2
 });
 
-const _id__put = defineEventHandler(async (event) => {
+const index_put$2 = defineEventHandler(async (event) => {
   var _a;
   try {
     const id = parseInt((_a = event.context.params) == null ? void 0 : _a.id);
@@ -3372,9 +3761,9 @@ const _id__put = defineEventHandler(async (event) => {
   }
 });
 
-const _id__put$1 = /*#__PURE__*/Object.freeze({
+const index_put$3 = /*#__PURE__*/Object.freeze({
   __proto__: null,
-  default: _id__put
+  default: index_put$2
 });
 
 const index = defineEventHandler(async (event) => {

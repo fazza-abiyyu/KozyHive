@@ -1,4 +1,5 @@
 declare global {
+  const BookingLogger: typeof import('../../server/utils/BookingLoggers')['BookingLogger']
   const ErrorHandler: typeof import('../../server/utils/ErrorHandler')['ErrorHandler']
   const Pagination: typeof import('../../server/utils/Pagination')['Pagination']
   const ResponseHandler: typeof import('../../server/utils/ResponseHandler')['ResponseHandler']
@@ -141,6 +142,9 @@ declare global {
 // for type re-export
 declare global {
   // @ts-ignore
+  export type { BookingLogger } from '../../server/utils/BookingLoggers'
+  import('../../server/utils/BookingLoggers')
+  // @ts-ignore
   export type { ErrorHandler } from '../../server/utils/ErrorHandler'
   import('../../server/utils/ErrorHandler')
   // @ts-ignore
@@ -164,6 +168,7 @@ export { defineNitroErrorHandler } from 'nitropack/runtime/internal/error/utils'
 export { appendCorsHeaders, appendCorsPreflightHeaders, appendHeader, appendHeaders, appendResponseHeader, appendResponseHeaders, assertMethod, callNodeListener, clearResponseHeaders, clearSession, createApp, createAppEventHandler, createError, createEvent, createEventStream, createRouter, defaultContentType, defineEventHandler, defineLazyEventHandler, defineNodeListener, defineNodeMiddleware, defineRequestMiddleware, defineResponseMiddleware, defineWebSocket, defineWebSocketHandler, deleteCookie, dynamicEventHandler, eventHandler, fetchWithEvent, fromNodeMiddleware, fromPlainHandler, fromWebHandler, getCookie, getHeader, getHeaders, getMethod, getProxyRequestHeaders, getQuery, getRequestFingerprint, getRequestHeader, getRequestHeaders, getRequestHost, getRequestIP, getRequestPath, getRequestProtocol, getRequestURL, getRequestWebStream, getResponseHeader, getResponseHeaders, getResponseStatus, getResponseStatusText, getRouterParam, getRouterParams, getSession, getValidatedQuery, getValidatedRouterParams, handleCacheHeaders, handleCors, isCorsOriginAllowed, isError, isEvent, isEventHandler, isMethod, isPreflightRequest, isStream, isWebResponse, lazyEventHandler, parseCookies, promisifyNodeListener, proxyRequest, readBody, readFormData, readMultipartFormData, readRawBody, readValidatedBody, removeResponseHeader, sanitizeStatusCode, sanitizeStatusMessage, sealSession, send, sendError, sendIterable, sendNoContent, sendProxy, sendRedirect, sendStream, sendWebResponse, serveStatic, setCookie, setHeader, setHeaders, setResponseHeader, setResponseHeaders, setResponseStatus, splitCookiesString, toEventHandler, toNodeListener, toPlainHandler, toWebHandler, toWebRequest, unsealSession, updateSession, useBase, useSession, writeEarlyHints } from 'h3';
 export { buildAssetsURL as __buildAssetsURL, publicAssetsURL as __publicAssetsURL } from 'E:/Projek/kozy-hive/node_modules/nuxt/dist/core/runtime/nitro/utils/paths';
 export { defineAppConfig } from 'E:/Projek/kozy-hive/node_modules/nuxt/dist/core/runtime/nitro/utils/config';
+export { BookingLogger } from 'E:/Projek/kozy-hive/server/utils/BookingLoggers';
 export { ErrorHandler } from 'E:/Projek/kozy-hive/server/utils/ErrorHandler';
 export { Pagination } from 'E:/Projek/kozy-hive/server/utils/Pagination';
 export { ResponseHandler } from 'E:/Projek/kozy-hive/server/utils/ResponseHandler';

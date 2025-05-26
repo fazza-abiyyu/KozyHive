@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
             { path: "/api/users", roles: ["ADMIN"] },
             { path: "/api/users/:id", roles: ["ADMIN"] },
             // { path: "/api/properties/*", roles: ["OWNER"] },
-            { path: "/api/bookings/*", roles: ["TENANT"] },
+            // { path: "/api/bookings/*", roles: ["TENANT"] },
         ];
 
         // Cek apakah URL cocok dengan salah satu endpoint yang butuh validasi role

@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
         const query = getQuery(event);
         const { page, limit } = Pagination.getPagination(query);
 
-        const { data, meta } = await Booking.getTenantBookings(userId, page, limit);
+        const { data, meta } = await Booking.getAllBookings(userId, page, limit);
 
         return ResponseHandler.sendSuccess(event, "Data pesanan ditemukan!", data, 200, meta);
 

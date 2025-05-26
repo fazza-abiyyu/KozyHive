@@ -12,7 +12,7 @@ city: Bali
 price: 5000000
 totalRooms: 3
 availableRooms: 2
-status: ACTIVE
+images: file.jpg
 ]
 
 Response 201
@@ -43,32 +43,109 @@ response 200
     "success": true,
     "statusCode": 200,
     "message": "Data properti ditemukan!",
-    "data": {
-        "0": {
+    "data": [
+        {
             "id": 1,
             "ownerId": 1,
-            "name": " Villa Sunset",
-            "description": " Villa mewah dengan pemandangan laut.",
-            "address": " Jl. Pantai Indah No. 12, Bali",
-            "city": " Bali",
+            "name": "Villa Sunset 1",
+            "description": "Villa mewah dengan pemandangan laut.",
+            "address": "Jl. Pantai Indah No. 12, Bali",
+            "city": "Bali",
             "price": 5000000,
             "totalRooms": 3,
             "availableRooms": 2,
             "status": "ACTIVE",
-            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748153398/1.1.jpg_1748153494269.jpg",
-            "createdAt": "2025-05-25T06:11:36.870Z",
-            "updatedAt": "2025-05-25T06:11:36.870Z",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179598/1.1.jpg_1748179694553.jpg",
+            "createdAt": "2025-05-25T13:28:17.110Z",
+            "updatedAt": "2025-05-25T13:32:16.942Z",
+            "owner": {
+                "id": 1,
+                "email": "fazaabiyyu15@gmail.com"
+            },
+            "bookings": []
+        },
+        {
+            "id": 2,
+            "ownerId": 1,
+            "name": "Villa Sunset 2",
+            "description": "Villa mewah dengan pemandangan laut.",
+            "address": "Jl. Pantai Indah No. 12, Bali",
+            "city": "Bali",
+            "price": 5000000,
+            "totalRooms": 4,
+            "availableRooms": 2,
+            "status": "DELETED",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179632/1.1.jpg_1748179728522.jpg",
+            "createdAt": "2025-05-25T13:28:50.925Z",
+            "updatedAt": "2025-05-25T23:49:02.953Z",
+            "owner": {
+                "id": 1,
+                "email": "fazaabiyyu15@gmail.com"
+            },
+            "bookings": []
+        },
+        {
+            "id": 3,
+            "ownerId": 1,
+            "name": "Villa Sunset 3",
+            "description": "Villa mewah dengan pemandangan laut.",
+            "address": "Jl. Pantai Indah No. 12, Bali",
+            "city": "Bali",
+            "price": 5000000,
+            "totalRooms": 3,
+            "availableRooms": 1,
+            "status": "DELETED",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179665/1.1.jpg_1748179761630.jpg",
+            "createdAt": "2025-05-25T13:29:24.661Z",
+            "updatedAt": "2025-05-25T23:24:59.739Z",
+            "owner": {
+                "id": 1,
+                "email": "fazaabiyyu15@gmail.com"
+            },
+            "bookings": [
+                {
+                    "id": 1,
+                    "tenantId": 1,
+                    "ownerId": 1,
+                    "propertyId": 3,
+                    "checkInDate": "2025-06-01T14:00:00.000Z",
+                    "duration": 6,
+                    "monthlyPrice": 5000000,
+                    "deposit": 500000,
+                    "totalAmount": 30500000,
+                    "status": "ACTIVE",
+                    "notes": "Saya ingin memesan kamar dengan pemandangan terbaik.",
+                    "paymentLink": null,
+                    "createdAt": "2025-05-25T13:44:12.000Z",
+                    "updatedAt": "2025-05-26T00:10:59.002Z"
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "ownerId": 1,
+            "name": "Villa Sunset 4",
+            "description": "Villa mewah dengan pemandangan laut.",
+            "address": "Jl. Pantai Indah No. 12, Bali",
+            "city": "Bali",
+            "price": 5000000,
+            "totalRooms": 3,
+            "availableRooms": 2,
+            "status": "INACTIVE",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179717/1.1.jpg_1748179813873.jpg",
+            "createdAt": "2025-05-25T13:30:16.342Z",
+            "updatedAt": "2025-05-25T13:30:16.342Z",
             "owner": {
                 "id": 1,
                 "email": "fazaabiyyu15@gmail.com"
             },
             "bookings": []
         }
-    },
+    ],
     "meta": {
         "page": 1,
         "limit": 10,
-        "total": 1,
+        "total": 4,
         "totalPages": 1
     }
 }
@@ -151,8 +228,6 @@ response 200
     }
 }
 
-
-response 403
 response 403
 {
     "success": false,
@@ -199,89 +274,109 @@ GET http://localhost:3000/api/properties/cities?c=Bali&page=1&pagesize=1
     "success": true,
     "statusCode": 200,
     "message": "Data properti ditemukan!",
-    "data": {
-        "0": {
+    "data": [
+        {
             "id": 1,
             "ownerId": 1,
-            "name": " Villa Sunset",
-            "description": " Villa mewah dengan pemandangan laut.",
-            "address": " Jl. Pantai Indah No. 12, Bali",
-            "city": " Bali",
-            "price": 5000000,
-            "totalRooms": 3,
-            "availableRooms": 2,
-            "status": "INACTIVE",
-            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748153398/1.1.jpg_1748153494269.jpg",
-            "createdAt": "2025-05-25T06:11:36.870Z",
-            "updatedAt": "2025-05-25T06:51:24.927Z",
-            "owner": {
-                "id": 1,
-                "email": "fazaabiyyu15@gmail.com"
-            },
-            "bookings": []
-        },
-        "1": {
-            "id": 2,
-            "ownerId": 1,
-            "name": "Villa Sunset 222",
+            "name": "Villa Sunset 1",
             "description": "Villa mewah dengan pemandangan laut.",
             "address": "Jl. Pantai Indah No. 12, Bali",
             "city": "Bali",
             "price": 5000000,
             "totalRooms": 3,
             "availableRooms": 2,
-            "status": "INACTIVE",
-            "images": "",
-            "createdAt": "2025-05-25T06:17:01.154Z",
-            "updatedAt": "2025-05-25T06:30:51.106Z",
+            "status": "ACTIVE",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179598/1.1.jpg_1748179694553.jpg",
+            "createdAt": "2025-05-25T13:28:17.110Z",
+            "updatedAt": "2025-05-25T13:32:16.942Z",
             "owner": {
                 "id": 1,
                 "email": "fazaabiyyu15@gmail.com"
             },
             "bookings": []
         },
-        "2": {
+        {
+            "id": 2,
+            "ownerId": 1,
+            "name": "Villa Sunset 2",
+            "description": "Villa mewah dengan pemandangan laut.",
+            "address": "Jl. Pantai Indah No. 12, Bali",
+            "city": "Bali",
+            "price": 5000000,
+            "totalRooms": 4,
+            "availableRooms": 2,
+            "status": "DELETED",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179632/1.1.jpg_1748179728522.jpg",
+            "createdAt": "2025-05-25T13:28:50.925Z",
+            "updatedAt": "2025-05-25T23:49:02.953Z",
+            "owner": {
+                "id": 1,
+                "email": "fazaabiyyu15@gmail.com"
+            },
+            "bookings": []
+        },
+        {
             "id": 3,
             "ownerId": 1,
-            "name": "Villa Sunset",
+            "name": "Villa Sunset 3",
             "description": "Villa mewah dengan pemandangan laut.",
             "address": "Jl. Pantai Indah No. 12, Bali",
             "city": "Bali",
             "price": 5000000,
             "totalRooms": 3,
             "availableRooms": 1,
-            "status": "ACTIVE",
-            "images": "",
-            "createdAt": "2025-05-25T06:18:21.127Z",
-            "updatedAt": "2025-05-25T07:37:26.471Z",
+            "status": "DELETED",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179665/1.1.jpg_1748179761630.jpg",
+            "createdAt": "2025-05-25T13:29:24.661Z",
+            "updatedAt": "2025-05-25T23:24:59.739Z",
             "owner": {
                 "id": 1,
                 "email": "fazaabiyyu15@gmail.com"
             },
             "bookings": [
                 {
-                    "id": 3,
+                    "id": 1,
                     "tenantId": 1,
                     "ownerId": 1,
                     "propertyId": 3,
                     "checkInDate": "2025-06-01T14:00:00.000Z",
-                    "duration": 4,
+                    "duration": 6,
                     "monthlyPrice": 5000000,
                     "deposit": 500000,
-                    "totalAmount": 20500000,
-                    "status": "PENDING",
+                    "totalAmount": 30500000,
+                    "status": "ACTIVE",
                     "notes": "Saya ingin memesan kamar dengan pemandangan terbaik.",
                     "paymentLink": null,
-                    "createdAt": "2025-05-25T07:37:26.463Z",
-                    "updatedAt": "2025-05-25T08:30:58.495Z"
+                    "createdAt": "2025-05-25T13:44:12.000Z",
+                    "updatedAt": "2025-05-26T00:10:59.002Z"
                 }
             ]
+        },
+        {
+            "id": 4,
+            "ownerId": 1,
+            "name": "Villa Sunset 4",
+            "description": "Villa mewah dengan pemandangan laut.",
+            "address": "Jl. Pantai Indah No. 12, Bali",
+            "city": "Bali",
+            "price": 5000000,
+            "totalRooms": 3,
+            "availableRooms": 2,
+            "status": "INACTIVE",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179717/1.1.jpg_1748179813873.jpg",
+            "createdAt": "2025-05-25T13:30:16.342Z",
+            "updatedAt": "2025-05-25T13:30:16.342Z",
+            "owner": {
+                "id": 1,
+                "email": "fazaabiyyu15@gmail.com"
+            },
+            "bookings": []
         }
-    },
+    ],
     "meta": {
         "page": 1,
         "limit": 10,
-        "total": 3,
+        "total": 4,
         "totalPages": 1
     }
 }
@@ -294,89 +389,109 @@ response 200
     "success": true,
     "statusCode": 200,
     "message": "Data properti ditemukan!",
-    "data": {
-        "0": {
+    "data": [
+        {
             "id": 1,
             "ownerId": 1,
-            "name": " Villa Sunset",
-            "description": " Villa mewah dengan pemandangan laut.",
-            "address": " Jl. Pantai Indah No. 12, Bali",
-            "city": " Bali",
-            "price": 5000000,
-            "totalRooms": 3,
-            "availableRooms": 2,
-            "status": "INACTIVE",
-            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748153398/1.1.jpg_1748153494269.jpg",
-            "createdAt": "2025-05-25T06:11:36.870Z",
-            "updatedAt": "2025-05-25T06:51:24.927Z",
-            "owner": {
-                "id": 1,
-                "email": "fazaabiyyu15@gmail.com"
-            },
-            "bookings": []
-        },
-        "1": {
-            "id": 2,
-            "ownerId": 1,
-            "name": "Villa Sunset 222",
+            "name": "Villa Sunset 1",
             "description": "Villa mewah dengan pemandangan laut.",
             "address": "Jl. Pantai Indah No. 12, Bali",
             "city": "Bali",
             "price": 5000000,
             "totalRooms": 3,
             "availableRooms": 2,
-            "status": "INACTIVE",
-            "images": "",
-            "createdAt": "2025-05-25T06:17:01.154Z",
-            "updatedAt": "2025-05-25T06:30:51.106Z",
+            "status": "ACTIVE",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179598/1.1.jpg_1748179694553.jpg",
+            "createdAt": "2025-05-25T13:28:17.110Z",
+            "updatedAt": "2025-05-25T13:32:16.942Z",
             "owner": {
                 "id": 1,
                 "email": "fazaabiyyu15@gmail.com"
             },
             "bookings": []
         },
-        "2": {
+        {
+            "id": 2,
+            "ownerId": 1,
+            "name": "Villa Sunset 2",
+            "description": "Villa mewah dengan pemandangan laut.",
+            "address": "Jl. Pantai Indah No. 12, Bali",
+            "city": "Bali",
+            "price": 5000000,
+            "totalRooms": 4,
+            "availableRooms": 2,
+            "status": "DELETED",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179632/1.1.jpg_1748179728522.jpg",
+            "createdAt": "2025-05-25T13:28:50.925Z",
+            "updatedAt": "2025-05-25T23:49:02.953Z",
+            "owner": {
+                "id": 1,
+                "email": "fazaabiyyu15@gmail.com"
+            },
+            "bookings": []
+        },
+        {
             "id": 3,
             "ownerId": 1,
-            "name": "Villa Sunset",
+            "name": "Villa Sunset 3",
             "description": "Villa mewah dengan pemandangan laut.",
             "address": "Jl. Pantai Indah No. 12, Bali",
             "city": "Bali",
             "price": 5000000,
             "totalRooms": 3,
             "availableRooms": 1,
-            "status": "ACTIVE",
-            "images": "",
-            "createdAt": "2025-05-25T06:18:21.127Z",
-            "updatedAt": "2025-05-25T07:37:26.471Z",
+            "status": "DELETED",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179665/1.1.jpg_1748179761630.jpg",
+            "createdAt": "2025-05-25T13:29:24.661Z",
+            "updatedAt": "2025-05-25T23:24:59.739Z",
             "owner": {
                 "id": 1,
                 "email": "fazaabiyyu15@gmail.com"
             },
             "bookings": [
                 {
-                    "id": 3,
+                    "id": 1,
                     "tenantId": 1,
                     "ownerId": 1,
                     "propertyId": 3,
                     "checkInDate": "2025-06-01T14:00:00.000Z",
-                    "duration": 4,
+                    "duration": 6,
                     "monthlyPrice": 5000000,
                     "deposit": 500000,
-                    "totalAmount": 20500000,
-                    "status": "PENDING",
+                    "totalAmount": 30500000,
+                    "status": "ACTIVE",
                     "notes": "Saya ingin memesan kamar dengan pemandangan terbaik.",
                     "paymentLink": null,
-                    "createdAt": "2025-05-25T07:37:26.463Z",
-                    "updatedAt": "2025-05-25T08:30:58.495Z"
+                    "createdAt": "2025-05-25T13:44:12.000Z",
+                    "updatedAt": "2025-05-26T00:10:59.002Z"
                 }
             ]
+        },
+        {
+            "id": 4,
+            "ownerId": 1,
+            "name": "Villa Sunset 4",
+            "description": "Villa mewah dengan pemandangan laut.",
+            "address": "Jl. Pantai Indah No. 12, Bali",
+            "city": "Bali",
+            "price": 5000000,
+            "totalRooms": 3,
+            "availableRooms": 2,
+            "status": "INACTIVE",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179717/1.1.jpg_1748179813873.jpg",
+            "createdAt": "2025-05-25T13:30:16.342Z",
+            "updatedAt": "2025-05-25T13:30:16.342Z",
+            "owner": {
+                "id": 1,
+                "email": "fazaabiyyu15@gmail.com"
+            },
+            "bookings": []
         }
-    },
+    ],
     "meta": {
         "page": 1,
         "limit": 10,
-        "total": 3,
+        "total": 4,
         "totalPages": 1
     }
 }
@@ -411,89 +526,109 @@ response 200
     "success": true,
     "statusCode": 200,
     "message": "Data properti ditemukan!",
-    "data": {
-        "0": {
+    "data": [
+        {
             "id": 1,
             "ownerId": 1,
-            "name": " Villa Sunset",
-            "description": " Villa mewah dengan pemandangan laut.",
-            "address": " Jl. Pantai Indah No. 12, Bali",
-            "city": " Bali",
-            "price": 5000000,
-            "totalRooms": 3,
-            "availableRooms": 2,
-            "status": "INACTIVE",
-            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748153398/1.1.jpg_1748153494269.jpg",
-            "createdAt": "2025-05-25T06:11:36.870Z",
-            "updatedAt": "2025-05-25T06:51:24.927Z",
-            "owner": {
-                "id": 1,
-                "email": "fazaabiyyu15@gmail.com"
-            },
-            "bookings": []
-        },
-        "1": {
-            "id": 2,
-            "ownerId": 1,
-            "name": "Villa Sunset 222",
+            "name": "Villa Sunset 1",
             "description": "Villa mewah dengan pemandangan laut.",
             "address": "Jl. Pantai Indah No. 12, Bali",
             "city": "Bali",
             "price": 5000000,
             "totalRooms": 3,
             "availableRooms": 2,
-            "status": "INACTIVE",
-            "images": "",
-            "createdAt": "2025-05-25T06:17:01.154Z",
-            "updatedAt": "2025-05-25T06:30:51.106Z",
+            "status": "ACTIVE",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179598/1.1.jpg_1748179694553.jpg",
+            "createdAt": "2025-05-25T13:28:17.110Z",
+            "updatedAt": "2025-05-25T13:32:16.942Z",
             "owner": {
                 "id": 1,
                 "email": "fazaabiyyu15@gmail.com"
             },
             "bookings": []
         },
-        "2": {
+        {
+            "id": 2,
+            "ownerId": 1,
+            "name": "Villa Sunset 2",
+            "description": "Villa mewah dengan pemandangan laut.",
+            "address": "Jl. Pantai Indah No. 12, Bali",
+            "city": "Bali",
+            "price": 5000000,
+            "totalRooms": 4,
+            "availableRooms": 2,
+            "status": "DELETED",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179632/1.1.jpg_1748179728522.jpg",
+            "createdAt": "2025-05-25T13:28:50.925Z",
+            "updatedAt": "2025-05-25T23:49:02.953Z",
+            "owner": {
+                "id": 1,
+                "email": "fazaabiyyu15@gmail.com"
+            },
+            "bookings": []
+        },
+        {
             "id": 3,
             "ownerId": 1,
-            "name": "Villa Sunset",
+            "name": "Villa Sunset 3",
             "description": "Villa mewah dengan pemandangan laut.",
             "address": "Jl. Pantai Indah No. 12, Bali",
             "city": "Bali",
             "price": 5000000,
             "totalRooms": 3,
             "availableRooms": 1,
-            "status": "ACTIVE",
-            "images": "",
-            "createdAt": "2025-05-25T06:18:21.127Z",
-            "updatedAt": "2025-05-25T07:37:26.471Z",
+            "status": "DELETED",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179665/1.1.jpg_1748179761630.jpg",
+            "createdAt": "2025-05-25T13:29:24.661Z",
+            "updatedAt": "2025-05-25T23:24:59.739Z",
             "owner": {
                 "id": 1,
                 "email": "fazaabiyyu15@gmail.com"
             },
             "bookings": [
                 {
-                    "id": 3,
+                    "id": 1,
                     "tenantId": 1,
                     "ownerId": 1,
                     "propertyId": 3,
                     "checkInDate": "2025-06-01T14:00:00.000Z",
-                    "duration": 4,
+                    "duration": 6,
                     "monthlyPrice": 5000000,
                     "deposit": 500000,
-                    "totalAmount": 20500000,
-                    "status": "PENDING",
+                    "totalAmount": 30500000,
+                    "status": "ACTIVE",
                     "notes": "Saya ingin memesan kamar dengan pemandangan terbaik.",
                     "paymentLink": null,
-                    "createdAt": "2025-05-25T07:37:26.463Z",
-                    "updatedAt": "2025-05-25T08:30:58.495Z"
+                    "createdAt": "2025-05-25T13:44:12.000Z",
+                    "updatedAt": "2025-05-26T00:10:59.002Z"
                 }
             ]
+        },
+        {
+            "id": 4,
+            "ownerId": 1,
+            "name": "Villa Sunset 4",
+            "description": "Villa mewah dengan pemandangan laut.",
+            "address": "Jl. Pantai Indah No. 12, Bali",
+            "city": "Bali",
+            "price": 5000000,
+            "totalRooms": 3,
+            "availableRooms": 2,
+            "status": "INACTIVE",
+            "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179717/1.1.jpg_1748179813873.jpg",
+            "createdAt": "2025-05-25T13:30:16.342Z",
+            "updatedAt": "2025-05-25T13:30:16.342Z",
+            "owner": {
+                "id": 1,
+                "email": "fazaabiyyu15@gmail.com"
+            },
+            "bookings": []
         }
-    },
+    ],
     "meta": {
         "page": 1,
         "limit": 10,
-        "total": 3,
+        "total": 4,
         "totalPages": 1
     }
 }

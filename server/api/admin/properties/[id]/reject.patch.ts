@@ -19,9 +19,8 @@ export default defineEventHandler(async (event) => {
         return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Properti tidak ditemukan." });
     }
 
-
     const body = await readBody(event);
-    const rawStatus = body.status?.trim().toUpperCase();
+    let rawStatus = body?.status?.trim().toUpperCase() || "DELETED";
 
     if (!rawStatus || !Object.values(PropertyStatus).includes(rawStatus as PropertyStatus)) {
         return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Status tidak valid." });

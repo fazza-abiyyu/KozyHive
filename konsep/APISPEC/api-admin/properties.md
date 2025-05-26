@@ -90,3 +90,49 @@ GET api/admin/properties?page=1&pagesize=1
         "totalPages": 1
     }
 }
+
+
+PATCH api/admin/properties/:id/approve
+response 200
+{
+    "code": 200,
+    "message": "Status properti berhasil diperbarui!",
+    "data": {
+        "id": 2,
+        "ownerId": 1,
+        "name": "Villa Sunset 2",
+        "description": "Villa mewah dengan pemandangan laut.",
+        "address": "Jl. Pantai Indah No. 12, Bali",
+        "city": "Bali",
+        "price": 5000000,
+        "totalRooms": 4,
+        "availableRooms": 2,
+        "status": "ACTIVE",
+        "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179632/1.1.jpg_1748179728522.jpg",
+        "createdAt": "2025-05-25T13:28:50.925Z",
+        "updatedAt": "2025-05-25T23:48:45.921Z"
+    }
+}
+
+
+PATCH api/admin/properties/:id/reject
+response 200
+{
+    "code": 200,
+    "message": "Status properti berhasil diperbarui!",
+    "data": {
+        "id": 2,
+        "ownerId": 1,
+        "name": "Villa Sunset 2",
+        "description": "Villa mewah dengan pemandangan laut.",
+        "address": "Jl. Pantai Indah No. 12, Bali",
+        "city": "Bali",
+        "price": 5000000,
+        "totalRooms": 4,
+        "availableRooms": 2,
+        "status": "DELETED",
+        "images": "https://res.cloudinary.com/dglcmrrhx/image/upload/v1748179632/1.1.jpg_1748179728522.jpg",
+        "createdAt": "2025-05-25T13:28:50.925Z",
+        "updatedAt": "2025-05-25T23:49:02.953Z"
+    }
+}

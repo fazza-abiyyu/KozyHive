@@ -1,6 +1,6 @@
 import { uploadFile } from "~/server/utils/UploadFiles";
 import { Property } from "~/server/models/Property";
-import { ErrorHandler } from "~/server/utils/ErrorHandler"; // 🔥 Tambahkan ErrorHandler
+import { ErrorHandler } from "~/server/utils/ErrorHandler";
 import { $Enums } from "~/generated/prisma";
 import PropertyStatus = $Enums.PropertyStatus;
 
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
             price: 0,
             totalRooms: 1,
             availableRooms: 1,
-            status: PropertyStatus.ACTIVE,
+            status: PropertyStatus.INACTIVE,
             images: "",
         };
 
@@ -93,7 +93,7 @@ export default defineEventHandler(async (event) => {
                         break;
                     case "status":
                         const rawStatus = data.toString("utf-8").trim().toUpperCase();
-                        payload.status = rawStatus === "ACTIVE" ? PropertyStatus.ACTIVE : PropertyStatus.INACTIVE;
+                        payload.status = rawStatus === "INACTIVE" ?  PropertyStatus.INACTIVE : PropertyStatus.ACTIVE;
                         break;
                 }
             }

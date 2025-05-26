@@ -5,8 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "db-client-js"
-  output   = "../generated/db"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -72,12 +71,13 @@ model Property {
   price          Float // Harga per bulan
   totalRooms     Int            @default(1)
   availableRooms Int            @default(1)
-  status         PropertyStatus @default(ACTIVE)
+  status         PropertyStatus @default(INACTIVE)
+  isArchived     Boolean?       @default(false)
   images         String? // Single image URL
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
 
-  owner    User      @relation(fields: [ownerId], references: [id])
+  owner    User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   bookings Booking[]
 }
 
@@ -104,9 +104,9 @@ model Booking {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  tenant   User     @relation("TenantBookings", fields: [tenantId], references: [id])
-  owner    User     @relation("OwnerBookings", fields: [ownerId], references: [id])
-  property Property @relation(fields: [propertyId], references: [id])
+  tenant   User     @relation("TenantBookings", fields: [tenantId], references: [id], onDelete: Cascade)
+  owner    User     @relation("OwnerBookings", fields: [ownerId], references: [id], onDelete: Cascade)
+  property Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
   transaction Transaction?
   bookingLogs BookingLog[]
@@ -146,9 +146,9 @@ model Transaction {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  booking Booking @relation(fields: [bookingId], references: [id])
-  tenant  User    @relation("TenantTransactions", fields: [tenantId], references: [id])
-  owner   User    @relation("OwnerTransactions", fields: [ownerId], references: [id])
+  booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  tenant  User    @relation("TenantTransactions", fields: [tenantId], references: [id], onDelete: Cascade)
+  owner   User    @relation("OwnerTransactions", fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 // ================================

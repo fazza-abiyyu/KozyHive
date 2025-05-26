@@ -8,9 +8,6 @@ export default defineEventHandler(async (event) => {
         const query = getQuery(event);
         const { page, limit } = Pagination.getPagination(query);
 
-        console.log("📌 Query Params:", query);
-
-        // ✅ Pastikan query parameter tidak kosong
         const searchQuery = typeof query.q === "string" ? query.q.trim() : "";
 
         if (!searchQuery || searchQuery.length < 1) {
@@ -22,7 +19,6 @@ export default defineEventHandler(async (event) => {
         return ResponseHandler.sendSuccess(event, "Data properti ditemukan!", data, 200, meta);
 
     } catch (error: any) {
-        console.error("❌ Error Caught:", error);
         return ErrorHandler.handleError(event, error);
     }
 });

@@ -3,6 +3,18 @@ import type { Serialize, Simplify } from "nitropack/types";
 declare module "nitropack/types" {
   type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T
   interface InternalApi {
+    '/api/admin/bookings': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/admin/bookings/index.get').default>>>>
+    }
+    '/api/admin/bookings/stats': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/admin/bookings/stats.get').default>>>>
+    }
+    '/api/admin/properties/:id/approve': {
+      'patch': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/admin/properties/[id]/approve.patch').default>>>>
+    }
+    '/api/admin/properties/:id/reject': {
+      'patch': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/admin/properties/[id]/reject.patch').default>>>>
+    }
     '/api/admin/properties': {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/admin/properties/index.get').default>>>>
     }
@@ -18,10 +30,26 @@ declare module "nitropack/types" {
     '/api/auth/register': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/auth/register.post').default>>>>
     }
+    '/api/bookings/:id/activate': {
+      'patch': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id]/activate.patch').default>>>>
+    }
+    '/api/bookings/:id/complete': {
+      'patch': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id]/complete.patch').default>>>>
+    }
+    '/api/bookings/:id/confirm': {
+      'patch': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id]/confirm.patch').default>>>>
+    }
     '/api/bookings/:id': {
-      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id].delete').default>>>>
-      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id].get').default>>>>
-      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id].put').default>>>>
+      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id]/index.delete').default>>>>
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id]/index.get').default>>>>
+      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id]/index.put').default>>>>
+    }
+    '/api/bookings/:id/logs': {
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id]/logs/index.get').default>>>>
+      'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id]/logs/index.post').default>>>>
+    }
+    '/api/bookings/:id/reject': {
+      'patch': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/[id]/reject.patch').default>>>>
     }
     '/api/bookings': {
       'post': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/bookings/index.post').default>>>>
@@ -36,9 +64,9 @@ declare module "nitropack/types" {
       'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/profile/index.put').default>>>>
     }
     '/api/properties/:id': {
-      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id].delete').default>>>>
-      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id].get').default>>>>
-      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id].put').default>>>>
+      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id]/index.delete').default>>>>
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id]/index.get').default>>>>
+      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id]/index.put').default>>>>
     }
     '/api/properties/:id/status': {
       'patch': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/[id]/status.patch').default>>>>
@@ -57,9 +85,9 @@ declare module "nitropack/types" {
       'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/properties/search.get').default>>>>
     }
     '/api/users/:id': {
-      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/[id].delete').default>>>>
-      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/[id].get').default>>>>
-      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/[id].put').default>>>>
+      'delete': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/[id]/index.delete').default>>>>
+      'get': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/[id]/index.get').default>>>>
+      'put': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/[id]/index.put').default>>>>
     }
     '/api/users': {
       'default': Simplify<Serialize<Awaited<ReturnType<typeof import('../../server/api/users/index').default>>>>
