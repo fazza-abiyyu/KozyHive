@@ -65,6 +65,7 @@ export default defineEventHandler(async (event) => {
                     id: user.id,
                     email: user.email,
                     role: user.role,
+                    profile: userData.profile,
                 },
             },
             200

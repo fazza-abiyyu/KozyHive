@@ -3,9 +3,15 @@ POST api/auth/register
 
 request 
 {
-    "email": "fazaabiyyu20@gmail.com",
-    "password": "admin123"
+    "email": "user@example.com",
+    "password": "securepassword",
+    "profile": {
+        "name": "John Doe",
+        "phone": "+628123456789",
+        "address": "Jl. Mawar No. 1, Jakarta"
+    }
 }
+
 
 respon 201
 {
@@ -14,11 +20,18 @@ respon 201
     "message": "Pengguna berhasil terdaftar!",
     "data": {
         "user": {
-            "id": 8,
-            "email": "fazaabiyyu15@gmail.com",
+            "id": 2,
+            "email": "user@example.com",
             "role": "TENANT",
-            "createdAt": "2025-05-25T01:01:58.769Z",
-            "updatedAt": "2025-05-25T01:01:58.769Z"
+            "createdAt": "2025-05-26T04:40:56.028Z",
+            "updatedAt": "2025-05-26T04:40:56.028Z",
+            "profile": {
+                "id": 1,
+                "userId": 2,
+                "name": "John Doe",
+                "phone": "+628123456789",
+                "address": "Jl. Mawar No. 1, Jakarta"
+            }
         }
     }
 }
@@ -43,8 +56,8 @@ POST api/auth/login
 
 request
 {
-    "email": "fazaabiyyu18@gmail.com",
-    "password": "admin123"
+   "email": "user@example.com",
+   "password": "securepassword"
 }
 
 
@@ -54,11 +67,18 @@ respon 200
     "statusCode": 200,
     "message": "Berhasil Masuk!",
     "data": {
-        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiZW1haWwiOiJmYXphYWJpeXl1MThAZ21haWwuY29tIiwicm9sZSI6IlRFTkFOVCIsImlhdCI6MTc0ODEzNDUzNSwiZXhwIjoxNzQ4MTM1MTM1fQ.I-c1L6FTRiz1ALao3x50g53Q_3VG_v_FhbZy7Aj_6iw",
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ1c2VyQGV4YW1wbGUuY29tIiwicm9sZSI6IlRFTkFOVCIsImlhdCI6MTc0ODIzNDU1OCwiZXhwIjoxNzQ4MjM1MTU4fQ.aEl9YCU3DcNimO0QjofIunn0Jj9xIvu37fftS9WZ0rw",
         "user": {
-            "id": 5,
-            "email": "fazaabiyyu18@gmail.com",
-            "role": "TENANT"
+            "id": 2,
+            "email": "user@example.com",
+            "role": "TENANT",
+            "profile": {
+                "id": 1,
+                "userId": 2,
+                "name": "John Doe",
+                "phone": "+628123456789",
+                "address": "Jl. Mawar No. 1, Jakarta"
+            }
         }
     }
 }

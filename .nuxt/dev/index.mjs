@@ -1179,6 +1179,25 @@ var __defProp$1 = Object.defineProperty;
 var __defNormalProp$1 = (obj, key, value) => key in obj ? __defProp$1(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
 var __publicField$1 = (obj, key, value) => __defNormalProp$1(obj, typeof key !== "symbol" ? key + "" : key, value);
 class User {
+  static async registerUser(data) {
+    var _a, _b, _c, _d, _e, _f;
+    return prisma.user.create({
+      data: {
+        email: data.email,
+        password: data.password,
+        role: Role.TENANT,
+        // Default role sebagai TENANT
+        profile: {
+          create: {
+            name: (_b = (_a = data.profile) == null ? void 0 : _a.name) != null ? _b : "",
+            phone: (_d = (_c = data.profile) == null ? void 0 : _c.phone) != null ? _d : "",
+            address: (_f = (_e = data.profile) == null ? void 0 : _e.address) != null ? _f : ""
+          }
+        }
+      },
+      include: { profile: true }
+    });
+  }
   static async countUsers() {
     return prisma.user.count();
   }
@@ -1191,14 +1210,6 @@ __publicField$1(User, "createUser", (data) => {
       password: data.password,
       role: (_a = data.role) != null ? _a : Role.TENANT,
       profile: data.profile ? { create: data.profile } : void 0
-    }
-  });
-});
-__publicField$1(User, "registerUser", (data) => {
-  return prisma.user.create({
-    data: {
-      email: data.email,
-      password: data.password
     }
   });
 });
@@ -1372,17 +1383,19 @@ const _dzrTQi = defineEventHandler(async (event) => {
       const userId = decoded.id;
       const user = await User.getUserById(userId);
       if (!user) {
-        throw createError({
+        setResponseStatus(event, 403);
+        return {
           statusCode: 403,
           statusMessage: "Unauthorized - User tidak ditemukan."
-        });
+        };
       }
       event.context.auth = { user };
     } catch (error) {
-      throw createError({
+      setResponseStatus(event, 500);
+      return {
         statusCode: 500,
         statusMessage: "Internal Server Error saat mendapatkan pengguna."
-      });
+      };
     }
   } catch (e) {
     return;
@@ -2801,24 +2814,27 @@ const login_post = defineEventHandler(async (event) => {
   try {
     const data = await readBody(event);
     if (!data.email || !data.password) {
-      throw createError({
+      setResponseStatus(event, 400);
+      return {
         statusCode: 400,
         statusMessage: "Pastikan telah mengisi dengan benar dan lengkap."
-      });
+      };
     }
     const user = await User.getUserByEmail(data.email);
     if (!user) {
-      throw createError({
+      setResponseStatus(event, 400);
+      return {
         statusCode: 400,
-        statusMessage: "Kesalahan Kredensial."
-      });
+        statusMessage: "Kesalahan Kradensial."
+      };
     }
     const isPasswordValid = bcrypt.compareSync(data.password, user.password);
     if (!isPasswordValid) {
-      throw createError({
+      setResponseStatus(event, 400);
+      return {
         statusCode: 400,
-        statusMessage: "Kesalahan Kredensial."
-      });
+        statusMessage: "Kesalahan Kradensial."
+      };
     }
     const { refreshToken, accessToken } = generateToken({
       id: user.id,
@@ -2836,7 +2852,8 @@ const login_post = defineEventHandler(async (event) => {
         user: {
           id: user.id,
           email: user.email,
-          role: user.role
+          role: user.role,
+          profile: userData.profile
         }
       },
       200
@@ -2858,27 +2875,30 @@ const logout_get = defineEventHandler(async (event) => {
   try {
     const user = event.context.auth.user;
     if (!user) {
-      throw createError({
+      setResponseStatus(event, 403);
+      return {
         statusCode: 403,
         statusMessage: "Pengguna tidak valid."
-      });
+      };
     }
     const authHeader = event.req.headers["authorization"];
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      throw createError({
+      setResponseStatus(event, 401);
+      return {
         statusCode: 401,
-        statusMessage: "Tidak terotorisasi."
-      });
+        statusMessage: "Tidak Terotorisasi"
+      };
     }
     const token = authHeader.split(" ")[1];
     verifyToken(token);
     addToBlacklist(token);
     const refreshToken = getCookie(event, "refresh_token");
     if (!refreshToken) {
-      throw createError({
+      setResponseStatus(event, 400);
+      return {
         statusCode: 400,
         statusMessage: "Tidak ada refresh token yang ditemukan dalam cookie."
-      });
+      };
     }
     await RefreshToken.deleteToken(refreshToken);
     deleteRefreshToken(event);
@@ -2903,33 +2923,37 @@ const refresh_get = defineEventHandler(async (event) => {
   try {
     const refreshToken = getCookie(event, "refresh_token");
     if (!refreshToken) {
-      throw createError({
+      setResponseStatus(event, 400);
+      return {
         statusCode: 400,
         statusMessage: "Tidak ada refresh token yang ditemukan dalam cookie."
-      });
+      };
     }
     const storedToken = await RefreshToken.findToken(refreshToken);
     if (!storedToken) {
-      throw createError({
+      setResponseStatus(event, 403);
+      return {
         statusCode: 403,
         statusMessage: "Refresh token tidak valid."
-      });
+      };
     }
     let decoded;
     try {
       decoded = decodeRefreshToken(refreshToken);
     } catch (error) {
-      throw createError({
+      setResponseStatus(event, 403);
+      return {
         statusCode: 403,
         statusMessage: "Refresh token tidak valid."
-      });
+      };
     }
     const user = await User.getUserById(decoded.id);
     if (!user) {
-      throw createError({
+      setResponseStatus(event, 403);
+      return {
         statusCode: 403,
         statusMessage: "Pengguna tidak valid dengan refresh token."
-      });
+      };
     }
     const accessToken = generateAccessToken({
       id: user.id,
@@ -2945,7 +2969,6 @@ const refresh_get = defineEventHandler(async (event) => {
       200
     );
   } catch (error) {
-    console.error("Error saat refresh token:", error);
     return ErrorHandler.handleError(event, error);
   }
 });
@@ -2956,18 +2979,25 @@ const refresh_get$1 = /*#__PURE__*/Object.freeze({
 });
 
 const register_post = defineEventHandler(async (event) => {
+  var _a, _b, _c, _d, _e, _f;
   try {
     const data = await readBody(event);
     if (!data.email || !data.password) {
-      throw createError({
+      setResponseStatus(event, 400);
+      return {
         statusCode: 400,
         statusMessage: "Harap berikan semua kolom yang diperlukan (email dan kata sandi)."
-      });
+      };
     }
     const hashedPassword = bcrypt.hashSync(data.password, 10);
     const user = await User.registerUser({
       email: data.email,
-      password: hashedPassword
+      password: hashedPassword,
+      profile: {
+        name: (_b = (_a = data.profile) == null ? void 0 : _a.name) != null ? _b : "",
+        phone: (_d = (_c = data.profile) == null ? void 0 : _c.phone) != null ? _d : "",
+        address: (_f = (_e = data.profile) == null ? void 0 : _e.address) != null ? _f : ""
+      }
     });
     return ResponseHandler.sendCreated(
       event,
@@ -2978,7 +3008,8 @@ const register_post = defineEventHandler(async (event) => {
           email: user.email,
           role: user.role,
           createdAt: user.createdAt,
-          updatedAt: user.updatedAt
+          updatedAt: user.updatedAt,
+          profile: user.profile
         }
       },
       201

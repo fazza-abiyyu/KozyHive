@@ -17,14 +17,23 @@ export class User {
         });
     };
 
-    static registerUser = (data: RegisterRequest) => {
+    static async registerUser(data: RegisterRequest) {
         return prisma.user.create({
             data: {
                 email: data.email,
-                password: data.password
+                password: data.password,
+                role: Role.TENANT, // Default role sebagai TENANT
+                profile: {
+                    create: {
+                        name: data.profile?.name ?? "",
+                        phone: data.profile?.phone ?? "",
+                        address: data.profile?.address ?? "",
+                    },
+                },
             },
+            include: { profile: true }
         });
-    };
+    }
 
     static getUserById = (id: number) => {
         return prisma.user.findUnique({

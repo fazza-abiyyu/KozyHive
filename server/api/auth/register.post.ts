@@ -20,6 +20,11 @@ export default defineEventHandler(async (event) => {
         const user = await User.registerUser({
             email: data.email,
             password: hashedPassword,
+            profile: {
+                name: data.profile?.name ?? "",
+                phone: data.profile?.phone ?? "",
+                address: data.profile?.address ?? "",
+            },
         });
 
         return ResponseHandler.sendCreated(
@@ -32,6 +37,7 @@ export default defineEventHandler(async (event) => {
                     role: user.role,
                     createdAt: user.createdAt,
                     updatedAt: user.updatedAt,
+                    profile: user.profile,
                 },
             },
             201 // Status kode
