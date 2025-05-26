@@ -65,18 +65,20 @@ export default defineEventHandler( async (event) => {
             const user = await User.getUserById(userId);
 
             if (!user) {
-                throw createError({
+                setResponseStatus(event, 403);
+                return {
                     statusCode: 403,
                     statusMessage: "Unauthorized - User tidak ditemukan.",
-                });
+                };
             }
 
             event.context.auth = { user };
         } catch (error) {
-            throw createError({
+            setResponseStatus(event, 500);
+            return {
                 statusCode: 500,
                 statusMessage: "Internal Server Error saat mendapatkan pengguna.",
-            });
+            };
         }
 
     } catch (e) {

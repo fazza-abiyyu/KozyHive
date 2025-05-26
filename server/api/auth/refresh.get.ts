@@ -10,19 +10,21 @@ export default defineEventHandler(async (event) => {
         const refreshToken = getCookie(event, "refresh_token");
 
         if (!refreshToken) {
-            throw createError({
+            setResponseStatus(event, 400);
+            return{
                 statusCode: 400,
                 statusMessage: "Tidak ada refresh token yang ditemukan dalam cookie.",
-            });
+            };
         }
 
         // Memeriksa apakah refresh token ada di database
         const storedToken = await RefreshToken.findToken(refreshToken);
         if (!storedToken) {
-            throw createError({
+            setResponseStatus(event, 403);
+            return {
                 statusCode: 403,
                 statusMessage: "Refresh token tidak valid.",
-            });
+            };
         }
 
         // Memverifikasi refresh token
@@ -30,19 +32,21 @@ export default defineEventHandler(async (event) => {
         try {
             decoded = decodeRefreshToken(refreshToken);
         } catch (error) {
-            throw createError({
+            setResponseStatus(event, 403);
+            return {
                 statusCode: 403,
                 statusMessage: "Refresh token tidak valid.",
-            });
+            };
         }
 
         // Memeriksa apakah pengguna ada
         const user = await User.getUserById(decoded.id);
         if (!user) {
-            throw createError({
+            setResponseStatus(event, 403);
+            return {
                 statusCode: 403,
                 statusMessage: "Pengguna tidak valid dengan refresh token.",
-            });
+            };
         }
 
         // Menghasilkan token akses baru
@@ -63,7 +67,6 @@ export default defineEventHandler(async (event) => {
         );
 
     } catch (error: any) {
-        console.error("Error saat refresh token:", error);
         return ErrorHandler.handleError(event, error);
     }
 });

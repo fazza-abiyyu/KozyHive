@@ -9,10 +9,11 @@ export default defineEventHandler(async (event) => {
         const data: RegisterRequest = await readBody(event);
 
         if (!data.email || !data.password) {
-            throw createError({
+            setResponseStatus(event, 400);
+            return{
                 statusCode: 400,
                 statusMessage: "Harap berikan semua kolom yang diperlukan (email dan kata sandi).",
-            });
+            };
         }
 
         const hashedPassword = bcrypt.hashSync(data.password, 10);

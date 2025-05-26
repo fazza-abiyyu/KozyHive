@@ -12,29 +12,32 @@ export default defineEventHandler(async (event) => {
 
         // Validasi input
         if (!data.email || !data.password) {
-            throw createError({
+            setResponseStatus(event, 400);
+            return {
                 statusCode: 400,
                 statusMessage: "Pastikan telah mengisi dengan benar dan lengkap.",
-            });
+            };
         }
 
 
         // Cek apakah user ada
         const user = await User.getUserByEmail(data.email);
         if (!user) {
-            throw createError({
+            setResponseStatus(event, 400);
+            return {
                 statusCode: 400,
-                statusMessage: "Kesalahan Kredensial.",
-            });
+                statusMessage: "Kesalahan Kradensial.",
+            };
         }
 
         // Cek password
         const isPasswordValid = bcrypt.compareSync(data.password, user.password);
         if (!isPasswordValid) {
-            throw createError({
+            setResponseStatus(event, 400);
+            return {
                 statusCode: 400,
-                statusMessage: "Kesalahan Kredensial.",
-            });
+                statusMessage: "Kesalahan Kradensial.",
+            };
         }
 
         // Generate tokens

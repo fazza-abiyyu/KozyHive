@@ -10,19 +10,21 @@ export default defineEventHandler(async (event) => {
         const user = event.context.auth.user;
 
         if (!user) {
-            throw createError({
+            setResponseStatus(event, 403);
+            return {
                 statusCode: 403,
                 statusMessage: "Pengguna tidak valid.",
-            });
+            };
         }
 
         // Memeriksa header otorisasi
         const authHeader = event.req.headers["authorization"];
         if (!authHeader || !authHeader.startsWith("Bearer ")) {
-            throw createError({
+            setResponseStatus(event, 401);
+            return {
                 statusCode: 401,
-                statusMessage: "Tidak terotorisasi.",
-            });
+                statusMessage: "Tidak Terotorisasi",
+            };
         }
 
         // Memverifikasi token
@@ -36,10 +38,11 @@ export default defineEventHandler(async (event) => {
         const refreshToken = getCookie(event, "refresh_token");
 
         if (!refreshToken) {
-            throw createError({
+            setResponseStatus(event, 400);
+            return {
                 statusCode: 400,
                 statusMessage: "Tidak ada refresh token yang ditemukan dalam cookie.",
-            });
+            };
         }
 
         // Menghapus refresh token dari basis data
