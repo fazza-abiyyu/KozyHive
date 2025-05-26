@@ -224,4 +224,18 @@ export class Booking {
             cancelledBookings,
         };
     }
+
+    static async countBookingsByTenant(tenantId: number) {
+        return prisma.booking.count({ where: { tenantId } });
+    }
+
+    static async countBookingsByOwner(ownerId: number) {
+        return prisma.booking.count({ where: { ownerId } });
+    }
+
+    static async getActiveBookingsByTenant(tenantId: number) {
+        return prisma.booking.findMany({
+            where: { tenantId, status: "ACTIVE" },
+        });
+    }
 }

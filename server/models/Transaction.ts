@@ -1,85 +1,74 @@
 import { prisma } from "~/server/config/db";
-import {PaymentStatus, TransactionType} from "@prisma/client";
+import { PaymentStatus, TransactionType } from "@prisma/client";
 
 export class Transaction {
-    // Membuat transaksi baru
-    static async createTransaction(data: any) {
+    // 🛠️ Membuat transaksi baru langsung berdasarkan bookingId
+    static async createTransaction(bookingId: number, paymentMethod: string, notes?: string) {
+        const booking = await prisma.booking.findUnique({
+            where: { id: bookingId },
+            select: {
+                id: true,
+                tenantId: true,
+                ownerId: true,
+                totalAmount: true,
+            },
+        });
+
+        if (!booking) throw new Error("Booking tidak ditemukan.");
+
         return prisma.transaction.create({
             data: {
-                bookingId: data.bookingId,
-                tenantId: data.tenantId,
-                ownerId: data.ownerId,
-                status: data.status ?? PaymentStatus.PENDING,
-                type: data.type ?? TransactionType.BOOKING_PAYMENT,
-                amount: data.amount,
-                adminFee: data.adminFee ?? 0,
-                netAmount: data.amount - (data.adminFee ?? 0),
-                paymentMethod: data.paymentMethod,
-                paymentId: data.paymentId,
-                notes: data.notes,
-                paymentDate: data.paymentDate ? new Date(data.paymentDate) : undefined,
+                bookingId: booking.id,
+                tenantId: booking.tenantId,
+                ownerId: booking.ownerId,
+                status: PaymentStatus.PENDING,
+                type: TransactionType.BOOKING_PAYMENT,
+                amount: booking.totalAmount, // 🔥 Mengambil jumlah dari booking!
+                adminFee: booking.totalAmount * 0.05, // 🔥 Contoh biaya platform 5%
+                netAmount: booking.totalAmount * 0.95, // 🔥 Bersih setelah dikurangi adminFee
+                paymentMethod,
+                notes,
             },
         });
     }
 
-    // Mengambil transaksi berdasarkan ID
+    // 📜 Mengambil transaksi berdasarkan ID
     static async getTransactionById(id: number) {
         return prisma.transaction.findUnique({
             where: { id },
-        });
-    }
-
-    // Mengambil semua transaksi milik tenant (dengan pagination)
-    static async getTransactionsByTenant(tenantId: number, page: number = 1, pageSize: number = 10) {
-        const skip = (page - 1) * pageSize;
-        const total = await prisma.transaction.count({ where: { tenantId } });
-
-        const transactions = await prisma.transaction.findMany({
-            where: { tenantId },
-            skip,
-            take: pageSize,
-            orderBy: { paymentDate: "desc" },
-        });
-
-        return {
-            success: true,
-            message: "Tenant's transactions retrieved successfully",
-            data: transactions,
-            meta: {
-                page,
-                limit: pageSize,
-                total,
-                totalPages: Math.ceil(total / pageSize),
+            include: {
+                booking: true,
+                tenant: {
+                    select: {
+                        id: true,
+                        email: true,
+                        profile: {
+                            select: { name: true, phone: true, address: true }
+                        }
+                    }
+                },
+                owner: {
+                    select: {
+                        id: true,
+                        email: true,
+                        profile: {
+                            select: { name: true, phone: true, address: true }
+                        }
+                    }
+                }
             },
-        };
-    }
-
-    // Mengambil semua transaksi milik owner (dengan pagination)
-    static async getTransactionsByOwner(ownerId: number, page: number = 1, pageSize: number = 10) {
-        const skip = (page - 1) * pageSize;
-        const total = await prisma.transaction.count({ where: { ownerId } });
-
-        const transactions = await prisma.transaction.findMany({
-            where: { ownerId },
-            skip,
-            take: pageSize,
-            orderBy: { paymentDate: "desc" },
         });
-
-        return {
-            success: true,
-            message: "Owner's transactions retrieved successfully",
-            data: transactions,
-            meta: {
-                page,
-                limit: pageSize,
-                total,
-                totalPages: Math.ceil(total / pageSize),
-            },
-        };
     }
 
-    // Memperbarui transaksi berdasarkan ID
+    // 📜 Mengambil transaksi berdasarkan Booking ID
+    static async getTransactionByBookingId(bookingId: number) {
+        return prisma.transaction.findUnique({
+            where: { bookingId },
+            include: { booking: true, tenant: true, owner: true },
+        });
+    }
+
+    // 🔄 Memperbarui transaksi berdasarkan ID
     static async updateTransaction(id: number, data: any) {
         return prisma.transaction.update({
             where: { id },
@@ -93,14 +82,14 @@ export class Transaction {
         });
     }
 
-    // Menghapus transaksi berdasarkan ID
+    // ❌ Menghapus transaksi berdasarkan ID
     static async deleteTransaction(id: number) {
         return prisma.transaction.delete({
             where: { id },
         });
     }
 
-    // Menghitung total pendapatan dari transaksi dengan status tertentu
+    // 🔢 Menghitung total pendapatan berdasarkan status transaksi tertentu
     static async getTotalRevenueByStatus(status: PaymentStatus) {
         const totalRevenue = await prisma.transaction.aggregate({
             _sum: { netAmount: true },
@@ -108,5 +97,167 @@ export class Transaction {
         });
 
         return totalRevenue._sum.netAmount ?? 0;
+    }
+
+    static async getTransactionsByTenant(tenantId: number, page: number = 1, pageSize: number = 10) {
+        const skip = (page - 1) * pageSize;
+        const total = await prisma.transaction.count({ where: { tenantId } });
+
+        const transactions = await prisma.transaction.findMany({
+            where: { tenantId },
+            skip,
+            take: pageSize,
+            orderBy: { paymentDate: "desc" },
+            include: {
+                booking: true,
+                owner: { select: { id: true, email: true } },
+            },
+        });
+
+        return {
+            success: true,
+            message: "Transaksi tenant berhasil diambil.",
+            data: transactions,
+            meta: {
+                page,
+                limit: pageSize,
+                total,
+                totalPages: Math.ceil(total / pageSize),
+            },
+        };
+    }
+
+    static async getTransactionsByOwner(ownerId: number, page: number = 1, pageSize: number = 10) {
+        const skip = (page - 1) * pageSize;
+        const total = await prisma.transaction.count({ where: { ownerId } });
+
+        const transactions = await prisma.transaction.findMany({
+            where: { ownerId },
+            include: {
+                booking: true,
+                tenant: { select: { id: true, email: true } },
+            },
+        });
+
+        return {
+            success: true,
+            message: "Transaksi owner berhasil diambil.",
+            data: transactions,
+            meta: {
+                page,
+                limit: pageSize,
+                total,
+                totalPages: Math.ceil(total / pageSize),
+            },
+        };
+    }
+
+    // Mengambil semua transaksi dengan pagination
+    static async getAllTransactions(page: number = 1, pageSize: number = 10) {
+        const skip = (page - 1) * pageSize;
+        const total = await prisma.transaction.count();
+
+        const transactions = await prisma.transaction.findMany({
+            skip,
+            take: pageSize,
+            orderBy: { paymentDate: "desc" },
+            include: {
+                booking: true,
+                tenant: { select: { id: true, email: true } },
+                owner: { select: { id: true, email: true } }
+            },
+        });
+
+        return {
+            success: true,
+            message: "Semua transaksi berhasil diambil.",
+            data: transactions,
+            meta: {
+                page,
+                limit: pageSize,
+                total,
+                totalPages: Math.ceil(total / pageSize),
+            },
+        };
+    }
+
+    // Menghitung total transaksi
+    static async getTotalTransactionCount() {
+        return prisma.transaction.count();
+    }
+
+    // Menghitung total pendapatan dari transaksi sukses
+    static async getTotalRevenue() {
+        const totalRevenue = await prisma.transaction.aggregate({
+            _sum: { netAmount: true },
+            where: { status: PaymentStatus.SUCCESS },
+        });
+
+        return totalRevenue._sum.netAmount ?? 0;
+    }
+
+    // Menghitung jumlah transaksi berdasarkan status tertentu
+    static async getTotalTransactionsByStatus(status: PaymentStatus) {
+        return prisma.transaction.count({ where: { status } });
+    }
+
+    static async getTotalTransactionsByOwner(ownerId: number) {
+        return prisma.transaction.count({ where: { ownerId } });
+    }
+
+    static async getTotalTransactionsByTenant(tenantId: number) {
+        return prisma.transaction.count({ where: { tenantId } });
+    }
+
+    static async getTotalRevenueByOwner(ownerId: number) {
+        const revenue = await prisma.transaction.aggregate({
+            _sum: { netAmount: true },
+            where: { ownerId, status: PaymentStatus.SUCCESS },
+        });
+
+        return revenue._sum.netAmount ?? 0;
+    }
+
+    static async getTotalTransactionsByStatusForTenant(tenantId: number, status: PaymentStatus) {
+        return prisma.transaction.count({ where: { tenantId, status } });
+    }
+
+    static async getTotalTransactionsByStatusForOwner(ownerId: number, status: PaymentStatus) {
+        return prisma.transaction.count({ where: { ownerId, status } });
+    }
+
+    static async getRevenueByMonthForOwner(ownerId: number) {
+        return prisma.transaction.groupBy({
+            by: ["paymentDate"],
+            _sum: { netAmount: true },
+            where: { ownerId, status: PaymentStatus.SUCCESS },
+        });
+    }
+
+    static async getTotalSpentByTenant(tenantId: number) {
+        const totalSpent = await prisma.transaction.aggregate({
+            _sum: { amount: true },
+            where: { tenantId, status: PaymentStatus.SUCCESS },
+        });
+
+        return totalSpent._sum.amount ?? 0;
+    }
+
+    static async getRevenueByMonth() {
+        return prisma.transaction.groupBy({
+            by: ["paymentDate"],
+            _sum: { netAmount: true },
+            where: { status: PaymentStatus.SUCCESS },
+            orderBy: { paymentDate: "asc" }
+        });
+    }
+
+    static async getTransactionTrends() {
+        return prisma.transaction.groupBy({
+            by: ["paymentDate"],
+            _count: { id: true },
+            where: { status: { in: [PaymentStatus.SUCCESS, PaymentStatus.FAILED] } },
+            orderBy: { paymentDate: "asc" }
+        });
     }
 }

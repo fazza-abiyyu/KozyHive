@@ -235,4 +235,62 @@ export class Property {
         };
     }
 
+    static async countPropertiesByOwner(ownerId: number) {
+        return prisma.property.count({ where: { ownerId } });
+    }
+
+    static async countTotalProperties() {
+        return prisma.property.count();
+    }
+
+    // 🏡 Pencarian properti dengan filter (lokasi, harga)
+    static async searchProperty(filters: { city?: string, minPrice?: number, maxPrice?: number }) {
+        return prisma.property.findMany({
+            where: {
+                city: filters.city ? { equals: filters.city } : undefined,
+                price: filters.minPrice || filters.maxPrice
+                    ? {
+                        gte: filters.minPrice ?? undefined,
+                        lte: filters.maxPrice ?? undefined,
+                    }
+                    : undefined,
+                isArchived: false, // Hanya menampilkan properti yang aktif
+                status: "ACTIVE", // Hanya menampilkan properti yang tersedia
+            },
+            orderBy: { price: "asc" },
+        });
+    }
+
+    // 🔍 Mendapatkan properti yang sering dicari sebagai saran pencarian
+    static async getPopularSearches() {
+        return prisma.property.findMany({
+            orderBy: { createdAt: "desc" }, // Menampilkan properti terbaru sebagai rekomendasi
+            take: 5, // Hanya menampilkan 5 properti rekomendasi
+        });
+    }
+
+    // 📍 Mendapatkan daftar kota yang memiliki properti aktif
+    static async getAvailableCities() {
+        const cities = await prisma.property.findMany({
+            distinct: ["city"],
+            where: { isArchived: false, status: "ACTIVE" }, // Hanya menampilkan kota dengan properti aktif
+            select: { city: true },
+        });
+
+        return cities.map(item => item.city); // Mengembalikan daftar nama kota
+    }
+
+    // 💰 Menghitung rentang harga properti tersedia
+    static async getPriceRange() {
+        const minMaxPrice = await prisma.property.aggregate({
+            _min: { price: true },
+            _max: { price: true },
+            where: { isArchived: false, status: "ACTIVE" }, // Hanya menghitung properti aktif
+        });
+
+        return {
+            minPrice: minMaxPrice._min.price ?? 0,
+            maxPrice: minMaxPrice._max.price ?? 0,
+        };
+    }
 }

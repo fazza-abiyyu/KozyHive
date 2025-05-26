@@ -167,4 +167,8 @@ export class User {
             },
         };
     };
+
+    static async countTotalUsers() {
+        return prisma.user.count();
+    }
 }
