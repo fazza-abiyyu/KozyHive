@@ -265,7 +265,7 @@ export class Property {
     static async getPopularSearches() {
         return prisma.property.findMany({
             orderBy: { createdAt: "desc" }, // Menampilkan properti terbaru sebagai rekomendasi
-            take: 5, // Hanya menampilkan 5 properti rekomendasi
+            take: 3, // Hanya menampilkan 5 properti rekomendasi
         });
     }
 

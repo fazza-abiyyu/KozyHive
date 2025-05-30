@@ -15,6 +15,7 @@ export default defineEventHandler( async (event) => {
             '/api/users/search?q=:q',
             '/api/users?page=:page&pagesize=:pagesize',
             '/api/profile',
+            '/api/properties',
             '/api/properties/my-properties',
             '/api/properties/:id/status',
             '/api/admin/properties/:id/approve',

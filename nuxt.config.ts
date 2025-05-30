@@ -22,6 +22,9 @@ export default defineNuxtConfig({
       tailwindcss(),
     ],
   },
+  experimental: {
+    payloadExtraction: false
+  },
   plugins: ["~/plugins/preline.client.ts"],
   app: {
     head: {

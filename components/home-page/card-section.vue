@@ -14,26 +14,23 @@
           View All
         </a>
       </div>
-
     </div>
 
     <!-- Grid -->
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
       <div v-for="property in properties" :key="property.id" class="group flex flex-col h-[500px] bg-white border border-gray-200 shadow-2xs rounded-xl">
-        <div class="h-[60%] flex flex-col justify-center items-center bg-blue-600 rounded-t-xl">
-          <img :src="property.images" :alt="property.name" class="w-full h-full object-cover rounded-t-xl"/>
+        <div class="h-[60%] flex justify-center items-center bg-blue-600 rounded-t-xl">
+          <img :src="property.images || 'https://via.placeholder.com/300'" :alt="property.name" class="w-full h-full object-cover rounded-t-xl"/>
         </div>
         <div class="h-[40%] p-4 md:p-3">
           <span class="block mb-1 text-xs font-normal uppercase text-[#24AB70] text-[12px]">{{ property.city }}</span>
           <h3 class="text-xl font-semibold text-gray-800 text-[24px]">{{ property.name }}</h3>
-<!--          <p class="mt-3 text-gray-500">{{ property.description }}</p>-->
-          <p class="mt-2 text-lg font-normal text-balck text-[16px]">Rp {{ property.price.toLocaleString() }}</p>
+          <p class="mt-2 text-lg font-normal text-black text-[16px]">Rp {{ property.price.toLocaleString() }}</p>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 
 <script setup>
 import { ref, onMounted } from 'vue';
@@ -42,10 +39,12 @@ const properties = ref([]);
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:3000/api/properties?page=1&pagesize=3');
+    const response = await fetch('http://localhost:3000/api/search/suggestions');
     const result = await response.json();
     if (result.success) {
-      properties.value = result.data.slice(0, 3); // Ambil hanya 3 properti
+      properties.value = result.data
+        .filter(property => property.status === "ACTIVE") // Hanya ambil properti yang masih aktif
+        .slice(0, 3); // Ambil hanya 3 properti pertama
     } else {
       console.error("Gagal mengambil data:", result.message);
     }
