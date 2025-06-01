@@ -5,32 +5,33 @@ import { PaymentStatus } from "@prisma/client";
 
 export default defineEventHandler(async (event) => {
     try {
-        const adminId = event.context.auth?.user?.id;
-        const isAdmin = event.context.auth?.user?.role === "ADMIN";
-        // if (!adminId || !isAdmin) {
-        //     return ErrorHandler.handleError(event, { statusCode: 403, statusMessage: "Akses terlarang. Hanya admin yang dapat memproses refund." });
-        // }
+        // Pastikan hanya admin yang bisa memproses refund
+        const user = event.context.auth?.user;
+        if (!user || user.role !== "ADMIN") {
+            return ErrorHandler.handleError(event, { statusCode: 403, statusMessage: "Akses terlarang. Hanya admin yang dapat memproses refund." });
+        }
 
-        const data = await readBody(event);
-        if (!data.transactionId) {
+        // Pastikan ada `transactionId` dalam request body
+        const { transactionId } = await readBody(event);
+        if (!transactionId) {
             return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Harap berikan `transactionId` untuk refund." });
         }
 
-        const transaction = await Transaction.getTransactionById(data.transactionId);
+        // Cek apakah transaksi benar-benar ada
+        const transaction = await Transaction.getTransactionById(transactionId);
         if (!transaction) {
             return ErrorHandler.handleError(event, { statusCode: 404, statusMessage: "Transaksi tidak ditemukan." });
         }
 
+        // Hanya transaksi dengan status SUCCESS yang bisa direfund
         if (transaction.status !== PaymentStatus.SUCCESS) {
             return ErrorHandler.handleError(event, { statusCode: 400, statusMessage: "Hanya transaksi sukses yang dapat direfund." });
         }
 
-        const refundedTransaction = await Transaction.updateTransaction(transaction.id, {
-            status: PaymentStatus.FAILED, // Bisa dibuat enum REFUNDED jika ada
-            notes: "Refund telah diproses oleh admin.",
-        });
+        // Refund dengan status baru
+        const refundedTransaction = await Transaction.updateTransaction(transaction.id, PaymentStatus.FAILED); // Bisa buat enum REFUNDED kalau diperlukan
 
-        return ResponseHandler.sendSuccess(event, "Refund berhasil diproses!", refundedTransaction, 200);
+        return ResponseHandler.sendSuccess(event, "Refund berhasil diproses!", { refundedTransaction }, 200);
 
     } catch (error: any) {
         return ErrorHandler.handleError(event, error);

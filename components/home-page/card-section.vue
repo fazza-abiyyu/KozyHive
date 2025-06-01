@@ -10,7 +10,7 @@
         <p class="text-sm text-gray-500 py-7 text-[16px]">
           Kos-kosan favorit dengan fasilitas lengkap dan lokasi terbaik.
         </p>
-        <a href="/all-properties" class="text-xl text-gray-500 hover:text-gray-700 transition text-[16px]">
+        <a href="/browser" class="text-xl text-gray-500 hover:text-gray-700 transition text-[16px]">
           View All
         </a>
       </div>
@@ -43,8 +43,7 @@ onMounted(async () => {
     const result = await response.json();
     if (result.success) {
       properties.value = result.data
-        .filter(property => property.status === "ACTIVE") // Hanya ambil properti yang masih aktif
-        .slice(0, 3); // Ambil hanya 3 properti pertama
+        .filter(property => property.status === "ACTIVE")
     } else {
       console.error("Gagal mengambil data:", result.message);
     }

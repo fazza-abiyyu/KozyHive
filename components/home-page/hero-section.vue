@@ -51,3 +51,5 @@
   </div>
   <!-- End Hero -->
 </template>
+<script setup lang="ts">
+</script>

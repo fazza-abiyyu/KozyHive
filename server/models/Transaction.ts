@@ -1,9 +1,42 @@
 import { prisma } from "~/server/config/db";
-import { PaymentStatus, TransactionType } from "@prisma/client";
+import {CashflowStatus, CashflowType, PaymentStatus, TransactionType} from "@prisma/client";
+import {Cashflow} from "~/server/models/Cashflow";
 
 export class Transaction {
     // 🛠️ Membuat transaksi baru langsung berdasarkan bookingId
-    static async createTransaction(bookingId: number, paymentMethod: string, notes?: string) {
+    // static async createTransaction(bookingId: number, paymentMethod: string, notes?: string) {
+    //     const booking = await prisma.booking.findUnique({
+    //         where: { id: bookingId },
+    //         select: {
+    //             id: true,
+    //             tenantId: true,
+    //             ownerId: true,
+    //             totalAmount: true,
+    //         },
+    //     });
+    //
+    //     if (!booking) throw new Error("Booking tidak ditemukan.");
+    //
+    //     return prisma.transaction.create({
+    //         data: {
+    //             bookingId: booking.id,
+    //             tenantId: booking.tenantId,
+    //             ownerId: booking.ownerId,
+    //             status: PaymentStatus.PENDING,
+    //             type: TransactionType.BOOKING_PAYMENT,
+    //             amount: booking.totalAmount, // 🔥 Mengambil jumlah dari booking!
+    //             adminFee: booking.totalAmount * 0.05, // 🔥 Contoh biaya platform 5%
+    //             netAmount: booking.totalAmount * 0.95, // 🔥 Bersih setelah dikurangi adminFee
+    //             paymentMethod,
+    //             notes,
+    //         },
+    //     });
+    // }
+    static async createTransaction(
+        bookingId: number,
+        paymentMethod: string,
+        notes?: string
+    ) {
         const booking = await prisma.booking.findUnique({
             where: { id: bookingId },
             select: {
@@ -16,21 +49,34 @@ export class Transaction {
 
         if (!booking) throw new Error("Booking tidak ditemukan.");
 
-        return prisma.transaction.create({
+        const transaction = await prisma.transaction.create({
             data: {
                 bookingId: booking.id,
                 tenantId: booking.tenantId,
                 ownerId: booking.ownerId,
                 status: PaymentStatus.PENDING,
                 type: TransactionType.BOOKING_PAYMENT,
-                amount: booking.totalAmount, // 🔥 Mengambil jumlah dari booking!
-                adminFee: booking.totalAmount * 0.05, // 🔥 Contoh biaya platform 5%
-                netAmount: booking.totalAmount * 0.95, // 🔥 Bersih setelah dikurangi adminFee
+                amount: booking.totalAmount,
+                adminFee: booking.totalAmount * 0.05,
+                netAmount: booking.totalAmount * 0.95,
                 paymentMethod,
                 notes,
             },
         });
+
+        // Menambahkan otomatis ke Cashflow sebagai DEBIT sesuai skema baru
+        await Cashflow.create({
+            ownerId: booking.ownerId,
+            transactionId: transaction.id,
+            name: "Penyewa",
+            bank: String(transaction.paymentMethod),
+            amount: transaction.netAmount,
+            type: CashflowType.DEBIT
+        });
+
+        return transaction;
     }
+
 
     // 📜 Mengambil transaksi berdasarkan ID
     static async getTransactionById(id: number) {
@@ -69,17 +115,31 @@ export class Transaction {
     }
 
     // 🔄 Memperbarui transaksi berdasarkan ID
-    static async updateTransaction(id: number, data: any) {
-        return prisma.transaction.update({
+    // static async updateTransaction(id: number, data: any) {
+    //     return prisma.transaction.update({
+    //         where: { id },
+    //         data: {
+    //             status: data.status,
+    //             paymentMethod: data.paymentMethod,
+    //             paymentId: data.paymentId,
+    //             notes: data.notes,
+    //             paymentDate: data.paymentDate ? new Date(data.paymentDate) : undefined,
+    //         },
+    //     });
+    // }
+    static async updateTransaction(id: number, newStatus: PaymentStatus) {
+        const updatedTransaction = await prisma.transaction.update({
             where: { id },
-            data: {
-                status: data.status,
-                paymentMethod: data.paymentMethod,
-                paymentId: data.paymentId,
-                notes: data.notes,
-                paymentDate: data.paymentDate ? new Date(data.paymentDate) : undefined,
-            },
+            data: { status: newStatus } // Menggunakan inputan status
         });
+
+        // Perbarui semua Cashflow terkait transaksi ini sesuai dengan status transaksi
+        await prisma.cashflow.updateMany({
+            where: { transactionId: id },
+            data: { status: newStatus }, // Cashflow mengikuti status transaksi
+        });
+
+        return updatedTransaction;
     }
 
     // ❌ Menghapus transaksi berdasarkan ID
@@ -162,7 +222,7 @@ export class Transaction {
             take: pageSize,
             orderBy: { paymentDate: "desc" },
             include: {
-                booking: true,
+                booking: {select: {id: true, property: {select: {name: true}}}},
                 tenant: { select: { id: true, email: true } },
                 owner: { select: { id: true, email: true } }
             },

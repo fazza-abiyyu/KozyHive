@@ -137,7 +137,7 @@ export class Property {
             skip,
             take,
             include: {
-                owner: { select: { id: true, email: true } },
+                owner: { select: { id: true, email: true, profile: { select: { id: true, name: true } } } },
                 bookings: true,
             },
         });
@@ -161,6 +161,9 @@ export class Property {
     static async getPropertyById(id: number) {
         return prisma.property.findUnique({
             where: { id },
+            include: {
+                owner: { select: { profile: true } },
+            }
         });
     }
 

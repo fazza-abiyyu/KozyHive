@@ -42,6 +42,27 @@ export class User {
                 id: true,
                 email: true,
                 role: true,
+                password: true,
+                createdAt: true,
+                updatedAt: true,
+                profile: true,
+                tenantBookings: true,
+                tenantTransactions: true,
+                properties: true,
+                ownerBookings: true,
+                ownerTransactions: true,
+            },
+        });
+    };
+
+    static getUser= (id:number ) => {
+        return prisma.user.findUnique({
+            where: { id },
+            select: {
+                id: true,
+                email: true,
+                role: true,
+                password: false,
                 createdAt: true,
                 updatedAt: true,
                 profile: true,

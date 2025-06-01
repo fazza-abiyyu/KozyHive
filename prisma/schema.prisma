@@ -35,7 +35,9 @@ model User {
   ownerBookings     Booking[]     @relation("OwnerBookings")
   ownerTransactions Transaction[] @relation("OwnerTransactions")
 
-  refreshTokens RefreshToken[]
+  refreshTokens   RefreshToken[]
+  tenantCashflows Cashflow[]     @relation(name: "TenantCashflow")
+  ownerCashflows  Cashflow[]     @relation(name: "OwnerCashflow")
 }
 
 model RefreshToken {
@@ -149,6 +151,27 @@ model Transaction {
   booking Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
   tenant  User    @relation("TenantTransactions", fields: [tenantId], references: [id], onDelete: Cascade)
   owner   User    @relation("OwnerTransactions", fields: [ownerId], references: [id], onDelete: Cascade)
+
+  income Cashflow[]
+}
+
+model Cashflow {
+  id            Int            @id @default(autoincrement())
+  transactionId Int?
+  tenantId      Int?
+  ownerId       Int?
+  name          String?
+  bank          String?
+  number        String?
+  amount        Float
+  type          CashflowType
+  status        CashflowStatus @default(PENDING)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  transaction Transaction? @relation(fields: [transactionId], references: [id], onDelete: Cascade)
+  tenant      User?        @relation(fields: [tenantId], references: [id], onDelete: Cascade, name: "TenantCashflow")
+  owner       User?        @relation(fields: [ownerId], references: [id], onDelete: Cascade, name: "OwnerCashflow")
 }
 
 // ================================
@@ -187,4 +210,15 @@ enum TransactionType {
   DEPOSIT // Deposit
   MONTHLY_RENT // Sewa bulanan
   REFUND // Pengembalian
+}
+
+enum CashflowType {
+  DEBIT
+  CREDIT
+}
+
+enum CashflowStatus {
+  PENDING
+  SUCCESS
+  FAILED
 }

@@ -1,4 +1,4 @@
-import useAuth from "~/composables/UseAuth";
+import useAuth from "~/composables/useAuth";
 
 export default (url: string, options: any = {}) => {
     const { useAuthToken, useAuthTokenCookie } = useAuth()

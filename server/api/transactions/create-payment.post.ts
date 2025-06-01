@@ -15,6 +15,8 @@ export default defineEventHandler(async (event) => {
         }
 
         const transaction = await Transaction.createTransaction(data.bookingId, data.paymentMethod, data.notes);
+
+
         return ResponseHandler.sendCreated(event, "Pembayaran berhasil dibuat!", transaction, 201);
 
     } catch (error: any) {

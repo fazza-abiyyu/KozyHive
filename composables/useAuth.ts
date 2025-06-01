@@ -1,5 +1,4 @@
 import { jwtDecode } from "jwt-decode";
-import useFetchApi from "~/composables/UseFetchApi";
 
 export default () => {
     // State untuk token dan user
@@ -29,15 +28,20 @@ export default () => {
                 body: { email, password },
             });
 
-            if (!response?.access_token) throw new Error("Login gagal");
+            console.log("Respons Login:", response);
+
+            if (!response?.data.access_token) throw new Error("Login gagal");
+
+            // Simpan token di localStorage
+            localStorage.setItem("token", response.data.access_token);
 
             // Set token dan user
-            setToken(response.access_token);
-            setUser(response?.data?.user);
+            setToken(response.data.access_token);
+            setUser(response?.data?.profile);
             isLoggedIn().value = true;
 
-            // Redirect ke halaman sesuai role
-            return navigateTo(response?.data?.user?.role === 'Admin' ? '/admin' : '/dashboard');
+            // Redirect ke halaman
+            return navigateTo('/home-page');
         } catch (error) {
             console.error(error);
             throw new Error('Email atau kata sandi salah');
@@ -48,7 +52,7 @@ export default () => {
     const refreshToken = async () => {
         try {
             const response: any = await useFetchApi('/api/auth/refresh', { method: 'GET' });
-            setToken(response?.access_token);
+            setToken(response?.data.access_token);
             return true;
         } catch (error) {
             await logout();
@@ -59,12 +63,14 @@ export default () => {
     // Mengambil Data User
     const getUser = async () => {
         try {
-            const response: any = await useFetchApi('/api/auth/user');
-            setUser(response?.data?.user);
+            const response: any = await useFetchApi('/api/profile', {method: 'GET', credentials: 'include'});
+            setUser(response?.data?.profile);
             return true;
-        } catch (error) {
-            throw error;
         }
+        catch (error) {
+            console.error("Error saat mengambil user:", error);
+            throw error;
+    }
     };
 
     // Memperbarui Token secara Berkala

@@ -8,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-import useAuth from "~/composables/UseAuth";
+import useAuth from "~/composables/useAuth";
 
 const {initAuth} = useAuth();
 onMounted(() => initAuth())
