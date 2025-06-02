@@ -85,7 +85,7 @@ const meta = ref({
 
 const fetchProperties = async (page = 1) => {
   try {
-    const response = await fetch(`http://localhost:3000/api/properties?page=${page}&limit=${meta.value.limit}`);
+    const response = await fetch(`/api/properties?page=${page}&limit=${meta.value.limit}`);
     const result = await response.json();
     if (result.success) {
       properties.value = result.data.filter(property => property.status === "ACTIVE");
