@@ -71,6 +71,7 @@ import {useNuxtApp} from "#imports";
 import useFetchApi from '~/composables/useFetchApi';
 import { useRouter } from "vue-router";
 import DashSidebar from "~/components/DashSidebar.vue";
+import { CashflowType } from '~/types/cashflow'
 
 
 const router = useRouter();
@@ -92,11 +93,6 @@ const clearForm = () => {
 };
 
 const totalAmount = ref(0);
-  
-export enum CashflowType {
-  CREDIT = "CREDIT",
-  DEBIT = "DEBIT"
-}
 
 async function getTotalAmount() {
   isLoading.value = true;
