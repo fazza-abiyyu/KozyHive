@@ -1,18 +1,6 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "nuxt.config.ts",
-      "use": "@vercel/node"
-    }
-  ],
   "buildCommand": "npx prisma generate && yarn build",
   "installCommand": "yarn install",
-  "outputDirectory": ".output",
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/server/index.mjs"
-    }
-  ]
+  "outputDirectory": ".output"
 }
