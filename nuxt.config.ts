@@ -16,11 +16,21 @@ export default defineNuxtConfig({
     SMTP_PASSWORD: process.env.SMTP_PASSWORD ?? "",
     MAIL_FROM_EMAIL: process.env.MAIL_FROM_EMAIL ?? "",
   },
+  
   css: ['~/assets/css/main.css'],
+  nitro: {
+    externals: {
+      external: ['@prisma/client', '.prisma']
+    },
+    noExternal: ['@prisma/client'] // <--- tambahkan ini juga
+  },
   vite: {
     plugins: [
       tailwindcss(),
     ],
+    optimizeDeps: {
+      exclude: ['@prisma/client']
+    }
   },
   experimental: {
     payloadExtraction: false
