@@ -16,9 +16,9 @@
       </div>
     </div>
 
-    <!-- Grid -->
+    <!-- Grid hanya menampilkan kartu properti -->
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div v-for="property in properties" :key="property.id" class="group flex flex-col h-[500px] bg-white border border-gray-200 shadow-2xs rounded-xl">
+      <div v-for="property in properties" :key="property.id" class="group flex flex-col h-[500px] bg-white border border-gray-200 shadow-2xs rounded-xl" @click="goToProperties(property.id)">
         <div class="h-[60%] flex justify-center items-center bg-blue-600 rounded-t-xl">
           <img :src="property.images || 'https://via.placeholder.com/300'" :alt="property.name" class="w-full h-full object-cover rounded-t-xl"/>
         </div>
@@ -36,10 +36,16 @@
 import { ref, onMounted } from 'vue';
 
 const properties = ref([]);
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const goToProperties = (id) => {
+  router.push(`/properties/${id}`);
+};
 
 onMounted(async () => {
   try {
-    const response = await fetch('http://localhost:3000/api/search/suggestions');
+    const response = await fetch('/api/search/suggestions');
     const result = await response.json();
     if (result.success) {
       properties.value = result.data

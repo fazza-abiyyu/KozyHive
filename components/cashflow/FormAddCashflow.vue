@@ -58,7 +58,7 @@
           <button type="submit"
                   class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none"
                   :disabled="isLoading">
-            Simpan
+            Ajukan
           </button>
         </div>
       </div>
@@ -71,7 +71,6 @@ import {useNuxtApp} from "#imports";
 import useFetchApi from '~/composables/useFetchApi';
 import { useRouter } from "vue-router";
 import DashSidebar from "~/components/DashSidebar.vue";
-import {Cashflow} from "~/server/models/Cashflow";
 import {CashflowType} from "@prisma/client";
 
 const router = useRouter();

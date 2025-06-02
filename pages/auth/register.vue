@@ -334,7 +334,7 @@ const handleSubmit = async () => {
     // Menyimpan email di localStorage
     localStorage.setItem("email", email.value);
 
-    return navigateTo('/auth/homa-page')
+    return navigateTo('/home-page')
   } catch (error: any) {
     console.log(error)
     $toast('Gagal mendaftarkan akun', 'error');

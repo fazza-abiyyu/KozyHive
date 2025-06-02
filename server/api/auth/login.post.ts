@@ -55,6 +55,14 @@ export default defineEventHandler(async (event) => {
         // Set refresh token ke cookie
         sendRefreshToken(event, refreshToken);
 
+        setCookie(event, "user.role", user.role, {
+            httpOnly: false,  // Jika ingin bisa dibaca oleh frontend
+            secure: false,    // Set ke `true` jika menggunakan HTTPS
+            path: "/",
+            maxAge: 60 * 60 * 24 * 7, // 7 hari
+        });
+
+
         const cleanedProfile = user.profile ? {
             name: user.profile.name,
             phone: user.profile.phone,

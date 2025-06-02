@@ -33,7 +33,7 @@
               </NuxtLink>
             </li>
 
-            <li>
+            <li v-if="userRole === 'ADMIN'">
                     <NuxtLink
                         class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                         to="/dashboard/users" active-class="bg-gray-100">
@@ -48,7 +48,7 @@
                     </NuxtLink>
             </li>
 
-            <li>
+            <li v-if="userRole === 'OWNER'">
               <NuxtLink
                   class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                   to="/dashboard/booking" active-class="bg-gray-100">
@@ -64,7 +64,7 @@
               </NuxtLink>
             </li>
 
-            <li>
+            <li v-if="userRole === 'ADMIN'">
               <NuxtLink
                   class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                   to="/dashboard/properties" active-class="bg-gray-100">
@@ -90,7 +90,7 @@
               </NuxtLink>
             </li>
 
-            <li>
+            <li v-if="userRole === 'ADMIN'">
               <NuxtLink
                   class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                   to="/dashboard/transactions" active-class="bg-gray-100">
@@ -110,7 +110,7 @@
               </NuxtLink>
             </li>
 
-            <li class="hs-accordion" id="properties-accordion">
+            <li class="hs-accordion" id="properties-accordion" v-if="userRole === 'OWNER'">
               <button type="button"
                       class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                       aria-expanded="true" aria-controls="properties-accordion-child">
@@ -194,25 +194,25 @@
                 </svg>
               </button>
 
-              <div id="posyandu-accordion-child"
+              <div id="keuangan-accordion-child"
                    class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
-                   role="region" aria-labelledby="posyandu-accordion">
+                   role="region" aria-labelledby="keuangan-accordion">
                 <ul class="ps-4 pt-1 mt-2 space-y-1 border-l-2 ml-4">
-                  <li>
+                  <li v-if="userRole === 'ADMIN'">
                     <NuxtLink
                         class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                         to="/dashboard/cashflow" active-class="bg-gray-100">
                       Daftar
                     </NuxtLink>
                   </li>
-                  <li>
+                  <li v-if="userRole === 'OWNER'">
                     <NuxtLink
                         class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                         to="/dashboard/cashflow/owner" active-class="bg-gray-100">
                       Daftar
                     </NuxtLink>
                   </li>
-                  <li>
+                  <li v-if="userRole === 'OWNER'">
                     <NuxtLink
                         class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                         to="/dashboard/cashflow/add" active-class="bg-gray-100">
@@ -247,6 +247,8 @@
 </template>
 
 <script setup lang="ts">
+const userRole = useCookie('user.role').value;
+
 </script>
 
 <style scoped>

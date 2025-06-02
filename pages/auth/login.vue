@@ -85,43 +85,45 @@ const isLoading = ref<boolean>(false); // Flag untuk status loading
 
 // Mengambil fungsi login dari composable useAuth
 const { login } = useAuth();
+import { useCookie } from "nuxt/app";
 
-// Fungsi untuk menangani pengiriman form login
+const userRole = useCookie("user.role");
+
 const handleSubmit = async () => {
   try {
-    // Menandakan proses loading dimulai
     isLoading.value = true;
 
-    // Validasi jika email dan password belum diisi
     if (!email.value || !password.value) {
       return;
     }
 
     // Melakukan proses login
-    await login({
+    const data = await login({
       email: email.value,
       password: password.value
     });
 
-    // Menyimpan atau menghapus email di localStorage jika "Ingat Saya" diaktifkan
+    if (data?.success) {
+      userRole.value = data.data.user.role; // Menyimpan role ke cookie
+      localStorage.setItem("access_token", data.data.access_token);
+    }
+
     if (isRemember.value && email.value) {
       localStorage.setItem("email", email.value);
     } else {
       localStorage.removeItem("email");
     }
 
-    // Setelah berhasil login, arahkan ke halaman utama
     return navigateTo('/home-page');
 
   } catch (error: any) {
-    // Menangani error dan menampilkan pesan kesalahan
     console.error(error);
     $toast('Email atau kata sandi tidak cocok.', 'error');
   } finally {
-    // Menghentikan status loading setelah proses selesai
     isLoading.value = false;
   }
 };
+
 
 // Menyimpan email pengguna di localStorage ketika komponen dipasang
 onMounted(() => {

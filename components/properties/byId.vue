@@ -137,11 +137,13 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'nuxt/app';
 import { useNuxtApp } from '#app';
-import {method} from "lodash";
 
 const { $toast } = useNuxtApp();
 const route = useRoute();
 const propertyId = ref<string | null>(route.params.id);
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const goBack = () => {
   window.history.back(); // Navigasi ke halaman sebelumnya
@@ -253,8 +255,6 @@ async function fetchUserData() {
       }
     });
 
-    console.log("Respons API User:", response); // Debugging respons API
-
     if (!response?.data) {
       throw new Error("User tidak ditemukan.");
     }
@@ -287,11 +287,11 @@ const submitBooking = async () => {
     $toast("Kamu harus login dulu sebelum booking.", "error");
     return router.push("/auth/login");
   }
+
   try {
     isLoading.value = true;
 
-
-    await useFetchApi("/api/bookings", {
+    const response = await useFetchApi("/api/bookings", {
       method: "POST",
       body: {
         propertyId: booking.value.propertyId,
@@ -300,11 +300,18 @@ const submitBooking = async () => {
         deposit: Number(booking.value.deposit),
         notes: booking.value.notes,
       }
-    })
-    $toast('Berhasil membuat reservasi.', 'success');
-    clearForm()
+    });
+
+    if (response?.success && response.data?.id) {
+      $toast("Berhasil membuat reservasi.", "success");
+      clearForm();
+      router.push(`/bookings/payment/${response.data.id}`); // Ambil ID dari respons API
+    } else {
+      throw new Error(response?.message || "Terjadi kesalahan dalam pemesanan.");
+    }
   } catch (error) {
-    $toast('Gagal membuat reservasi.', 'success');
+    console.error("Error saat membuat reservasi:", error);
+    $toast("Gagal membuat reservasi.", "error");
   } finally {
     isLoading.value = false;
   }

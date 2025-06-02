@@ -47,8 +47,8 @@
                 Riwayat
               </NuxtLink>
             </li>
-            <li>
-              <NuxtLink
+            <li v-if="userRole === 'OWNER' || userRole === 'ADMIN'">
+            <NuxtLink
                   class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                   to="/dashboard" active-class="bg-gray-100">
                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -60,6 +60,20 @@
                 Dashboard
               </NuxtLink>
             </li>
+            <li style="position: absolute; bottom: 80px; width: 90%;">
+              <button
+                  class="w-full flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+                  @click="handleLogout">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                      d="M8 16H5.33333C4.97971 16 4.64057 15.8595 4.39052 15.6095C4.14048 15.3594 4 15.0203 4 14.6667V5.33333C4 4.97971 4.14048 4.64057 4.39052 4.39052C4.64057 4.14048 4.97971 4 5.33333 4H8"
+                      stroke="#2B2B2B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12.6666 13.3332L16 9.99984L12.6666 6.6665" stroke="#2B2B2B" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Keluar
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -70,6 +84,20 @@
 </template>
 
 <script setup lang="ts">
+const { logout } = useAuth()
+const { $toast } = useNuxtApp();
+const userRole = useCookie('user.role').value;
+
+const handleLogout = async () => {
+  try {
+    await logout()
+  } catch (error: any) {
+    return
+  } finally {
+    $toast('Berhasil menghapus sesi masuk.', 'success'); // Menampilkan pesan kesalahan menggunakan toast
+    navigateTo('/auth/login'); // Setelah logout berhasil, arahkan ke halaman login
+  }
+}
 </script>
 
 <style scoped>

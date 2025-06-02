@@ -1,34 +1,22 @@
-// middleware/auth.global.ts
-
 export default defineNuxtRouteMiddleware((to, from) => {
-    const isAuthenticated = useCookie('isLoggedIn').value; // Cek status login
-    const userRole = useCookie('user_role').value ?? 'User'; // Default ke 'User' jika null/undefined
+    const isAuthenticated = useCookie('isLoggedIn').value;
 
-    // Daftar halaman publik yang tidak memerlukan otentikasi
-    const publicPages = ['/auth/login', '/auth/register', '/auth/forget-password', '/auth/reset-password', '/home-page', '/browser', '/properties/:id'
-    ];
+    const userRole = useCookie("user.role").value ?? "TENANT"; // Default ke TENANT jika tidak ada
+    console.log("User Role dari Cookie:", userRole);
 
-    // Cek apakah halaman yang diminta adalah halaman publik
-    const isPublicPage = publicPages.includes(to.path);
 
-    // Jika pengguna belum login dan tidak mengakses halaman publik, redirect ke landing page
-    if (!isPublicPage && !isAuthenticated) {
+
+    // Daftar halaman publik yang bisa diakses siapa saja
+    const publicPages = ['/auth/login', '/auth/register', '/home-page', '/browser', '/properties/:id'];
+
+    if (publicPages.includes(to.path)) return; // Jika halaman publik, lanjutkan
+
+    if (!isAuthenticated) {
         return navigateTo('/auth/login', { redirectCode: 302 });
     }
 
-    // Jika pengguna sudah login, cegah akses ke halaman login/registrasi
-    const isAuthPage = ['/auth/login', '/auth/register', '/auth/forget-password', '/auth/reset-password'].includes(to.path);
-    if (isAuthPage && isAuthenticated) {
-        return navigateTo('/home-page');
-    }
-
-    // Jika Admin biasa mencoba mengakses halaman user, arahkan ke user dashboard
-    if (userRole === 'Admin' && to.path.startsWith('/admin')) {
-        return navigateTo('/user/dashboard');
-    }
-
-    // Jika user biasa mencoba mengakses halaman admin, arahkan ke user dashboard
-    if (userRole === 'User' && to.path.startsWith('/admin')) {
-        return navigateTo('/user/dashboard');
+    // Jika halaman punya meta.role, cek apakah pengguna sesuai
+    if (to.meta.role && to.meta.role !== userRole) {
+        return navigateTo('/unauthorized'); // Redirect jika tidak sesuai
     }
 });

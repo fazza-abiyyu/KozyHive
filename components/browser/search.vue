@@ -46,7 +46,7 @@ export default {
     return {
       searchQuery: '',
       properties: [],
-      searched: false, // Tambahkan variabel untuk mengetahui apakah pencarian sudah dilakukan
+      searched: false,
     };
   },
   methods: {
