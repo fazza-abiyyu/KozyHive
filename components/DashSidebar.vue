@@ -22,7 +22,7 @@
           <ul class="flex flex-col space-y-1">
             <li>
               <NuxtLink class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
-                        to="/home-page" active-class="bg-gray-100">
+                        to="/dashboard" active-class="bg-gray-100">
                 <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                      stroke-linejoin="round">
@@ -115,16 +115,15 @@
                       class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                       aria-expanded="true" aria-controls="properties-accordion-child">
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <g clip-path="url(#clip0_220994_2241)">
-                    <path d="M10.0002 16.6663C13.6821 16.6663 16.6668 13.6816 16.6668 9.99967C16.6668 6.31778 13.6821 3.33301 10.0002 3.33301C6.31826 3.33301 3.3335 6.31778 3.3335 9.99967C3.3335 13.6816 6.31826 16.6663 10.0002 16.6663Z" stroke="#1F2937" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M12.6668 7.33301H8.66683C8.31321 7.33301 7.97407 7.47348 7.72402 7.72353C7.47397 7.97358 7.3335 8.31272 7.3335 8.66634C7.3335 9.01996 7.47397 9.3591 7.72402 9.60915C7.97407 9.8592 8.31321 9.99967 8.66683 9.99967H11.3335C11.6871 9.99967 12.0263 10.1402 12.2763 10.3902C12.5264 10.6402 12.6668 10.9794 12.6668 11.333C12.6668 11.6866 12.5264 12.0258 12.2763 12.2758C12.0263 12.5259 11.6871 12.6663 11.3335 12.6663H7.3335" stroke="#1F2937" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M10 14V6" stroke="#E5E7EB" stroke-linecap="round" stroke-linejoin="round"/>
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_220994_2241">
-                      <rect width="16" height="16" fill="white" transform="translate(2 2)"/>
-                    </clipPath>
-                  </defs>
+                  <path d="M14.0001 3.33301H6.00008C5.64646 3.33301 5.30732 3.47348 5.05727 3.72353C4.80722 3.97358 4.66675 4.31272 4.66675 4.66634V15.333C4.66675 15.6866 4.80722 16.0258 5.05727 16.2758C5.30732 16.5259 5.64646 16.6663 6.00008 16.6663H14.0001C14.3537 16.6663 14.6928 16.5259 14.9429 16.2758C15.1929 16.0258 15.3334 15.6866 15.3334 15.333V4.66634C15.3334 4.31272 15.1929 3.97358 14.9429 3.72353C14.6928 3.47348 14.3537 3.33301 14.0001 3.33301Z" stroke="#1F2937" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8 12.6665L8.232 12.5065C9.20867 11.8312 10.792 11.8312 11.768 12.5065L12 12.6665" stroke="#1F2937" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7.33325 6.66699H7.33992" stroke="#1F2937" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12.6667 6.66699H12.6734" stroke="#E5E7EB" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 6.66699H10.0067" stroke="#E5E7EB" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10 9.33301H10.0067" stroke="#E5E7EB" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12.6667 9.33301H12.6734" stroke="#E5E7EB" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7.33325 9.33301H7.33992" stroke="#E5E7EB" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M8.66675 16.6663V12.333M11.3334 12.333V16.6663" stroke="#E5E7EB" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 Kost
 

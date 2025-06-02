@@ -109,6 +109,16 @@ export class User {
         });
     };
 
+    static updateUserRole = async (id: number, role: Role) => {
+        return prisma.user.update({
+            where: { id },
+            data: {
+                role: role
+            }
+        });
+    };
+
+
     static deleteUser = async (id: number) => {
         return prisma.user.delete({
             where: { id },

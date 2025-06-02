@@ -165,8 +165,8 @@ const getAddRoute = () => `${route.path}/add`;
 const getEditRoute = (row: Record<string, any>) => {
   if ("owner" in row) {
     return `/dashboard/properties/edit/${row.id}`;
-  } else if ("category" in row) {
-    return `/cashflow/edit/${row.id}`;
+  } else if ("email" in row) {
+    return `/dashboard/users/${row.id}`;
   } else if ("email" in row) {
     return `/users/edit/${row.id}`;
   } else {
