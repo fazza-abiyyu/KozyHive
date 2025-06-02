@@ -2,8 +2,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
     const isAuthenticated = useCookie('isLoggedIn').value;
 
     const userRole = useCookie("user.role").value ?? "TENANT"; // Default ke TENANT jika tidak ada
-    console.log("User Role dari Cookie:", userRole);
-
 
 
     // Daftar halaman publik yang bisa diakses siapa saja
