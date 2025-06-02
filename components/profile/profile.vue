@@ -103,7 +103,7 @@ const updateProfile = async () => {
     }
 
     // Kirim request ke API
-    const response = await useFetchApi("http://localhost:3000/api/profile", {
+    const response = await useFetchApi("/api/profile", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
