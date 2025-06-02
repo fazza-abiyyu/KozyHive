@@ -2,6 +2,7 @@ import { uploadFile } from "~/server/utils/UploadFiles";
 import { Property } from "~/server/models/Property";
 import { ErrorHandler } from "~/server/utils/ErrorHandler";
 import {PropertyStatus} from "@prisma/client";
+import {ResponseHandler} from "~/server/utils/ResponseHandler";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -106,7 +107,7 @@ export default defineEventHandler(async (event) => {
         // Buat properti baru di database
         try {
             const newProperty = await Property.createProperty(payload);
-            return { code: 201, message: "Properti berhasil ditambahkan!", data: newProperty };
+            return ResponseHandler.sendSuccess(event, "Data properti berhasil di tambahkan!", newProperty, 201);
         } catch (dbError: any) {
             return ErrorHandler.handleError(event, { statusCode: 500, statusMessage: dbError.message || "Gagal menyimpan properti ke database." });
         }

@@ -22,7 +22,7 @@
                   <!-- Kolom Alat (Edit & Delete) -->
                   <th v-if="editAction || deleteAction || approveAction || rejectAction || activeAction || completedAction" scope="col"
                       class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase center flex items-center justify-center">
-                   KONFIRMASI
+                   AKSI
                   </th>
                 </tr>
                 </thead>
@@ -164,7 +164,7 @@ const getAddRoute = () => `${route.path}/add`;
 
 const getEditRoute = (row: Record<string, any>) => {
   if ("owner" in row) {
-    return `/properties/edit/${row.id}`;
+    return `/dashboard/properties/edit/${row.id}`;
   } else if ("category" in row) {
     return `/cashflow/edit/${row.id}`;
   } else if ("email" in row) {

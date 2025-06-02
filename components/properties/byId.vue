@@ -103,12 +103,12 @@
 
 
             <!-- Deposit -->
-            <div>
-              <label class="block text-sm font-medium text-black mb-1">Deposit (Rp)</label>
-              <input type="number" v-model="booking.deposit" min="0"
-                     class="w-full px-[10px] py-[10px] border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                     required>
-            </div>
+<!--            <div>-->
+<!--              <label class="block text-sm font-medium text-black mb-1">Deposit (Rp)</label>-->
+<!--              <input type="number" v-model="booking.deposit" min="0"-->
+<!--                     class="w-full px-[10px] py-[10px] border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-blue-500"-->
+<!--                     required>-->
+<!--            </div>-->
 
             <!-- Catatan -->
             <div>

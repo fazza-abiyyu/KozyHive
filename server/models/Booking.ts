@@ -7,7 +7,7 @@ export class Booking {
         return prisma.booking.findUnique({
             where: {id},
             include: {
-                tenant: {select: {id: true, email: true}},
+                tenant: {select: {id: true, email: true, profile: {select: {name: true, phone: true}}}},
                 owner: {select: {id: true, email: true}},
                 property: true,
                 bookingLogs: true,
@@ -165,6 +165,13 @@ export class Booking {
         return prisma.booking.update({
             where: {id},
             data: {status},
+        });
+    }
+
+    static async updatePaymentLink(id: number, paymentLink: string) {
+        return prisma.booking.update({
+            where: { id: Number(id) }, // Pastikan id dikonversi ke integer
+            data: { paymentLink },
         });
     }
 

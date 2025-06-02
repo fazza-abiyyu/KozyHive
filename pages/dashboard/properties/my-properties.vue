@@ -44,7 +44,6 @@
           :title="'Daftar Kost'"
           :fields="[
       { label: 'NAMA KOST', key: 'name' },
-      { label: 'PEMILIK KOST', key: 'owner.profile.name' },
       { label: 'HARGA', key: 'price' },
       { label: 'ALAMAT', key: 'address' },
       { label: 'STATUS', key: 'status' },
@@ -58,12 +57,8 @@
           :isLoading="isLoading"
           :delete-action="true"
           :edit-action="true"
-          :approve-action="true"
-          :reject-action="true"
           @fetchData="(e) => handleChangeFetchData(e)"
           @deleteData="(e) => handleDeleteData(e)"
-          @approveData="(e) => handleApproveData(e)"
-          @rejectData="(e) => handleRejectData(e)"
       />
     </div>
   </div>
@@ -98,7 +93,7 @@ const pageSize = limit
 const fetchProperties = async () => {
   try {
     isLoading.value = true
-    const response: any = await useFetchApi(`/api/properties?page=${page.value}&limit=${pageSize.value}`);
+    const response: any = await useFetchApi(`/api/properties/my-properties?page=${page.value}&limit=${pageSize.value}`);
     propertiesData.value = response?.data;
     totalPages.value = response?.meta?.totalPages;
     nextPage.value = response?.meta?.next;
@@ -114,7 +109,7 @@ const fetchProperties = async () => {
 const handleChangeFetchData = async (payload: { currentPage: number }) => {
   try {
     isLoading.value = true;
-    const response: any = await useFetchApi(`/api/properties?page=${payload.currentPage}&limit=${pageSize.value}`);
+    const response: any = await useFetchApi(`/api/properties/my-properties?page=${payload.currentPage}&limit=${pageSize.value}`);
     propertiesData.value = response?.data;
     totalPages.value = response?.meta?.totalPages;
     nextPage.value = response?.meta?.next;
@@ -138,65 +133,6 @@ const handleDeleteData = async (id: number) => {
     $toast('Berhasil menghapus data.', 'success');
   } catch (e) {
     $toast('Gagal menghapus data.', 'error');
-  }
-}
-
-const handleApproveData = async (id: number) => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("Token tidak ditemukan, harap login ulang.");
-    }
-
-    await useFetchApi(`/api/properties/${id}/status`, {
-      method: 'PATCH',
-      headers: {
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        "status": 'ACTIVE',
-      })
-    })
-    propertiesData.value = propertiesData.value.filter((item: any) => item.id !== id)
-
-    // Refresh halaman setelah update sukses
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
-
-    $toast('Berhasil mengubah status.', 'success');
-  } catch (e) {
-  }
-}
-
-
-const handleRejectData = async (id: number) => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      throw new Error("Token tidak ditemukan, harap login ulang.");
-    }
-
-    await useFetchApi(`/api/properties/${id}/statues`, {
-      method: 'PATCH',
-      headers: {
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        "status": 'DELETED',
-      })
-    })
-    propertiesData.value = propertiesData.value.filter((item: any) => item.id !== id)
-    // Refresh halaman setelah update sukses
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
-
-    $toast('Berhasil mengubah status.', 'success');
-  } catch (e) {
-    $toast('Gagal mengubah status.', 'error');
   }
 }
 

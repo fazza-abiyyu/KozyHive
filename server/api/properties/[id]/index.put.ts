@@ -2,6 +2,7 @@ import { uploadFile } from "~/server/utils/UploadFiles";
 import { Property } from "~/server/models/Property";
 import { ErrorHandler } from "~/server/utils/ErrorHandler";
 import {PropertyStatus} from "@prisma/client";
+import {ResponseHandler} from "~/server/utils/ResponseHandler";
 
 export default defineEventHandler(async (event) => {
     try {
@@ -100,7 +101,7 @@ export default defineEventHandler(async (event) => {
 
         try {
             const updatedProperty = await Property.updateProperty(id, payload);
-            return { code: 200, message: "Properti berhasil diperbarui!", data: updatedProperty };
+            return ResponseHandler.sendSuccess(event, "Data properti berhasil di perbarui!", updatedProperty, 200);
         } catch (dbError: any) {
             return ErrorHandler.handleError(event, { statusCode: 500, statusMessage: dbError.message || "Gagal memperbarui properti di database." });
         }

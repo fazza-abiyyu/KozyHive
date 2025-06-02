@@ -110,6 +110,59 @@
               </NuxtLink>
             </li>
 
+            <li class="hs-accordion" id="properties-accordion">
+              <button type="button"
+                      class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+                      aria-expanded="true" aria-controls="properties-accordion-child">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g clip-path="url(#clip0_220994_2241)">
+                    <path d="M10.0002 16.6663C13.6821 16.6663 16.6668 13.6816 16.6668 9.99967C16.6668 6.31778 13.6821 3.33301 10.0002 3.33301C6.31826 3.33301 3.3335 6.31778 3.3335 9.99967C3.3335 13.6816 6.31826 16.6663 10.0002 16.6663Z" stroke="#1F2937" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.6668 7.33301H8.66683C8.31321 7.33301 7.97407 7.47348 7.72402 7.72353C7.47397 7.97358 7.3335 8.31272 7.3335 8.66634C7.3335 9.01996 7.47397 9.3591 7.72402 9.60915C7.97407 9.8592 8.31321 9.99967 8.66683 9.99967H11.3335C11.6871 9.99967 12.0263 10.1402 12.2763 10.3902C12.5264 10.6402 12.6668 10.9794 12.6668 11.333C12.6668 11.6866 12.5264 12.0258 12.2763 12.2758C12.0263 12.5259 11.6871 12.6663 11.3335 12.6663H7.3335" stroke="#1F2937" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10 14V6" stroke="#E5E7EB" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_220994_2241">
+                      <rect width="16" height="16" fill="white" transform="translate(2 2)"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+                Kost
+
+                <svg class="hs-accordion-active:block ms-auto hidden size-4" xmlns="http://www.w3.org/2000/svg"
+                     width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m18 15-6-6-6 6"/>
+                </svg>
+
+                <svg class="hs-accordion-active:hidden ms-auto block size-4" xmlns="http://www.w3.org/2000/svg"
+                     width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"/>
+                </svg>
+              </button>
+
+              <div id="posyandu-accordion-child"
+                   class="hs-accordion-content w-full overflow-hidden transition-[height] duration-300 hidden"
+                   role="region" aria-labelledby="posyandu-accordion">
+                <ul class="ps-4 pt-1 mt-2 space-y-1 border-l-2 ml-4">
+                  <li>
+                    <NuxtLink
+                        class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+                        to="/dashboard/properties/my-properties" active-class="bg-gray-100">
+                      Daftar
+                    </NuxtLink>
+                  </li>
+                  <li>
+                    <NuxtLink
+                        class="flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
+                        to="/dashboard/properties/add" active-class="bg-gray-100">
+                      Tambah
+                    </NuxtLink>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
             <li class="hs-accordion" id="keuangan-accordion">
               <button type="button"
                       class="hs-accordion-toggle w-full text-start flex items-center gap-x-3.5 py-2 px-2.5 text-sm text-gray-800 rounded-lg hover:bg-gray-100 focus:outline-none focus:bg-gray-100"

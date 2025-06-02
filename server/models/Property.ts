@@ -172,28 +172,42 @@ export class Property {
         const skip = (page - 1) * pageSize;
         const take = pageSize;
 
+        let dynamicFilter = [];
+
+        // Cek kalau query adalah range harga (misalnya: "1000000 - 20000000")
+        if (/^\s*\d+\s*-\s*\d+\s*$/.test(searchQuery)) {
+            const [minStr, maxStr] = searchQuery.split('-');
+            const min = Number(minStr.trim());
+            const max = Number(maxStr.trim());
+            if (!isNaN(min) && !isNaN(max)) {
+                dynamicFilter.push({ price: { gte: min, lte: max } });
+            }
+        }
+        // Kalau angka tunggal
+        else if (!isNaN(Number(searchQuery))) {
+            const price = Number(searchQuery);
+            dynamicFilter.push({ price: { equals: price } });
+        }
+
+        // Pencarian berdasarkan teks
+        dynamicFilter.push(
+            { name: { contains: searchQuery } },
+            { description: { contains: searchQuery } },
+            { city: { contains: searchQuery } }
+        );
+
+        const whereClause = {
+            OR: dynamicFilter
+        };
+
         const properties = await prisma.property.findMany({
-            where: {
-                OR: [
-                    { name: { contains: searchQuery } },
-                    { description: { contains: searchQuery } }
-                ]
-            },
+            where: whereClause,
             skip,
             take,
-            include: {
-                owner: { select: { id: true, email: true } },
-                bookings: true,
-            },
         });
 
         const total = await prisma.property.count({
-            where: {
-                OR: [
-                    { name: { contains: searchQuery } },
-                    { description: { contains: searchQuery } }
-                ]
-            }
+            where: whereClause,
         });
 
         return {
@@ -208,6 +222,7 @@ export class Property {
             },
         };
     }
+
 
     static async filterPropertiesByCity(city: string, page: number = 1, pageSize: number = 10) {
         const skip = (page - 1) * pageSize;

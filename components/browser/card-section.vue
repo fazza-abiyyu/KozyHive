@@ -1,6 +1,7 @@
 <template>
   <!-- Card Blog -->
-  <div class="max-w-[85rem] px-4 py-7 sm:px-6 lg:px-8 lg:py-14 mx-auto">
+  <div class="max-w-[85rem] px-4 py-3 sm:px-4 lg:px-6 lg:py-7 mx-auto mt-0 pt-0">
+
     <!-- Button Kembali -->
     <button @click="goBack"
             class="flex items-center space-x-2 px-4 py-2 bg-white text-gray-700 hover:bg-gray-100">
@@ -19,17 +20,25 @@
         </p>
       </div>
     </div>
+
+    <search/>
+
+
     <!-- Grid -->
-    <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-6">
-      <router-link
+    <div class="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mb-6 p-2 pl-0 m-5 ml-0">
+    <router-link
           v-for="property in properties"
           :key="property.id"
           :to="'/properties/' + property.id"
           class="group flex flex-col h-[400px] bg-white border border-gray-200 shadow-2xs rounded-xl hover:shadow-md transition-shadow">
-        <div class="h-[60%] flex justify-center items-center bg-blue-600 rounded-t-xl">
-          <img :src="property.images || 'https://via.placeholder.com/300'" :alt="property.name" class="w-full h-full object-cover rounded-t-xl"/>
-        </div>
-        <div class="h-[40%] p-4">
+      <div class="flex justify-center items-center bg-blue-600 rounded-t-xl">
+        <img
+            :src="property.images || 'https://via.placeholder.com/300'"
+            :alt="property.name"
+            class="w-full object-cover rounded-t-xl aspect-[8/6]"
+        />
+      </div>
+      <div class="h-[40%] p-4">
           <span class="block mb-1 text-xs font-normal uppercase text-[#24AB70]">{{ property.city }}</span>
           <h3 class="text-lg font-semibold text-gray-800">{{ property.name }}</h3>
           <p class="mt-2 text-sm font-normal text-black">Rp {{ property.price.toLocaleString() }}</p>
@@ -60,6 +69,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import search from "~/components/browser/search.vue"
 
 const goBack = () => {
   window.history.back(); // Navigasi ke halaman sebelumnya
