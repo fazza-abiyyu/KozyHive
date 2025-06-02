@@ -30,7 +30,10 @@ export default defineNuxtConfig({
     ],
     optimizeDeps: {
       exclude: ['@prisma/client']
-    }
+    },
+    ssr: {
+    noExternal: ['@prisma/client']
+  }
   },
   experimental: {
     payloadExtraction: false
