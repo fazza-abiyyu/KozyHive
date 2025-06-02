@@ -193,7 +193,7 @@ const profile = ref<Record<string, any>>({});
 onMounted(async () => {
   try {
     await fetchUserData()
-    const res = await fetch(`http://localhost:3000/api/properties/${propertyId.value}`);
+    const res = await fetch(`/api/properties/${propertyId.value}`);
     const result = await res.json();
     if (result.success) {
       property.value = result.data;
