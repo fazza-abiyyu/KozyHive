@@ -56,12 +56,9 @@
           :prevPage="prevPage"
           :nextPage="nextPage"
           :isLoading="isLoading"
-          :delete-action="true"
-          :edit-action="true"
           :approve-action="true"
           :reject-action="true"
           @fetchData="(e) => handleChangeFetchData(e)"
-          @deleteData="(e) => handleDeleteData(e)"
           @approveData="(e) => handleApproveData(e)"
           @rejectData="(e) => handleRejectData(e)"
       />
