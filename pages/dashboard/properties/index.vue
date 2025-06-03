@@ -175,7 +175,7 @@ const handleRejectData = async (id: number) => {
       throw new Error("Token tidak ditemukan, harap login ulang.");
     }
 
-    await useFetchApi(`/api/properties/${id}/statues`, {
+    await useFetchApi(`/api/properties/${id}/status`, {
       method: 'PATCH',
       headers: {
         "Authorization": `Bearer ${token}`
